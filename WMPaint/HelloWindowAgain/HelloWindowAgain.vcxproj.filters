@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyWindow.cpp">
+    <ClCompile Include="WMPaint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
