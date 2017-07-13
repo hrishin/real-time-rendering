@@ -3,6 +3,8 @@
 LRESULT CALLBACK WndCallackProc(HWND, UINT, WPARAM, LPARAM);
 HWND glWndHwnd;
 bool glToggleFullScreen;
+WINDOWPLACEMENT glWndPrevPlacement;
+DWORD glDwStyle;
 
 int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpszCmdLine, int cmdShow)
 {
@@ -11,6 +13,7 @@ int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpsz
 	MSG msg;
 	TCHAR szAppName[] = TEXT("MyWindow");
 	HBRUSH hbWndBackground = CreateSolidBrush(RGB(0, 0, 0));
+	glToggleFullScreen = false;
 
 	// Initialize Window Object properies
 	wndClass.cbSize = sizeof(WNDCLASSEX);
@@ -59,9 +62,28 @@ int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpsz
 
 LRESULT CALLBACK WndCallackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
+	void toggleFullscreen();
+
 	switch (iMsg)
 	{
 	case WM_CREATE:
+		break;
+
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case 'F':
+			glToggleFullScreen = !glToggleFullScreen;
+			toggleFullscreen();
+			break;
+		
+		case VK_ESCAPE:
+			DestroyWindow(glWndHwnd);
+			break;
+		
+		default:
+			break;
+		}
 		break;
 
 	case WM_DESTROY:
@@ -71,4 +93,37 @@ LRESULT CALLBACK WndCallackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 	
 
 	return (DefWindowProc(hwnd, iMsg, wParam, lParam));
+}
+
+
+void toggleFullscreen()
+{
+	MONITORINFO monInfo;
+	HMONITOR hMonitor;
+	monInfo = { sizeof(MONITORINFO) };
+	hMonitor = MonitorFromWindow(glWndHwnd, MONITORINFOF_PRIMARY);
+
+	if (glToggleFullScreen == true) {
+		glDwStyle = GetWindowLong(glWndHwnd, GWL_STYLE);
+		if(glDwStyle & WS_OVERLAPPEDWINDOW)
+		{
+			glWndPrevPlacement = { sizeof(WINDOWPLACEMENT) };
+			if (GetWindowPlacement(glWndHwnd, &glWndPrevPlacement) && GetMonitorInfo(hMonitor, &monInfo))
+			{
+				SetWindowLong(glWndHwnd, GWL_STYLE, glDwStyle & ~WS_OVERLAPPEDWINDOW);
+				SetWindowPos(glWndHwnd, HWND_TOP, monInfo.rcMonitor.left, monInfo.rcMonitor.top, (monInfo.rcMonitor.right- monInfo.rcMonitor.left), (monInfo.rcMonitor.bottom - monInfo.rcMonitor.top), SWP_NOZORDER | SWP_FRAMECHANGED);
+			}
+
+			ShowCursor(FALSE);
+		}
+	}
+	else 
+	{
+		SetWindowLong(glWndHwnd, GWL_STYLE, glDwStyle | WS_OVERLAPPEDWINDOW);
+		SetWindowPlacement(glWndHwnd, &glWndPrevPlacement);
+		SetWindowPos(glWndHwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+		
+		ShowCursor(TRUE);
+	}
+
 }
