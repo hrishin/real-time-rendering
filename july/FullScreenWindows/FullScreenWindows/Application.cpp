@@ -5,6 +5,7 @@ HWND glWndHwnd;
 bool glToggleFullScreen;
 WINDOWPLACEMENT glWndPrevPlacement;
 DWORD glDwStyle;
+COLORREF glColorRef;
 
 int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpszCmdLine, int cmdShow)
 {
@@ -12,8 +13,9 @@ int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpsz
 	HWND hwnd;
 	MSG msg;
 	TCHAR szAppName[] = TEXT("MyWindow");
-	HBRUSH hbWndBackground = CreateSolidBrush(RGB(0, 0, 0));
 	glToggleFullScreen = false;
+	glColorRef = RGB(0, 0, 0);
+	HBRUSH hbWndBackground = CreateSolidBrush(glColorRef);
 
 	// Initialize Window Object properies
 	wndClass.cbSize = sizeof(WNDCLASSEX);
@@ -63,6 +65,9 @@ int WINAPI WinMain(HINSTANCE currentInstance, HINSTANCE prevInstance, LPSTR lpsz
 LRESULT CALLBACK WndCallackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
 	void toggleFullscreen();
+	HDC  hdc;
+	PAINTSTRUCT ps;
+	RECT rc;
 
 	switch (iMsg)
 	{
@@ -76,14 +81,25 @@ LRESULT CALLBACK WndCallackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPar
 			glToggleFullScreen = !glToggleFullScreen;
 			toggleFullscreen();
 			break;
-		
+
+		case 'R':
+			MessageBox(glWndHwnd, TEXT("Pressed R"), TEXT("Chaning Color"), MB_OK);
+			glColorRef = RGB(255, 0, 0);
+			break;
+
 		case VK_ESCAPE:
 			DestroyWindow(glWndHwnd);
 			break;
-		
-		default:
-			break;
 		}
+		
+		InvalidateRect(glWndHwnd, NULL, TRUE);
+		break;
+
+	case WM_PAINT:
+		hdc = BeginPaint(glWndHwnd, &ps);
+		GetClientRect(glWndHwnd, &rc);
+		FillRect(hdc, &rc, CreateSolidBrush(glColorRef));
+		EndPaint(glWndHwnd, &ps);
 		break;
 
 	case WM_DESTROY:
