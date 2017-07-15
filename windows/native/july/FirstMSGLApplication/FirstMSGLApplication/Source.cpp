@@ -170,7 +170,7 @@ void initialize(void)
 	PIXELFORMATDESCRIPTOR pfd;
 	int iPixelFormatIndex;
 
-	// zeroout 
+	// zero out 
 	ZeroMemory(&pfd, sizeof(PIXELFORMATDESCRIPTOR));
 
 	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -204,7 +204,10 @@ void initialize(void)
 	   context into multiple viewports
 
 	   Transition from window to OpenGL rendering context
+	   Copies Windows context property to OpenGL context properties
 	   Windows: WGL (Windows GL)
+	   
+	   This is called Bridging 
 	*/
 	gblHrc = wglCreateContext(gblHdc);
 	if (gblHrc == NULL)
@@ -219,6 +222,7 @@ void initialize(void)
 		ReleaseDeviceContext();
 	}
 
+	/*State function*/
 	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 
 	resize(WIN_WIDTH, WIN_HEIGH);
@@ -259,6 +263,11 @@ void display(void)
 	glFlush();
 }
 
+/*
+Very important for Dirext X not for OpenGL
+becuase DirextX is not state machine and change in windows resize empose
+re-rendering of Direct X (even for Vulcan)
+*/
 void resize(int width, int height)
 {
 	if (height == 0)
