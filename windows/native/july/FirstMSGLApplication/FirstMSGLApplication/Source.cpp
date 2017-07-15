@@ -36,6 +36,9 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 
 	//initialize window object
 	wndClass.cbSize = sizeof(WNDCLASSEX);
+	/*  CS_OWNDC : Is required to make sure memory allocated is neither movable or discardable  
+		in OpenGL.
+	*/
 	wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wndClass.cbClsExtra = 0;
 	wndClass.cbWndExtra = 0;
@@ -109,14 +112,20 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 	switch (iMsg)
 	{
 	case WM_ACTIVATE:
-		gblActiveWindow = ((wParam) == 1);
+		gblActiveWindow = (HIWORD(wParam) == 0);
 		break;
 
 	case WM_PAINT:
+		// it's single buffered rendering/painting
+		// single threaded
+		// can't save the state on stack
+		// so that's why tearing and flicekring happens
 		display();
 		break;
 
 	case WM_ERASEBKGND:
+		// telling windows, dont paint window background, this program
+		// has ability to paint window background by itself.
 		return(0);
 
 	case WM_KEYDOWN:
@@ -126,7 +135,7 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 			gblIsEscPressed = true;
 			break;
 		
-		case 0x46:
+		case 0x46: // 'f' or 'F'
 			gblFullScreen = !gblFullScreen;
 			toggleFullScreen();
 			break;
@@ -134,6 +143,17 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 		default:
 			break;
 		}
+		break;
+
+	case WM_SIZE:
+		resize(LOWORD(lParam), HIWORD(lParam));
+		break;
+
+	case WM_LBUTTONDOWN:
+		break;
+	
+	case WM_DESTROY:
+		PostQuitMessage(0);
 		break;
 
 	default:
@@ -158,9 +178,9 @@ void initialize(void)
 	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
 	pfd.iPixelType = PFD_TYPE_RGBA;
 	pfd.cColorBits = 32;
-	pfd.cRedBits = 8;
+	pfd.cRedBits   = 8;
 	pfd.cGreenBits = 8;
-	pfd.cBlueBits = 8;
+	pfd.cBlueBits  = 8;
 	pfd.cAlphaBits = 8;
 
 	gblHdc = GetDC(gblHwnd);
@@ -176,6 +196,16 @@ void initialize(void)
 		ReleaseDeviceContext();
 	}
 
+	/*
+	1) every window has individual rendering context (In maya/phosohop every window has own context)
+	   if we have multiple child window and want to render same things accross all then 
+	   main window knows to with it has shared the context but child/other window doesnt know about it
+	2) usually 1 viewport has 1 rendering context. we can split 1 window in multiple viewports and can 1 rendering
+	   context into multiple viewports
+
+	   Transition from window to OpenGL rendering context
+	   Windows: WGL (Windows GL)
+	*/
 	gblHrc = wglCreateContext(gblHdc);
 	if (gblHrc == NULL)
 	{
