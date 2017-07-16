@@ -259,14 +259,24 @@ void uninitialize(void)
 
 void display(void)
 {
+	/*
+	State function: May be
+	clear the FrameBuffer for following properties
+	Color Buffer, Depth Buffer, Stencil Buffer, Accumulate Buffer for fragement
+	*/
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	/*
+	Push the everything to graphhics pipeline.
+	It requires for single buffer only but for double buffer its not required
+	*/
 	glFlush();
 }
 
 /*
 Very important for Dirext X not for OpenGL
 becuase DirextX is not state machine and change in windows resize empose
-re-rendering of Direct X (even for Vulcan)
+re-rendering of Direct X (even for Vulcan) scenes.
 */
 void resize(int width, int height)
 {
