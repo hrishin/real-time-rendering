@@ -3,7 +3,7 @@
 #include <math.h>
 
 #define PI 3.1415926535898 //or look for 'M_PI' in 'math.h'
-#define WIN_WIDTH 800
+#define WIN_WIDTH 600
 #define WIN_HEIGHT 600
 
 #pragma comment (lib, "opengl32.lib")
@@ -351,12 +351,11 @@ void display(void)
 	glVertex3f(-1.0f, 0.0f, 0.0f);
 	glEnd();
 
-	/*draw the yellow border rectangle*/
-	glBegin(GL_LINES);
+	/*draw the yellow border circle*/
+	GLint circle_points = 1000; 
+	glLineWidth(1);
+	glBegin(GL_POINTS); 
 	glColor3f(1.0f, 1.0f, 0.0f);
-
-	GLint circle_points = 1000; //you can try using 1000 or 10000
-	glBegin(GL_POINTS); //GL_LINES will also do
 	for (int i = 0; i < circle_points; i++)
 	{
 		angle = 2 * PI * i / circle_points;

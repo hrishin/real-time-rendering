@@ -1,0 +1,5 @@
+﻿  Source.cpp
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\opengl functions\assignment9\assignment9\source.cpp(361): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\opengl functions\assignment9\assignment9\source.cpp(362): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  Assignment9.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\OpenGL functions\Assignment9\Debug\Assignment9.exe
+  Assignment9.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\OpenGL functions\Assignment9\Debug\Assignment9.pdb (Full PDB)
