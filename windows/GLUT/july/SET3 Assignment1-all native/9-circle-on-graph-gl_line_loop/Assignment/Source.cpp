@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 	glutInitWindowSize(WIN_WIDTH, WIN_HEIGHT);
 	glutInitWindowPosition((iScreenWidth/2) - (WIN_WIDTH/2),
 							(iScreenHeight/2) - (WIN_HEIGHT/2));
-	glutCreateWindow("OpenGL GLUT: Horizontal Line");
+	glutCreateWindow("OpenGL GLUT: Circles");
 
 	initialize();
 
