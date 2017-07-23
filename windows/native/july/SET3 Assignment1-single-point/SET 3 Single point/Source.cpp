@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <gl/GL.h>
 
-#define WIN_WIDTH 800
+#define WIN_WIDTH 600
 #define WIN_HEIGHT 600
 
 #pragma comment (lib, "opengl32.lib")
