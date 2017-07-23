@@ -235,7 +235,7 @@ void initialize(void)
 	}
 
 	/*state function*/
-	glClearColor(0.0f, 0.0f, 0.5f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// warmup
 	//resize(WIN_WIDTH, WIN_HEIGH);

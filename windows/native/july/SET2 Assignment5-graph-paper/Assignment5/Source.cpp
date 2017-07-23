@@ -289,7 +289,7 @@ void display(void)
 	/*Only draw*/
 	glLineWidth(1);
 	glBegin(GL_LINES);
-	glColor3f(0.0f, 0.0f, 0.8f);
+	glColor3f(0.0f, 0.0f, 1.0f);
 	xPosition = -0.05f;
 	for (i = 0; i < 20; i++)
 	{
@@ -312,7 +312,7 @@ void display(void)
 
 	glLineWidth(1);
 	glBegin(GL_LINES);
-	glColor3f(0.0f, 0.0f, 0.8f);
+	glColor3f(0.0f, 0.0f, 1.0f);
 	yPosition = -0.05f;
 	for (i = 0; i < 20; i++)
 	{
