@@ -15,6 +15,5 @@ Source.obj : error LNK2019: unresolved external symbol __imp___glutCreateWindowW
 Source.obj : error LNK2019: unresolved external symbol __imp_glutLeaveMainLoop referenced in function "void __cdecl keyboard(unsigned char,int,int)" (?keyboard@@YAXEHH@Z)
 Source.obj : error LNK2019: unresolved external symbol __imp_glutLeaveFullScreen referenced in function "void __cdecl keyboard(unsigned char,int,int)" (?keyboard@@YAXEHH@Z)
 Source.obj : error LNK2019: unresolved external symbol __imp_glutCloseFunc referenced in function main
-MSVCRTD.lib(exe_winmain.obj) : error LNK2019: unresolved external symbol WinMain referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
 c:\freeglut\lib\freeglut.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
-C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\GLUT\july\SET3 Assignment10-deathly-holow\x64\Debug\Assignment.exe : fatal error LNK1120: 15 unresolved externals
+C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\GLUT\july\SET3 Assignment10-deathly-holow\x64\Debug\Assignment.exe : fatal error LNK1120: 14 unresolved externals

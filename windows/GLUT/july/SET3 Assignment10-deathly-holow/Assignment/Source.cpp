@@ -115,14 +115,16 @@ void drawCircle()
 		for (i = 0; i < circle_points; i++)
 		{
 			angle = 2 * PI * i / circle_points;
-			glVertex3f(radius * cos(angle) + centerX, radius * sin(angle - 1.0f) + centerY, 1.0f);
+			glVertex3f(radius * cos(angle) + centerX, radius * sin(angle) + centerY, 1.0f);
 		}
 	glEnd();
 }
 
 GLfloat getDistance(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
-	return(sqrtf((x2 - x1) + (y2 - y1)));
+	GLfloat x = pow(x2 - x1, 2);
+	GLfloat y = pow(y2 - y1, 2);
+	return(sqrtf( x + y));
 }
 
 void drawLine()
