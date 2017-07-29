@@ -61,7 +61,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("OpenGL Fixed Fucntion Pipeline Using Native Windowing : Aspect Ratio"),
+		TEXT("OpenGL Fixed Fucntion Pipeline Using Native Windowing : Fixed Size Triangle"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -337,12 +337,14 @@ void resize(int width, int height)
 	if (width < height)
 	{
 		aspectRatio = (GLfloat)height / (GLfloat)width;
+		glOrtho(-50.0f, 50.0f, (-50.0f*aspectRatio), (50.0f*aspectRatio), -50.0f, 50.0f); //100  x 100 X 100 volume
 	}
 	else
 	{
 		aspectRatio = (GLfloat)width / (GLfloat)height;
+		glOrtho((-50.0f * aspectRatio), (50.0f * aspectRatio), -50.0f, 50.0f, -50.0f, 50.0f); //100  x 100 X 100 volume
 	}
-	glOrtho(-50.0f, 50.0f, (-50.0f*aspectRatio), (50.0f*aspectRatio), -50.0f, 50.0f); //100  x 100 X 100 volume
+	
 }
 
 void toggleFullScreen(void)
