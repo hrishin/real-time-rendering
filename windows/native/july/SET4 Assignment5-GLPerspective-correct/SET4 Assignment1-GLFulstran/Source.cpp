@@ -323,24 +323,13 @@ re-rendering of Direct X (even for Vulcan) scenes.
 */
 void resize(int width, int height)
 {
-	GLfloat aspectRatio;
-
 	if (height == 0)
 		height = 1;
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	if (width < height)
-	{
-		aspectRatio = (GLfloat)height / (GLfloat)width;
-	}
-	else 
-	{
-		aspectRatio = (GLfloat)width / (GLfloat)height;
-	}
-
-	gluPerspective(0.0f, aspectRatio, 0.1f, 100.0f);
+	gluPerspective(0.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void toggleFullScreen(void)
