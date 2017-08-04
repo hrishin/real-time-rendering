@@ -340,13 +340,13 @@ void renderSquare(void)
 
 void update(void)
 {
-	angleTri = angleTri + 1.0f;
+	angleTri = angleTri + 0.1f;
 	if (angleTri >= 360) 
 	{
 		angleTri = 0;
 	}
 
-	angleRect = angleTri - 1.0f;
+	angleRect = angleTri - 0.4f;
 	if (angleRect <=  0)
 	{
 		angleRect = 360.0f;
