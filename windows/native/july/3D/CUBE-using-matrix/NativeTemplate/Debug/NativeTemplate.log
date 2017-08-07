@@ -1,0 +1,16 @@
+﻿  Source.cpp
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(444): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(445): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(448): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(449): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(459): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(461): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(467): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(469): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(479): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(480): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(483): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(484): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\3d\cube-using-matrix\nativetemplate\source.cpp(504): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\3D\CUBE-using-matrix\Debug\NativeTemplate.exe
+  NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\3D\CUBE-using-matrix\Debug\NativeTemplate.pdb (Full PDB)
