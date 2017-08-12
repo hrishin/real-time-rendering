@@ -201,6 +201,7 @@ void initialize(void)
 	pfd.cGreenBits = 8;
 	pfd.cBlueBits = 8;
 	pfd.cAlphaBits = 8;
+	pfd.cDepthBits = 32;
 
 	gblHdc = GetDC(gblHwnd);
 
@@ -243,6 +244,10 @@ void initialize(void)
 
 	/*state function*/
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	glClearDepth(1.0f); // set depth buffer
+	glEnable(GL_DEPTH_TEST); // enable depth testing
+	glDepthFunc(GL_LEQUAL); // type of depth testing (may be Direxct3D, Vulkcan doesnt requires this test)
 
 	// warmup
 	resize(WIN_WIDTH, WIN_HEIGHT);
