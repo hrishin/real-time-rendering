@@ -142,7 +142,7 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 		has ability to paint window background by itself.*/
 		return(0);
 
-	case WM_KEYDOWN:
+	case WM_CHAR:
 		switch (wParam)
 		{
 		case 'D':
@@ -157,7 +157,7 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 			year = (year + 6) % 360;
 			break;
 		
-		case 'ys':
+		case 'y':
 			year = (year - 6) % 360;
 			break;
 

@@ -61,7 +61,7 @@ void display(void)
 	gluLookAt(0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	
 	glPushMatrix();
-	glTranslatef(-1, 0.0, 0.0);
+	glTranslatef(-1.0f, 0.0f, 0.0f);
 	glRotatef((GLfloat)shoulder, 0.0, 0.0, 1.0);
 	glTranslatef(1.0, 0.0, 0.0);
 	glPushMatrix();	

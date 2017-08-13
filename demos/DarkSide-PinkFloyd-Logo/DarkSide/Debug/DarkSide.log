@@ -1,0 +1,11 @@
+﻿  Source.cpp
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(316): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(318): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(320): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(322): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(348): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(350): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(352): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\fun\darkside\darkside\source.cpp(392): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  DarkSide.vcxproj -> C:\Users\hrishi\Documents\fun\DarkSide\Debug\DarkSide.exe
+  DarkSide.vcxproj -> C:\Users\hrishi\Documents\fun\DarkSide\Debug\DarkSide.pdb (Full PDB)
