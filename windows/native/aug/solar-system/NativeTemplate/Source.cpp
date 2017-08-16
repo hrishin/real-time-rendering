@@ -167,7 +167,8 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 			gblIsEscPressed = true;
 			break;
 
-		case 0x46: // 'f' or 'F'
+		case 'F':
+		case 'f':
 			gblFullScreen = !gblFullScreen;
 			toggleFullScreen();
 			break;
