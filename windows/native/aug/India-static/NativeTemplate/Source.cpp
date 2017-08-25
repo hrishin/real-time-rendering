@@ -27,7 +27,7 @@ bool gblActiveWindow = false;
 int shoulder = 0;
 int elbow = 0;
 
-GLfloat angel = 61.0;
+GLfloat angel = 45.0;
 int glwidth, glheight;
 GLUquadric *qudric = NULL;
 
@@ -418,7 +418,7 @@ void display(void)
 
 	glTranslatef(-0.02, 0, -2);
 
-	//drawGrid();
+	drawGrid();
 	drawIndia();
 
 	SwapBuffers(gblHdc);

@@ -1,0 +1,20 @@
+﻿  Source.cpp
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(163): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(163): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(170): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(170): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(177): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(177): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(184): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(189): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(196): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(196): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(203): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(203): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(210): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(210): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(217): warning C4244: 'argument': conversion from 'GLfloat' to 'GLsizei', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(217): warning C4244: 'argument': conversion from 'GLfloat' to 'GLint', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set4-assignment13-viewports demo\assignment6\source.cpp(146): warning C4101: 'yIndex': unreferenced local variable
+  Assignment6.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET4-Assignment13-viewports demo\Debug\Assignment6.exe
+  Assignment6.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET4-Assignment13-viewports demo\Debug\Assignment6.pdb (Full PDB)

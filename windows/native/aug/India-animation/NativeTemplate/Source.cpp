@@ -33,8 +33,11 @@ GLfloat thirdLetterPositin =  2.0f;
 GLfloat orangeColor[] = {0.0f, 0.0f, 0.0f};
 GLfloat greenColor[] = {0.0f, 0.0f, 0.0f};
 GLfloat fourthLetterPosition = -2.0f;
+GLfloat fifthLetterPosition = 0.8f;
 GLfloat flagX1Position = -1.5f;
 GLfloat flagX2Position = -1.5f;
+
+GLfloat angel = -0.14f;
 
 int animationTime = 2000;
 
@@ -156,6 +159,20 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
+		case 38:
+			angel = angel + 0.1;
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glTranslatef(angel, 0.0f, 3.0f);
+			break;
+
+		case 40:
+			angel = angel - 0.1;
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glTranslatef(angel, 0.0f, 3.0f);
+			break;		
+		
 		case VK_ESCAPE:
 		case 'q':
 		case 'Q':
@@ -459,7 +476,7 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(-0.14f, 0, -2);
+	glTranslatef(angel, 0, -3);
 
 	//drawGrid();
 
@@ -515,7 +532,7 @@ void resize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluPerspective(61.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void toggleFullScreen(void)

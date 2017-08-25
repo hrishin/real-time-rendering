@@ -1,61 +1,61 @@
 ﻿  Source.cpp
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(312): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(315): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(316): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(318): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(319): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(299): warning C4101: 'i': unreferenced local variable
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(327): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(328): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(329): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(330): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(338): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(339): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(340): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(341): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(328): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(331): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(332): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(334): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(335): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(315): warning C4101: 'i': unreferenced local variable
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(343): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(344): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(345): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(346): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(348): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(349): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(350): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(351): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(354): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(355): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(356): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(357): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(359): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(360): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(361): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(362): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(364): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(365): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(366): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(367): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(371): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(372): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(376): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(378): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(385): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(386): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(377): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(381): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(383): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(387): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(388): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(395): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(396): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(397): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(398): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(400): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(392): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(394): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(401): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(402): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(403): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(410): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(404): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(411): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(412): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(413): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(414): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(422): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(425): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(416): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(417): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(418): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(419): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(426): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(433): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(436): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(442): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(427): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(428): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(434): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(435): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(436): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(443): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(444): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(445): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(449): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(446): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(452): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(453): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(454): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(455): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
 c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(459): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(462): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(465): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\hrishi\documents\visual studio 2015\projects\windows\native\aug\india-animation\nativetemplate\source.cpp(469): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
   NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\aug\India-animation\x64\Debug\NativeTemplate.exe
   NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\aug\India-animation\x64\Debug\NativeTemplate.pdb (Full PDB)
