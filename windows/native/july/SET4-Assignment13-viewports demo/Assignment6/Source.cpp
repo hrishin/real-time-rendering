@@ -356,77 +356,14 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	/*draw horisontal lines*/
-	glLineWidth(1);
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 0.0f, 0.8f);
-	xPosition = -0.05f;
-	for (i = 0; i < 20; i++)
-	{
-		glVertex3f(xPosition, -1.0f, 0.0f);
-		glVertex3f(xPosition, 1.0f, 0.0f);
-		xPosition = xPosition - 0.05f;
-	}
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	xPosition = 0.05f;
-	for (i = 0; i < 20; i++)
-	{
-		glVertex3f(xPosition, 1.0f, 0.0f);
-		glVertex3f(xPosition, -1.0f, 0.0f);
-		xPosition = xPosition + 0.05f;
-	}
-	glEnd();
-
-	/*draw vertical lines*/
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 0.0f, 0.8f);
-	yPosition = -0.05f;
-	for (i = 0; i < 20; i++)
-	{
-		glVertex3f(-1.0f, yPosition, 0.0f);
-		glVertex3f(1.0f, yPosition, 0.0f);
-		yPosition = yPosition - 0.05f;
-	}
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	yPosition = 0.05f;
-	for (i = 0; i < 20; i++)
-	{
-		glVertex3f(1.0f, yPosition, 0.0f);
-		glVertex3f(-1.0f, yPosition, 0.0f);
-		yPosition = yPosition + 0.05f;
-	}
-	glEnd();
-
-	/*draw center horizontal line*/
-	glLineWidth(3);
-	glBegin(GL_LINES);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	/*draw the tringle*/
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 1.0f, 0.5f);
 	glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -1.0f, 0.0f);
-	glEnd();
-
-	/*draw center vertical line*/
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-1.0f, 0.0f, 0.0f);
-	glEnd();
-
-	/*draw the yellow border tringle*/
-	glBegin(GL_LINES);
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, 0.5f, 0.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-	glVertex3f(0.0f, 0.5f, 0.0f);
+	glColor3f(0.2f, 1.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, 0.0f);
+	glColor3f(1.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, -1.0f, 0.0f);
 	glEnd();
 
 	/*Animation comes here*/
