@@ -421,6 +421,54 @@ void drawShape5(GLfloat xl, GLfloat xr, GLfloat yt, GLfloat yb, int devisions)
 		glVertex3f(xl + (diff *2), yb, 0.0f);
 		glVertex3f(xl, yt, 0.0f);
 		glVertex3f(xr, yb, 0.0f);
+		glVertex3f(xl, yt, 0.0f);
+		glVertex3f(xr, yt  - (diff *2), 0.0f);
+		glVertex3f(xl, yt, 0.0f);
+		glVertex3f(xr, yt - (diff * 1), 0.0f);
+	glEnd();
+}
+
+void drawShape6(GLfloat xl, GLfloat xr, GLfloat yt, GLfloat yb, int devisions)
+{
+	GLfloat diff = fabs((fabs(yt) - fabs(yb)) / devisions);
+
+	glBegin(GL_POLYGON);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(xl, yt, 0.0f);
+		glVertex3f(xl, yb, 0.0f);
+		glVertex3f(xl + (diff * 1), yb, 0.0f);
+		glVertex3f(xl + (diff * 1), yt, 0.0f);
+		glVertex3f(xl, yt, 0.0f);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(xl + (diff * 1), yt, 0.0f);
+		glVertex3f(xl + (diff * 1), yb, 0.0f);
+		glVertex3f(xl + (diff * 2), yb, 0.0f);
+		glVertex3f(xl + (diff * 2), yt, 0.0f);
+		glVertex3f(xl + (diff * 1), yt, 0.0f);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(xr - (diff * 1), yt, 0.0f);
+		glVertex3f(xr - (diff * 1), yb, 0.0f);
+		glVertex3f(xr, yb, 0.0f);
+		glVertex3f(xr, yt, 0.0f);
+		glVertex3f(xr + (diff * 1), yt, 0.0f);
+	glEnd();
+
+	glLineWidth(1.0f);
+	glBegin(GL_LINES);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(xl, yt - (diff * 1), 0.0f);
+		glVertex3f(xr, yt - (diff * 1), 0.0f);
+		glVertex3f(xl, yt - (diff * 2), 0.0f);
+		glVertex3f(xr, yt - (diff * 2), 0.0f);
+
+		glVertex3f(xl + (diff * 1), yt, 0.0f);
+		glVertex3f(xl + (diff * 1), yb, 0.0f);
+		glVertex3f(xl + (diff * 2), yt, 0.0f);
+		glVertex3f(xl + (diff * 2), yb, 0.0f);
 	glEnd();
 }
 
@@ -430,23 +478,26 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.0f, 0.0f, -3.0f);
+	glTranslatef(-1.0f, 0.5f, -5.5f);
 
 	//drawGrid();
 
 	drawDots(xLeft, (xLeft - 1.0f), yTop, (yTop - 1.0f), 3);
 
-	glTranslatef(0.2f, 0, 0);
+	glTranslatef(1.0f, 0, 0);
 	drawShape2((xLeft + 1.0f), (xRight - 1.0f), yTop, (yTop - 1.0f), 3);
 
-	glTranslatef(0.2f, 0, 0);
+	glTranslatef(1.0f, 0, 0);
 	drawShape3(xRight-1, xRight, yTop, (yTop - 1.0f), 3);
 
-	glTranslatef(-0.4f, -0.2f, 0);
+	glTranslatef(-2.0f, -0.8f, 0);
 	drawShape4(xLeft, (xLeft + 1.0f), (yTop - 1.0f), yBottom, 3);
 
-	glTranslatef(0.2f, 0, 0);
+	glTranslatef(1.0f, 0, 0);
 	drawShape5((xLeft + 1.0f), (xRight - 1.0f), (yTop - 1.0f), yBottom, 3);
+
+	glTranslatef(1.0f, 0, 0);
+	drawShape6(xRight - 1, xRight, (yTop - 1.0f), yBottom, 3);
 
 	SwapBuffers(gblHdc);
 }
