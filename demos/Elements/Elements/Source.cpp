@@ -67,7 +67,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("OpenGL Windowing : Pink Floyd"),
+		TEXT("OpenGL Windowing : Bodhi Vriksha"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -302,8 +302,9 @@ void display(void)
 	glShadeModel(GL_SMOOTH);
 	
 	// face
-	drawDramaIcon(pos, NULL, color);
-	
+	//drawDramaIcon(pos, NULL, color);
+	drawMedicalIcon(pos, NULL, color);
+
 	SwapBuffers(gblHdc);
 }
 
