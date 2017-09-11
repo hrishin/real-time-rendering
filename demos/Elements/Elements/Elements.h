@@ -2,34 +2,31 @@
 #define _Elements_h
 #pragma once
 
-
-struct _position 
+typedef struct _position
 {
 	float topLeft;
 	float topRight;
 	float bottomRight;
 	float bottomLeft;
-};
-typedef _position Position;
+} POSITION;
 
-struct _color 
+typedef struct _color
 {
 	float r;
 	float g;
 	float b;
-};
-typedef _color Color;
+} COLOR;
 
-void drawMedicalIcon(Position position, float zIndex, Color color);
-void drawDramaIcon(Position position, float zIndex, Color color);
-void drawPratibimbIcon(Position position, float zIndex, Color color);
-void drawAstroIcon(Position position, float zIndex, Color color);
-void drawTeacherIcon(Position position, float zIndex, Color color);
-void drawWin32Icon(Position position, float zIndex, Color color);
-void drawUnixIcon(Position position, float zIndex, Color color);
-void drawAppleIcon(Position position, float zIndex, Color color);
-void drawAppleCutProIcon(Position position, float zIndex, Color color);
-void drawAndroidIcon(Position position, float zIndex, Color color);
-void drawOpenGlIcon(Position position, float zIndex, Color color);
+void drawMedicalIcon(POSITION position, float zIndex, COLOR color);
+void drawDramaIcon(POSITION position, float zIndex, COLOR color);
+void drawPratibimbIcon(POSITION position, float zIndex, COLOR color);
+void drawAstroIcon(POSITION position, float zIndex, COLOR color);
+void drawTeacherIcon(POSITION position, float zIndex, COLOR color);
+void drawWin32Icon(POSITION position, float zIndex, COLOR color);
+void drawUnixIcon(POSITION position, float zIndex, COLOR color);
+void drawAppleIcon(POSITION position, float zIndex, COLOR color);
+void drawAppleCutProIcon(POSITION position, float zIndex, COLOR color);
+void drawAndroidIcon(POSITION position, float zIndex, COLOR color);
+void drawOpenGlIcon(POSITION position, float zIndex, COLOR color);
 
 #endif // !_Elements_h

@@ -1,0 +1,16 @@
+﻿  Elements.cpp
+e:\rtr\demos\elements\elements\elements.cpp(14): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\demos\elements\elements\elements.cpp(27): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(36): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(46): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(55): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(65): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(74): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(93): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(102): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(112): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(121): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(131): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(140): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  Elements.vcxproj -> E:\RTR\demos\Elements\Debug\Elements.exe
+  Elements.vcxproj -> E:\RTR\demos\Elements\Debug\Elements.pdb (Full PDB)
