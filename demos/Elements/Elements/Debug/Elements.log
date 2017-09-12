@@ -6,6 +6,7 @@ e:\rtr\demos\elements\elements\elements.cpp(46): warning C4244: 'argument': conv
 e:\rtr\demos\elements\elements\elements.cpp(55): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 e:\rtr\demos\elements\elements\elements.cpp(65): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 e:\rtr\demos\elements\elements\elements.cpp(74): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\demos\elements\elements\elements.cpp(84): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 e:\rtr\demos\elements\elements\elements.cpp(93): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 e:\rtr\demos\elements\elements\elements.cpp(102): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 e:\rtr\demos\elements\elements\elements.cpp(112): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data

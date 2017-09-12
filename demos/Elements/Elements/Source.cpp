@@ -247,9 +247,11 @@ void initialize(void)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glClearDepth(1.0f); // set depth buffer
-	glEnable(GL_DEPTH_TEST); // enable depth testing
+	glEnable(GL_DEPTH_TEST | GL_BLEND); // enable depth testing
 	glDepthFunc(GL_LEQUAL); // type of depth testing (may be Direxct3D, Vulkcan doesnt require this test)
 							// warmup
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	resize(WIN_WIDTH, WIN_HEIGHT);
 }
 
@@ -296,11 +298,12 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//glTranslatef(0.0, 0.0, -100.0f);
-
+	glTranslatef(0.0, 0.0, -6.0);
+	glShadeModel(GL_SMOOTH);
+	
 	// face
 	drawDramaIcon(pos, NULL, color);
-
+	
 	SwapBuffers(gblHdc);
 }
 
@@ -316,8 +319,7 @@ void resize(int width, int height)
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-200, 200, -200, 200, -1, 1);
-	//gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void toggleFullScreen(void)

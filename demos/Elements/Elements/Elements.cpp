@@ -15,8 +15,8 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 	
 	// sad face
 	glPushMatrix();
-		glTranslatef(20.0f, 0.0, 0.0);
-		//glRotatef(-15.0f, 0.0f, 0.0f, 1.0f);
+		glTranslatef(0.40f, 0.0, 0.0);
+		glRotatef(-15.0f, 0.0f, 0.0f, 1.0f);
 
 		// face
 		glBegin(GL_POLYGON);
@@ -24,7 +24,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 161; i < 380; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 47.0, sin(rad) * 95.0);
+			glVertex2f(cos(rad) * 0.47, sin(rad) * 0.95);
 		}
 		glEnd();
 
@@ -33,7 +33,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 379; i > 160; i--)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 65.0, (sin(rad) * 95.0) + 85);
+			glVertex2f(cos(rad) * 0.65, (sin(rad) * 0.95) + 0.85);
 		}
 		glEnd();
 
@@ -43,7 +43,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 0; i < 180; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 20.0, (sin(rad) * 25.0) - 80.0);
+			glVertex2f(cos(rad) * 0.20, (sin(rad) * 0.25) - 0.80);
 		}
 		glEnd();
 
@@ -52,7 +52,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 0; i < 181; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 20.0, (sin(rad) * 15.0) - 82.0);
+			glVertex2f(cos(rad) * 0.20, (sin(rad) * 0.15) - 0.82);
 		}
 		glEnd();
 
@@ -62,7 +62,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 40; i < 201; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f((cos(rad) * 10.0) - 20.0, (sin(rad) * 12.0) - 35.0);
+			glVertex2f((cos(rad) * 0.10) - 0.20, (sin(rad) * 0.12) - 0.35);
 		}
 		glEnd();
 
@@ -71,7 +71,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 161; i < 320; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(-(cos(rad) * 10.0) + 20.0, -(sin(rad) * 12.0) - 35.0);
+			glVertex2f(-(cos(rad) * 0.10) + 0.20, -(sin(rad) * 0.12) - 0.35);
 		}
 		glEnd();
 
@@ -81,8 +81,8 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 	// happy face
 	glPushMatrix();
 
-		glTranslatef(-20.0, 0.0, 0.0);
-		//glRotatef(5.0f, 0.0f, 0.0f, 1.0f);
+		glTranslatef(-0.40, 0.0, 0.0);
+		glRotatef(10.0f, 0.0f, 0.0f, 1.0f);
 	
 		// face
 		glBegin(GL_POLYGON);
@@ -90,7 +90,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 161; i < 380; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 47.0, sin(rad) * 95.0);
+			glVertex2f(cos(rad) * 0.47, sin(rad) * 0.95);
 		}
 		glEnd();
 
@@ -99,7 +99,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 379; i > 160; i--)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 65.0, (sin(rad) * 95.0) + 85);
+			glVertex2f(cos(rad) * 0.65, (sin(rad) * 0.95) + 0.85);
 		}
 		glEnd();
 
@@ -109,7 +109,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 181; i < 360; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 25.0, (sin(rad) * 25.0) - 60.0);
+			glVertex2f(cos(rad) * 0.25, (sin(rad) * 0.25) - 0.60);
 		}
 		glEnd();
 
@@ -118,7 +118,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 181; i < 360; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(cos(rad) * 32.0, (sin(rad) * 18.0) - 50.0);
+			glVertex2f(cos(rad) * 0.32, (sin(rad) * 0.18) - 0.50);
 		}
 		glEnd();
 
@@ -128,7 +128,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 161; i < 320; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f(-(cos(rad) * 10.0) - 20.0, -(sin(rad) * 12.0) - 35.0);
+			glVertex2f(-(cos(rad) * 0.10) - 0.20, -(sin(rad) * 0.12) - 0.35);
 		}
 		glEnd();
 
@@ -137,7 +137,7 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 		for (i = 40; i < 201; i++)
 		{
 			GLfloat rad = i * DEG2RAD;
-			glVertex2f((cos(rad) * 10.0) + 20.0, (sin(rad) * 12.0) - 35.0);
+			glVertex2f((cos(rad) * 0.10) + 0.20, (sin(rad) * 0.12) - 0.35);
 		}
 		glEnd();
 
