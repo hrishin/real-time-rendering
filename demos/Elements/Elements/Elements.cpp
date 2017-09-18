@@ -172,3 +172,22 @@ void drawDramaIcon(POSITION position, float zIndex, COLOR color)
 
 	glPopMatrix();
 }
+
+void drawAstroIcon(POSITION position, float zIndex, COLOR color)
+{
+	int i;
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(9.0f);
+
+	// draw circle
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f(cos(rad) * 0.9f, sin(rad) * 0.9f, 0.0);
+	}
+	glEnd();
+
+}

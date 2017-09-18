@@ -19,7 +19,6 @@ typedef struct _color
 
 void drawMedicalIcon(POSITION position, float zIndex, COLOR color);
 void drawDramaIcon(POSITION position, float zIndex, COLOR color);
-void drawPratibimbIcon(POSITION position, float zIndex, COLOR color);
 void drawAstroIcon(POSITION position, float zIndex, COLOR color);
 void drawTeacherIcon(POSITION position, float zIndex, COLOR color);
 void drawWin32Icon(POSITION position, float zIndex, COLOR color);
