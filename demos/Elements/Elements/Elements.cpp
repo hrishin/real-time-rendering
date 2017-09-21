@@ -177,7 +177,7 @@ void drawAstroIcon(POSITION position, float zIndex, COLOR color)
 {
 	int i;
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glLineWidth(9.0f);
 
 	// draw circle
@@ -186,8 +186,30 @@ void drawAstroIcon(POSITION position, float zIndex, COLOR color)
 	for (i = 0; i < 360; i++)
 	{
 		GLfloat rad = i * DEG2RAD;
-		glVertex3f(cos(rad) * 0.9f, sin(rad) * 0.9f, 0.0);
+		glVertex3f(cos(rad) * 0.8f, sin(rad) * 0.8f, 1.0);
 	}
 	glEnd();
 
+	// draw inner circle
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_POLYGON);
+	glColor3f(0.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f((cos(rad) * 0.2f) - 0.3f, (sin(rad) * 0.2f) + 0.3f, 1.0);
+	}
+	glEnd();
+
+	// draw outline
+	glRotatef(-60.0f, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f(cos(rad) * 0.3f, sin(rad) * 1.9f, 0.0);
+	}
+	glEnd();
 }
