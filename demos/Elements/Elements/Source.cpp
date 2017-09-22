@@ -304,7 +304,8 @@ void display(void)
 	// face
 	//drawDramaIcon(pos, NULL, color);
 	//drawMedicalIcon(pos, NULL, color);
-	drawAstroIcon(pos, NULL, color);
+	//drawAstroIcon(pos, NULL, color);
+	drawAppleIcon(pos, NULL, color);
 
 	SwapBuffers(gblHdc);
 }

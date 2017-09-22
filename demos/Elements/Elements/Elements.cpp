@@ -213,3 +213,43 @@ void drawAstroIcon(POSITION position, float zIndex, COLOR color)
 	}
 	glEnd();
 }
+
+void drawAppleIcon(POSITION position, float zIndex, COLOR color)
+{
+	int i;
+	
+	glLineWidth(9.0f);
+
+	// draw circle
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f(cos(rad) * 0.5, sin(rad) * 0.5, 1.0);
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f((cos(rad) * 0.4) - 0.3, (sin(rad) * 0.3) + 0.25, 1.0);
+	}
+	glEnd();
+
+	glRotatef(23.0f, 0.0, 0.0, 1.0);
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 0.0, 0.0);
+	for (i = 0; i < 360; i++)
+	{
+		GLfloat rad = i * DEG2RAD;
+		glVertex3f((cos(rad) * 0.3) - 0.4, (sin(rad) * 0.5) + 0.12, 1.0);
+	}
+	glEnd();
+
+	
+
+}

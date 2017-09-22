@@ -17,6 +17,9 @@ Elements.cpp(169): warning C4244: 'argument': conversion from 'double' to 'GLflo
 Elements.cpp(189): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 Elements.cpp(200): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
 Elements.cpp(212): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+Elements.cpp(230): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+Elements.cpp(239): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+Elements.cpp(249): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
   Generating code
   1 of 9 functions (11.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
