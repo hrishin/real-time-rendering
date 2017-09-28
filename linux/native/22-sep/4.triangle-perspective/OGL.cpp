@@ -202,7 +202,7 @@ void CreateWindow(void)
         exit(EXIT_FAILURE);
     }
 
-    XStoreName(gpDisplay, gWindow, "Triangle Ortho Projection");
+    XStoreName(gpDisplay, gWindow, "Triangle Perspective Projection");
 
     Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELTE_WINDOW", True);
     XSetWMProtocols(gpDisplay, gWindow, &windowManagerDelete, 1);
@@ -252,13 +252,17 @@ void Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(0.0f, 0.0f, -6.0f); //model transformation
+	
 	glBegin(GL_TRIANGLES);
 		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 50.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
 		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-50.0f, -50.0f, 0.0f);
+		glVertex3f(-1.0f, -1.0f, 0.0f);
 		glColor3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(50.0f, -50.0f, 0.0f);
+		glVertex3f(1.0f, -1.0f, 0.0f);
 	glEnd();
 
 	glFlush();
@@ -274,7 +278,7 @@ void Resize(int width, int height)
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-50.0f, 50.0f, -50.0f, 50.0f); //100  x 100 X 100 volume
+    gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void Uninitialize(void)
