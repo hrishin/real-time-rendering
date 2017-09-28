@@ -12,7 +12,6 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 
-
 using namespace std;
 
 bool gbFullScreen = false;
@@ -24,6 +23,9 @@ int giWindowWidth = 800;
 int giWindowHeight = 600;
 
 GLXContext gGLXContext;
+
+GLfloat angleTri = 0.0f;
+GLfloat angleRect = 360.0f;
 
 // entry point function
 int main(void)
@@ -49,8 +51,6 @@ int main(void)
 	// Game loop
     XEvent event;
     KeySym keysym;
-	GLfloat width;
-	GLfloat height;
 
     while(bDone == false)
     {
@@ -84,65 +84,8 @@ int main(void)
                             	gbFullScreen = false;
                         	}
                         	break;
-	
-						case XK_A: //A
-						case XK_a: 
-							width = (GLfloat) winWidth / 2;
-                        	height = (GLfloat) winHeight / 2;
-                        	glViewport(0, height / 2, width, height);
-							break;
 
-               			case XK_C: //C
-						case XK_c:
-                        	glViewport(0, 0, winWidth, winHeight);
-                        	break;
-
-                		case XK_W: //W
-						case XK_w:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width/2, height, width, height);
-                        	break;
-
-                		case XK_S: // S
-						case XK_s:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width / 2, 0, width, height);
-                        	break;
-
-                		case XK_D: // D
-						case XK_d:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width, height/2, width, height);
-                        	break;
-
-						case 0x08fb:
-							width = (GLfloat) winHeight / 2;
-	                        height = (GLfloat) winHeight / 2;
-    	                    glViewport(0, height, width, height);
-							break;
-
-						case 0x08fd:
-                        	width = (GLfloat)winHeight / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width, 0, width, height);
-							break;
-
-						case 0x08fc:
-	                        width = (GLfloat)winHeight / 2;
-    	                    height = (GLfloat)winHeight / 2;
-                        	glViewport(width, height, width, height);
-							break;
-						
-						case 0x08fe:
-	                        width = (GLfloat)winHeight / 2;
-    	                    height = (GLfloat)winHeight / 2;
-        	                glViewport(0, 0, width, height);
-							break;
-                    	
-						default:
+                    	default:
                         	break;
                 	}
                 	break;
@@ -212,6 +155,7 @@ void CreateWindow(void)
 		GLX_GREEN_SIZE, 1,
 		GLX_BLUE_SIZE, 1,
 		GLX_ALPHA_SIZE, 1,
+		GLX_DOUBLEBUFFER, True,
 		None
 	};
 
@@ -262,7 +206,7 @@ void CreateWindow(void)
         exit(EXIT_FAILURE);
     }
 
-    XStoreName(gpDisplay, gWindow, "Multiple Viewport");
+    XStoreName(gpDisplay, gWindow, "2D shape double buffer");
 
     Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELTE_WINDOW", True);
     XSetWMProtocols(gpDisplay, gWindow, &windowManagerDelete, 1);
@@ -310,18 +254,65 @@ void Initialize(void)
 
 void Render(void)
 {
+	void renderSquare(void);
+   	void renderTriangle(void);
+    void update(void);
+
 	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(-1.5f, 0.0f, -6.0f); //model transformation
+    glRotatef(angleTri, 0.0f, 1.0f, 0.0f);
+    renderTriangle();
 
-	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-1.0f, -1.0f, 0.0f);
-		glColor3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(1.0f, -1.0f, 0.0f);
-	glEnd();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(1.5f, 0.0f, -6.0f); 
+    glRotatef(angleRect, 1.0f, 0.0f, 0.0f);
+   	renderSquare();
 
-	glFlush();
+  	/*Animation comes here*/
+  	update();
+
+	glXSwapBuffers(gpDisplay, gWindow); 
+}
+
+void renderTriangle(void)
+{
+        glBegin(GL_TRIANGLES);
+        glColor3f(1.0f, 1.0f, 0.5f);
+        glVertex3f(0.0f, 1.0f, 0.0f);
+        glColor3f(0.2f, 1.0f, 1.0f);
+        glVertex3f(-1.0f, -1.0f, 0.0f);
+        glColor3f(1.0f, 0.0f, 1.0f);
+        glVertex3f(1.0f, -1.0f, 0.0f);
+        glEnd();
+}
+
+void renderSquare(void)
+{
+        glBegin(GL_QUADS);
+        glColor3f(0.3f, 0.5f, 0.9f);
+        glVertex3f(-1.0f, 1.0f, 0.0f);
+        glVertex3f(-1.0f, -1.0f, 0.0f);
+        glVertex3f(1.0f, -1.0f, 0.0f);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+        glEnd();
+}
+
+void update(void)
+{
+        angleTri = angleTri + 0.1f;
+        if (angleTri >= 360)
+        {
+                angleTri = 0;
+        }
+
+        angleRect = angleTri - 0.4f;
+        if (angleRect <=  0)
+        {
+                angleRect = 360.0f;
+        }
 }
 
 void Resize(int width, int height)
@@ -332,6 +323,9 @@ void Resize(int width, int height)
 	}
 	
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+    gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void Uninitialize(void)
