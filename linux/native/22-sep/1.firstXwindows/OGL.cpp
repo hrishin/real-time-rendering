@@ -52,8 +52,8 @@ int main(void)
                 {
                     case XK_Escape:
                         Uninitialize();
-			exit(EXIT_SUCCESS);
-                        break;
+						exit(EXIT_SUCCESS);
+						break;
 
                     case XK_F:
                     case XK_f:
@@ -83,10 +83,10 @@ int main(void)
                     case 2:
                         break;
                     
-  		    case 3:
+  		    		case 3:
                         break;
                     
-	            default:
+	            	default:
                         break;
 
                 }
@@ -109,7 +109,6 @@ int main(void)
             case 33:
                 Uninitialize();
                 exit(EXIT_SUCCESS);
-		break;
 
             default:
                 break;
@@ -117,7 +116,7 @@ int main(void)
     }
 
     Uninitialize();
-    return (EXIT_SUCCESS);
+    return (0);
 }
 
 void CreateWindow(void)
@@ -189,7 +188,7 @@ void CreateWindow(void)
 
     XStoreName(gpDisplay, gWindow, "First Window");
 
-    Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELTE_WINDOW", True);
+    Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELETE_WINDOW", True);
     XSetWMProtocols(gpDisplay, gWindow, &windowManagerDelete, 1);
 
     XMapWindow(gpDisplay, gWindow);
@@ -215,7 +214,7 @@ void ToggleFullscreen(void)
 
     XSendEvent(gpDisplay,
             RootWindow(gpDisplay, gpXVisualInfo -> screen),
-	    False,
+	    	False,
             StructureNotifyMask,
             &xev);
 }
@@ -243,5 +242,6 @@ void Uninitialize(void)
         XCloseDisplay(gpDisplay);
         gpDisplay = NULL;
     }
+
 }
 

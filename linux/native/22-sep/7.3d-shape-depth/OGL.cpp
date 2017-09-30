@@ -12,7 +12,6 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 
-
 using namespace std;
 
 bool gbFullScreen = false;
@@ -24,6 +23,9 @@ int giWindowWidth = 800;
 int giWindowHeight = 600;
 
 GLXContext gGLXContext;
+
+GLfloat anglePyramid = 0.0f;
+GLfloat angleCube = 360.0f;
 
 // entry point function
 int main(void)
@@ -49,8 +51,6 @@ int main(void)
 	// Game loop
     XEvent event;
     KeySym keysym;
-	GLfloat width;
-	GLfloat height;
 
     while(bDone == false)
     {
@@ -84,65 +84,8 @@ int main(void)
                             	gbFullScreen = false;
                         	}
                         	break;
-	
-						case XK_A: //A
-						case XK_a: 
-							width = (GLfloat) winWidth / 2;
-                        	height = (GLfloat) winHeight / 2;
-                        	glViewport(0, height / 2, width, height);
-							break;
 
-               			case XK_C: //C
-						case XK_c:
-                        	glViewport(0, 0, winWidth, winHeight);
-                        	break;
-
-                		case XK_W: //W
-						case XK_w:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width/2, height, width, height);
-                        	break;
-
-                		case XK_S: // S
-						case XK_s:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width / 2, 0, width, height);
-                        	break;
-
-                		case XK_D: // D
-						case XK_d:
-                        	width = (GLfloat)winWidth / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width, height/2, width, height);
-                        	break;
-
-						case XK_Left:
-							width = (GLfloat) winHeight / 2;
-	                        height = (GLfloat) winHeight / 2;
-    	                    glViewport(0, height, width, height);
-							break;
-
-						case XK_Right:
-                        	width = (GLfloat)winHeight / 2;
-                        	height = (GLfloat)winHeight / 2;
-                        	glViewport(width, 0, width, height);
-							break;
-
-						case XK_Up:
-	                        width = (GLfloat)winHeight / 2;
-    	                    height = (GLfloat)winHeight / 2;
-                        	glViewport(width, height, width, height);
-							break;
-						
-						case XK_Down:
-	                        width = (GLfloat)winHeight / 2;
-    	                    height = (GLfloat)winHeight / 2;
-        	                glViewport(0, 0, width, height);
-							break;
-                    	
-						default:
+                    	default:
                         	break;
                 	}
                 	break;
@@ -212,6 +155,8 @@ void CreateWindow(void)
 		GLX_GREEN_SIZE, 1,
 		GLX_BLUE_SIZE, 1,
 		GLX_ALPHA_SIZE, 1,
+		GLX_DEPTH_SIZE, 24,	
+		GLX_DOUBLEBUFFER, True,
 		None
 	};
 
@@ -262,9 +207,9 @@ void CreateWindow(void)
         exit(EXIT_FAILURE);
     }
 
-    XStoreName(gpDisplay, gWindow, "Multiple Viewport");
+    XStoreName(gpDisplay, gWindow, "2D shape double buffer");
 
-    Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELTE_WINDOW", True);
+    Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELETE_WINDOW", True);
     XSetWMProtocols(gpDisplay, gWindow, &windowManagerDelete, 1);
 
     XMapWindow(gpDisplay, gWindow);
@@ -304,24 +249,148 @@ void Initialize(void)
 	glXMakeCurrent(gpDisplay, gWindow, gGLXContext);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
 	Resize(giWindowWidth, giWindowHeight);
 }
 
 void Render(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	void renderCube(void);
+   	void renderPyramid(void);
+    void update(void);
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(-1.5f, 0.0f, -6.0f); //model transformation
+	glRotatef(anglePyramid, 0.0f, 1.0f, 0.0f);
+    renderPyramid();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(1.5f, 0.0f, -6.0f); 
+    glRotatef(angleCube, 1.0f, 0.0f, 0.0f);
+   	renderCube();
+
+  	/*Animation comes here*/
+  	update();
+
+	glXSwapBuffers(gpDisplay, gWindow); 
+}
+
+void renderPyramid(void)
+{
 	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 1.0f, 0.0f);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-1.0f, -1.0f, 0.0f);
-		glColor3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(1.0f, -1.0f, 0.0f);
-	glEnd();
 
-	glFlush();
+	//front face
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, -1.0f, 1.0f);
+
+	// right face
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(1.0f, -1.0f, 1.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+
+	// back face
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+
+	// left face
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+
+	glEnd();
+}
+
+void renderCube(void)
+{
+	glBegin(GL_QUADS);
+		
+		// TOP
+		glColor3f(0.1f, 0.0f, 0.0f); // RED
+		glVertex3f(1.0f, 1.0f, -1.0f);
+		glVertex3f(-1.0f, 1.0f, -1.0f);
+		glVertex3f(-1.0f, 1.0f, 1.0f);
+		glVertex3f(1.0f, 1.0f, 1.0f);
+
+		// BOTTOM
+		glColor3f(0.0f, 1.0f, 1.0f); // CYAN
+		glVertex3f(1.0f, -1.0f, -1.0f);
+		glVertex3f(-1.0f, -1.0f, -1.0f);
+		glVertex3f(-1.0f, -1.0f, 1.0f);
+		glVertex3f(1.0f, -1.0f, 1.0f);
+
+		// FRONT
+		glColor3f(0.0f, 1.0f, 0.0f); // GREEN
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(-1.0f, 1.0f, 1.0f);
+		glVertex3f(-1.0f, -1.0f, 1.0f);
+		glVertex3f(1.0f, -1.0f, 1.0f);
+
+		// BACK
+		glColor3f(1.0f, 1.0f, 0.0f); // 
+		glVertex3f(1.0f, 1.0f, -1.0f);
+		glVertex3f(-1.0f, 1.0f, -1.0f);
+		glVertex3f(-1.0f, -1.0f, -1.0f);
+		glVertex3f(1.0f, -1.0f, -1.0f);
+
+		// RIGHT FACE
+		glColor3f(0.0f, 0.0f, 1.0f); // BLUE
+		glVertex3f(1.0f, 1.0f, -1.0f);
+		glVertex3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(1.0f, -1.0f, 1.0f);
+		glVertex3f(1.0f, -1.0f, -1.0f);
+
+		// LEFT FACE
+		glColor3f(1.0f, 0.0f, 1.0f); // 
+		glVertex3f(-1.0f, 1.0f, -1.0f);
+		glVertex3f(-1.0f, 1.0f, 1.0f);
+		glVertex3f(-1.0f, -1.0f, 1.0f);
+		glVertex3f(-1.0f, -1.0f, -1.0f);
+
+	glEnd();
+}
+
+void update(void)
+{
+        anglePyramid = anglePyramid + 0.1f;
+        if (anglePyramid >= 360)
+        {
+                anglePyramid = 0;
+        }
+
+        angleCube = anglePyramid - 0.4f;
+        if (angleCube <=  0)
+        {
+                angleCube = 360.0f;
+        }
 }
 
 void Resize(int width, int height)
@@ -332,6 +401,9 @@ void Resize(int width, int height)
 	}
 	
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+    gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void Uninitialize(void)
