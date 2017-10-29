@@ -1,0 +1,2 @@
+Log file is created successfully 
+Starting Initialization
