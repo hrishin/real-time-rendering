@@ -1,0 +1,17 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (Elements.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Source.cpp
+Source.cpp(30): warning C4305: 'initializing': truncation from 'double' to 'float'
+Source.cpp(43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+Source.cpp(166): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+Source.cpp(178): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+Source.cpp(193): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+Source.cpp(202): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+Source.cpp(228): warning C4244: '=': conversion from 'float' to 'GLint', possible loss of data
+Source.cpp(615): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  Generating code
+  1 of 1164 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Elements.vcxproj -> E:\RTR\demos\BodhiVriksha\Release\BodhiVriksha.exe
+  Elements.vcxproj -> E:\RTR\demos\BodhiVriksha\Release\BodhiVriksha.pdb (Full PDB)

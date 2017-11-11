@@ -1,0 +1,1 @@
+#define IDB_BITMAP_SMILY 101

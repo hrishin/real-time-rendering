@@ -1,0 +1,2 @@
+#define IDB_BITMAP_KUDALI 101
+#define IDB_BITMAP_STONE  102
