@@ -311,7 +311,7 @@ void display(void)
 
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	qudric = gluNewQuadric();
 	glColor3f(1.0f, 1.0f, 0.0f);
 	gluSphere(qudric, 0.75f, 30, 30);
@@ -322,13 +322,13 @@ void display(void)
 
 	glRotatef((GLfloat)year, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(1.5f, 0.0f, 0.0f);
+	glTranslatef(2.0f, 0.0f, 0.0f);
 
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 	glRotatef((GLfloat) day, 0.0f, 0.0f, 1.0f);
 	
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	qudric = gluNewQuadric();
 	glColor3f(0.4f, 0.9f, 1.0f);
 	gluSphere(qudric, 0.2f, 20, 20);
