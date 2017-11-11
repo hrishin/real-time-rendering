@@ -10,6 +10,8 @@
 
 #include <GL/gl.h>
 #include <GL/glx.h>
+#include <GL/glu.h>
+#include <SOIL/SOIL.h>
 
 using namespace std;
 
@@ -18,16 +20,12 @@ Display *gpDisplay = NULL;
 XVisualInfo *gpXVisualInfo = NULL;
 Colormap gColorMap;
 Window gWindow;
-typedef GLXContext (*glXCreateContextAttribsARBProc) (Display*, GLXFBConfig, GLXContext, Bool, const int*);
-glXCreateContextAttribsARBProc glXCreateContextAttribsARB = NULL;
-GLXFBConfig gGLXFBConfig;
-GLXContext gGLXContext;
-
 int giWindowWidth = 800;
 int giWindowHeight = 600;
 
-FILE *gpFile = NULL;
+GLXContext gGLXContext;
 
+GLuint smily_texture;
 
 // entry point function
 int main(void)
@@ -39,17 +37,6 @@ int main(void)
 	void Render(void);
 	void Resize(int, int); 
     void Uninitialize(void);
-	
-	gpFile = fopen("Log.txt", "w");
-	if(gpFile == NULL)
-	{
-		printf("Log File can be created. Exiting now \n");
-		exit(0);
-	}
-	else 
-	{
-		fprintf(gpFile, "Log file is created successfully \n");
-	}
 
     // varible declearation
     int winWidth = giWindowWidth;
@@ -158,26 +145,18 @@ void CreateWindow(void)
 
     //varible declarations
     XSetWindowAttributes winAttribs;
-	GLXFBConfig *pGLXFBConfigs = NULL;
-	GLXFBConfig bestGLXFBConfig;
-	XVisualInfo *pTempXVisualInfo = NULL;
-	int iNumFBConfigs = 0;
-	int styleMask;
-	int i;
+    int defaultScreen;
+    int styleMask;
 
 	static int frameBufferAttributes[]=
 	{
-		GLX_X_RENDERABLE, True,
-		GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
-		GLX_RENDER_TYPE, GLX_RGBA_BIT,
-		GLX_X_VISUAL_TYPE, GLX_TRUE_COLOR,
-		GLX_RED_SIZE, 8,
-		GLX_GREEN_SIZE, 8,
-		GLX_BLUE_SIZE, 8,
-		GLX_ALPHA_SIZE, 8,
-		GLX_DEPTH_SIZE, 24,
-		GLX_STENCIL_SIZE, 8,
-		GLX_DOUBLEBUFFER, 1,
+		GLX_RGBA,
+		GLX_RED_SIZE, 1,
+		GLX_GREEN_SIZE, 1,
+		GLX_BLUE_SIZE, 1,
+		GLX_ALPHA_SIZE, 1,
+		GLX_DEPTH_SIZE, 24,	
+		GLX_DOUBLEBUFFER, True,
 		None
 	};
 
@@ -189,62 +168,21 @@ void CreateWindow(void)
         exit(EXIT_FAILURE);
     }
 
-	// get all mathcing FB configs	
-	pGLXFBConfigs = glXChooseFBConfig(gpDisplay, DefaultScreen(gpDisplay), frameBufferAttributes, &iNumFBConfigs);
-	
-	if(pGLXFBConfigs == NULL)
-	{
-		printf("Failed to get vlida frame buffer config\n");
-		Uninitialize();
-		exit(0);
-	}
+    defaultScreen = XDefaultScreen(gpDisplay);
 
-	printf("%d  mathcing FB configs found", iNumFBConfigs);
-	
-	// Pick the FB config with most with most samples per pixel
-	int bestFBConfig = 1;
-	int worstFBConfig = 1;
-	int bestNumberOfSamples = -1;
-	int worstNumberOfSamples = 999;
-
-	for(i=0; i<iNumFBConfigs; i++)
-	{
-		pTempXVisualInfo = glXGetVisualFromFBConfig(gpDisplay, pGLXFBConfigs[i]);
-
-		if(pTempXVisualInfo)
-		{
-			int sampleBuffer, samples;
-			
-			glXGetFBConfigAttrib(gpDisplay, pGLXFBConfigs[i], GLX_SAMPLE_BUFFERS, &sampleBuffer);
-		 	glXGetFBConfigAttrib(gpDisplay, pGLXFBConfigs[i], GLX_SAMPLE_BUFFERS, &samples);
-			printf("Mathcing\n");
-
-			if(bestFBConfig < 0 || sampleBuffer && samples > bestNumberOfSamples)
-			{
-				bestFBConfig = i;
-				bestNumberOfSamples = samples;
-			}
-
-			if(worstNumberOfSamples < 0 || !sampleBuffer || samples < worstNumberOfSamples)
-			{
-				worstFBConfig = i;
-				worstNumberOfSamples = samples;
-			}
-		}
-		XFree(pTempXVisualInfo);
-	}	
-
-	bestGLXFBConfig = pGLXFBConfigs[bestFBConfig];
-	gGLXFBConfig = bestGLXFBConfig;
-
-	XFree(pGLXFBConfigs);
-
-    gpXVisualInfo = glXGetVisualFromFBConfig(gpDisplay, bestGLXFBConfig);
-	printf("Chosen Visual ID = 0X%lu\n", gpXVisualInfo -> visualid);
+    gpXVisualInfo = glXChooseVisual(gpDisplay, defaultScreen, frameBufferAttributes);
+    if(gpXVisualInfo == NULL)
+    {
+        printf("ERROR: Unable to get a Visual Info.\nExiting now...\n");
+        Uninitialize();
+        exit(EXIT_FAILURE);
+    }
 
     winAttribs.border_pixel = 0;
     winAttribs.background_pixmap = 0;
     winAttribs.colormap = XCreateColormap(gpDisplay, RootWindow(gpDisplay, gpXVisualInfo -> screen), gpXVisualInfo ->visual, AllocNone);
+    gColorMap = winAttribs.colormap;
+    winAttribs.background_pixel = BlackPixel(gpDisplay, defaultScreen);
     winAttribs.event_mask = ExposureMask | VisibilityChangeMask | ButtonPressMask | KeyPressMask | PointerMotionMask | StructureNotifyMask;
 
 	styleMask = CWBorderPixel | CWBackPixel | CWEventMask | CWColormap;
@@ -269,7 +207,7 @@ void CreateWindow(void)
         exit(EXIT_FAILURE);
     }
 
-    XStoreName(gpDisplay, gWindow, "First Window");
+    XStoreName(gpDisplay, gWindow, "2D shape double buffer");
 
     Atom windowManagerDelete = XInternAtom(gpDisplay, "WM_DELETE_WINDOW", True);
     XSetWMProtocols(gpDisplay, gWindow, &windowManagerDelete, 1);
@@ -304,73 +242,75 @@ void ToggleFullscreen(void)
 
 void Initialize(void)
 {
-	fprintf(gpFile, "Starting Initialization");
 	void Resize(int, int);
+	bool loadTexture(GLuint*, char*);
 
-	glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc) glXGetProcAddressARB((GLubyte*) "glXCreateContextAttribsARB");
+	gGLXContext = glXCreateContext(gpDisplay, gpXVisualInfo, NULL, GL_TRUE);
 
-	GLint attribs[] = {
-		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
-		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
-		GLX_CONTEXT_PROFILE_MASK_ARB,
-		GLX_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
-		0
-	};
-
-	gGLXContext = glXCreateContextAttribsARB(gpDisplay, gGLXFBConfig, 0, True, attribs);
-	
-	// fallback to safe old style 2.4
-	if(!gGLXContext)
-	{
-		GLint attribs[] = {
-			GLX_CONTEXT_MAJOR_VERSION_ARB, 1,
-			GLX_CONTEXT_MINOR_VERSION_ARB, 0,
-			0
-		};
-		printf("Failed to create GLX 4.5 context");
-		gGLXContext = glXCreateContextAttribsARB(gpDisplay, gGLXFBConfig, 0, True, attribs);
-	}
-	else
-	{
-		printf("OpenGL context 4.5 is created \n");
-	}
-	
-	// verify if this cotext is direct context
-	if(!glXIsDirect(gpDisplay, gGLXContext))
-	{
-		printf("Indirect GLX Rendering context obtained\n");
-	}
-	else
-	{
-		printf("Direct GLX Rendering context obtained\n");
-	}
- 
 	glXMakeCurrent(gpDisplay, gWindow, gGLXContext);
 
-	glShadeModel(GL_SMOOTH);
-	
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
-
 	glEnable(GL_DEPTH_TEST);
-
 	glDepthFunc(GL_LEQUAL);
 
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+   	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glEnable(GL_TEXTURE_2D);
+    
+	loadTexture(&smily_texture, "Smiley-512x512.bmp");
+}
 
-	glEnable(GL_CULL_FACE);
-	
-	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+bool loadTexture(GLuint *texture, char *image)
+{
+        bool is_status = false;
+		int width, height;
+		unsigned char *img_data = NULL;
 
-	Resize(giWindowWidth, giWindowHeight);
+        glGenTextures(1, texture);
+        img_data = SOIL_load_image(image, &width, &height, 0, SOIL_LOAD_RGB);
+        if (img_data != NULL)
+        {
+                is_status = true;
+                glBindTexture(GL_TEXTURE_2D, *texture);
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-	fprintf(gpFile, "Exiting Initialization");
+                gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, (void*)img_data);
+
+				SOIL_free_image_data(img_data);
+        }
+
+        return(is_status);
 }
 
 void Render(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glXSwapBuffers(gpDisplay, gWindow);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0.0f, 0.0f, -4.0f);
+
+    glBindTexture(GL_TEXTURE_2D, smily_texture);
+
+    glBegin(GL_QUADS);
+
+        glTexCoord2f(1, 0);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+
+        glTexCoord2f(0, 0);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+
+        glTexCoord2f(0, 1);
+        glVertex3f(-1.0f, -1.0f, 1.0f);
+
+        glTexCoord2f(1, 1);
+        glVertex3f(1.0f, -1.0f, 1.0f);
+
+ 	glEnd();
+
+	glXSwapBuffers(gpDisplay, gWindow); 
 }
 
 void Resize(int width, int height)
@@ -379,8 +319,11 @@ void Resize(int width, int height)
 	{
 		height = 1;
 	}
-
+	
 	glViewport(0, 0, (GLsizei) width, (GLsizei) height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+    gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 }
 
 void Uninitialize(void)
@@ -421,4 +364,3 @@ void Uninitialize(void)
         gpDisplay = NULL;
     }
 }
-
