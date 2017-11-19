@@ -24,8 +24,7 @@ bool gblFullScreen = false;
 bool gblIsEscPressed = false;
 bool gblActiveWindow = false;
 bool gblIsLPressed = false;
-int year = 0;
-int day = 0;
+
 GLUquadric *qudric = NULL;
 
 GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -33,7 +32,7 @@ GLfloat light_defues[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light_position[] = { 0.0, 0.0, 1.0, 0.0 };
 GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat material_shiness[] = {50.0};
+GLfloat material_shiness[] = { 50.0 };
 
 int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lpszCmdLune, int iCmdShow)
 {
@@ -74,7 +73,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("OpenGL Windowing : Solar System"),
+		TEXT("OpenGL Functions : Basic Light with Shpere"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -150,33 +149,14 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 		has ability to paint window background by itself.*/
 		return(0);
 
-	case WM_CHAR:
+	case WM_KEYDOWN:
 		switch (wParam)
 		{
-		case 'D':
-			day = (day + 6) % 360;
-			break;
-
-		case 'd':
-			day = (day - 6) % 360;
-			break;
-
-		case 'Y':
-			year = (year + 6) % 360;
-			break;
-
-		case 'y':
-			year = (year - 6) % 360;
-			break;
-
 		case VK_ESCAPE:
-		case 'q':
-		case 'Q':
 			gblIsEscPressed = true;
 			break;
 
-		case 'F':
-		case 'f':
+		case 0x46: // 'f' or 'F'
 			gblFullScreen = !gblFullScreen;
 			toggleFullScreen();
 			break;
@@ -187,13 +167,14 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 			{
 				gblIsLPressed = false;
 				glDisable(GL_LIGHTING);
-			} 
+			}
 			else
-			{ 
+			{
 				gblIsLPressed = true;
 				glEnable(GL_LIGHTING);
 			}
 			break;
+		
 		default:
 			break;
 		}
@@ -239,7 +220,6 @@ void initialize(void)
 	pfd.cGreenBits = 8;
 	pfd.cBlueBits = 8;
 	pfd.cAlphaBits = 8;
-	pfd.cDepthBits = 32;
 
 	gblHdc = GetDC(gblHwnd);
 
@@ -295,7 +275,7 @@ void initialize(void)
 	glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
 	glMaterialfv(GL_FRONT, GL_SHININESS, material_shiness);
 	glEnable(GL_LIGHT0);
-	
+
 	resize(WIN_WIDTH, WIN_HEIGHT);
 }
 
