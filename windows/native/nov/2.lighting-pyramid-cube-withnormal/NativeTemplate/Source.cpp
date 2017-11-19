@@ -353,7 +353,6 @@ void drawCube(void)
 	glBegin(GL_QUADS);
 		
 		// TOP
-		glColor3f(0.1f, 0.0f, 0.0f); // RED
 		glNormal3f(0.0, 1.0, 0.0);
 		glVertex3f(1.0f, 1.0f, -1.0f);
 		glVertex3f(-1.0f, 1.0f, -1.0f);
@@ -361,7 +360,6 @@ void drawCube(void)
 		glVertex3f(1.0f, 1.0f, 1.0f);
 
 		// BOTTOM
-		glColor3f(0.0f, 1.0f, 1.0f); // CYAN
 		glNormal3f(0.0, -1.0, 0.0);
 		glVertex3f(1.0f, -1.0f, -1.0f);
 		glVertex3f(-1.0f, -1.0f, -1.0f);
@@ -369,7 +367,6 @@ void drawCube(void)
 		glVertex3f(1.0f, -1.0f, 1.0f);
 
 		// FRONT
-		glColor3f(0.0f, 1.0f, 0.0f); // GREEN
 		glNormal3f(0.0, 0.0, 1.0);
 		glVertex3f(1.0f, 1.0f, 1.0f);
 		glVertex3f(-1.0f, 1.0f, 1.0f);
@@ -377,7 +374,6 @@ void drawCube(void)
 		glVertex3f(1.0f, -1.0f, 1.0f);
 
 		// BACK
-		glColor3f(1.0f, 1.0f, 0.0f); // 
 		glNormal3f(0.0, 0.0, -1.0);
 		glVertex3f(1.0f, 1.0f, -1.0f);
 		glVertex3f(-1.0f, 1.0f, -1.0f);
@@ -385,7 +381,6 @@ void drawCube(void)
 		glVertex3f(1.0f, -1.0f, -1.0f);
 
 		// RIGHT FACE
-		glColor3f(0.0f, 0.0f, 1.0f); // BLUE
 		glNormal3f(1.0, 0.0, 0.0);
 		glVertex3f(1.0f, 1.0f, -1.0f);
 		glVertex3f(1.0f, 1.0f, 1.0f);
@@ -393,7 +388,6 @@ void drawCube(void)
 		glVertex3f(1.0f, -1.0f, -1.0f);
 
 		// LEFT FACE
-		glColor3f(1.0f, 0.0f, 1.0f); // 
 		glNormal3f(-1.0, 0.0, 0.0);
 		glVertex3f(-1.0f, 1.0f, -1.0f);
 		glVertex3f(-1.0f, 1.0f, 1.0f);
@@ -409,46 +403,26 @@ void drawPyramid(void)
 
 	//front face
 	glNormal3f(0.0, 0.0, 1.0);
-	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 
 	// right face
 	glNormal3f(1.0, 0.0, 0.0);
-	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 
 	// back face
 	glNormal3f(0.0, 0.0, -1.0);
-	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 
 	// left face
 	glNormal3f(-1.0, 0.0, 0.0);
-	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 
 	glEnd();

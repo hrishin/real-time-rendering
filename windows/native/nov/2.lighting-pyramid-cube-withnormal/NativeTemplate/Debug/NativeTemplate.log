@@ -1,3 +1,4 @@
 ﻿  Source.cpp
-  NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\nov\lighting-pyramid-cube\Debug\NativeTemplate.exe
-  NativeTemplate.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\nov\lighting-pyramid-cube\Debug\NativeTemplate.pdb (Full PDB)
+  LINK : C:\Users\hrishi\Downloads\rtr\windows\native\nov\2.lighting-pyramid-cube-withnormal\Debug\NativeTemplate.exe not found or not built by the last incremental link; performing full link
+  NativeTemplate.vcxproj -> C:\Users\hrishi\Downloads\rtr\windows\native\nov\2.lighting-pyramid-cube-withnormal\Debug\NativeTemplate.exe
+  NativeTemplate.vcxproj -> C:\Users\hrishi\Downloads\rtr\windows\native\nov\2.lighting-pyramid-cube-withnormal\Debug\NativeTemplate.pdb (Full PDB)

@@ -30,7 +30,8 @@ GLUquadric *qudric = NULL;
 GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat light_defues[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light_position[] = { 0.0, 0.0, 1.0, 0.0 };
+GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+
 GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat material_shiness[] = { 50.0 };
 
@@ -315,18 +316,12 @@ void display(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	gluLookAt(0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-
-	glPushMatrix();
-
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	glTranslatef(0.0f, 0.0f, -3.0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	qudric = gluNewQuadric();
-	glColor3f(0.5, 0.0, 0.5);
 	gluSphere(qudric, 0.75f, 30, 30);
 
-	glPopMatrix();
 
 	SwapBuffers(gblHdc);
 }
