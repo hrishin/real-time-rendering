@@ -261,6 +261,8 @@ void initialize(void)
 		ReleaseDeviceContext();
 	}
 
+	qudric = gluNewQuadric();
+
 	/*state function*/
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -317,9 +319,7 @@ void display(void)
 	glLoadIdentity();
 
 	glTranslatef(0.0f, 0.0f, -3.0);
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	qudric = gluNewQuadric();
 	gluSphere(qudric, 0.75f, 30, 30);
 
 
