@@ -1,16 +1,16 @@
-﻿  Source.cpp
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(42): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(42): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(43): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(43): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(44): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(44): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(45): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(45): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(47): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(47): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(510): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(511): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\source.cpp(512): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+﻿  Material.cpp
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(42): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(42): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(43): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(43): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(44): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(44): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(45): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(45): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(47): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(47): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(499): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(500): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(501): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
   NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\6.materail-demo-sphericals\Debug\NativeTemplate.exe
   NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\6.materail-demo-sphericals\Debug\NativeTemplate.pdb (Full PDB)
