@@ -1,7 +1,8 @@
 ﻿  Source.cpp
-c:\users\hrishi\downloads\rtr\windows\native\nov\3.spherical-light-motion\nativetemplate\source.cpp(32): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\hrishi\downloads\rtr\windows\native\nov\3.spherical-light-motion\nativetemplate\source.cpp(412): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\downloads\rtr\windows\native\nov\3.spherical-light-motion\nativetemplate\source.cpp(413): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\downloads\rtr\windows\native\nov\3.spherical-light-motion\nativetemplate\source.cpp(414): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-  NativeTemplate.vcxproj -> C:\Users\hrishi\Downloads\rtr\windows\native\nov\3.spherical-light-motion\Debug\NativeTemplate.exe
-  NativeTemplate.vcxproj -> C:\Users\hrishi\Downloads\rtr\windows\native\nov\3.spherical-light-motion\Debug\NativeTemplate.pdb (Full PDB)
+e:\rtr\windows\native\nov\4.spherical-light-motion\nativetemplate\source.cpp(32): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\rtr\windows\native\nov\4.spherical-light-motion\nativetemplate\source.cpp(410): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\windows\native\nov\4.spherical-light-motion\nativetemplate\source.cpp(411): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\windows\native\nov\4.spherical-light-motion\nativetemplate\source.cpp(412): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  LINK : E:\RTR\windows\native\nov\4.spherical-light-motion\Debug\NativeTemplate.exe not found or not built by the last incremental link; performing full link
+  NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\4.spherical-light-motion\Debug\NativeTemplate.exe
+  NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\4.spherical-light-motion\Debug\NativeTemplate.pdb (Full PDB)
