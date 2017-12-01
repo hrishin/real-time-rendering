@@ -475,9 +475,9 @@ void display(void)
 
 void update(void)
 {
-	angleXLight = angleXLight > 360 ? 0.0 : angleXLight + 0.3f;
-	angleYLight = angleYLight > 360 ? 0.0 : angleYLight + 0.3f;
-	angleZLight = angleZLight > 360 ? 0.0 : angleZLight + 0.3f;
+	angleXLight = angleXLight + 0.3f;
+	angleYLight = angleYLight + 0.3f;
+	angleZLight = angleZLight + 0.3f;
 }
 /*
 Very important for Dirext X not for OpenGL
