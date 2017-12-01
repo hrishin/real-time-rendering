@@ -151,6 +151,9 @@
   <ItemGroup>
     <Text Include="Materials-ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="material.dat" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

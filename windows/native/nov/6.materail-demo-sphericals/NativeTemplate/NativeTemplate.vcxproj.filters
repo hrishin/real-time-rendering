@@ -24,4 +24,9 @@
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="material.dat">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
