@@ -1,0 +1,6 @@
+﻿  Source.cpp
+e:\rtr\demos\solarsystemdemo\solarsystemdemo\source.cpp(45): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+e:\rtr\demos\solarsystemdemo\solarsystemdemo\source.cpp(45): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+e:\rtr\demos\solarsystemdemo\solarsystemdemo\source.cpp(427): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+  SolarSystemDemo.vcxproj -> E:\RTR\demos\SolarSystemDemo\Debug\SolarSystemDemo.exe
+  SolarSystemDemo.vcxproj -> E:\RTR\demos\SolarSystemDemo\Debug\SolarSystemDemo.pdb (Full PDB)
