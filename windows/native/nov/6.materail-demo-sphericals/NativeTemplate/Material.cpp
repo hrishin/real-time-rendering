@@ -240,7 +240,7 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 void initialize(void)
 {
 	void ReleaseDeviceContext(void);
-	int parse(char *file_path);
+	int parseMaterialData(char *file_path);
 
 	/*It has 26 members*/
 	PIXELFORMATDESCRIPTOR pfd;
@@ -320,13 +320,13 @@ void initialize(void)
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light1_spcular);
 	glEnable(GL_LIGHT0);
 
-	parse("./material.dat");
+	parseMaterialData("./material.dat");
 
 	// warmup
 	resize(WIN_WIDTH, WIN_HEIGHT);
 }
 
-int parse(char *file_path)
+int parseMaterialData(char *file_path)
 {
 	FILE *file = NULL;
 	int objects, i;
@@ -403,60 +403,44 @@ void display(void)
 	gluLookAt(0.0f, 0.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	
 	if (gblXPressed == true)
 	{
-		glPushMatrix();
 		glRotatef(angleXLight, 1.0f, 0.0f, 0.0f);
 		light1_x_position[1] = angleXLight;
 		glLightfv(GL_LIGHT0, GL_POSITION, light1_x_position);
-		glPopMatrix();
 	}
 	else if (gblYPressed == true)
 	{
-		glPushMatrix();
 		glRotatef(angleYLight, 0.0f, 1.0f, 0.0f);
 		light1_y_position[0] = angleYLight;
 		glLightfv(GL_LIGHT0, GL_POSITION, light1_y_position);
-		glPopMatrix();
 	} 
 	else if(gblZPressed == true)
 	{
-		glPushMatrix();
 		glRotatef(angleZLight, 0.0f, 0.0f, 1.0f);
 		light1_z_position[0] = angleZLight;
 		glLightfv(GL_LIGHT0, GL_POSITION, light1_z_position);
-		glPopMatrix();
 	}
 	
 	index = 0;
-	ypos = 1.7;
+	ypos = 1.4;
 	for (row = 0; row < 6; row++)
 	{
-		glPushMatrix();
+		xpos = -1.4;
 		for (column = 0; column < 4; column++)
 		{
-			if (column == 0) 
-			{
-				glTranslatef(-1.0f, ypos, -3.0f);
-			}
-			else
-			{
-				glTranslatef(0.7f, 0.0f, 0.0f);
-			}
-			
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glTranslatef(xpos, ypos, -3.0f);
 			glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambience[index]);
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse[index]);
 			glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular[index]);
 			glMaterialf(GL_FRONT, GL_SHININESS, ((GLfloat)material_shiness[index][0] * (GLfloat)material_shiness[index][1]));
 			gluSphere(qudric, 0.3f, 100, 100);
-
 			index++;
+			xpos = xpos + 0.7;
 		}
-		glPopMatrix();
-
-		ypos = (ypos - 0.7);
+		ypos = ypos - 0.7;
 	}
 		
 	/*Animation comes here*/
@@ -486,6 +470,8 @@ re-rendering of Direct X (even for Vulcan) scenes.
 */
 void resize(int width, int height)
 {
+	GLfloat aspectRatio;
+
 	if (height == 0)
 		height = 1;
 
@@ -493,7 +479,16 @@ void resize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	if (width < height)
+	{
+		aspectRatio = (GLfloat)height / (GLfloat)width;
+		glOrtho(-5.0f, 5.0f, (-5.0f*aspectRatio), (5.0f*aspectRatio), -5.0f, 5.0f);
+	}
+	else
+	{
+		aspectRatio = (GLfloat)width / (GLfloat)height;
+		glOrtho((-5.0f * aspectRatio), (5.0f * aspectRatio), -5.0f, 5.0f, -5.0f, 5.0f);
+	}
 }
 
 void toggleFullScreen(void)
