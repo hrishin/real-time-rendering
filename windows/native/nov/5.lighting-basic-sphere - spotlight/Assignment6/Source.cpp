@@ -31,13 +31,13 @@ GLUquadric *qudric = NULL;
 GLfloat light1_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat light1_diffeuse[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat light1_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light1_position[] = { 1.0, 1.0, 1.0, 0.0 };
+GLfloat light1_position[] = { 0.0, 5.0, 0.0, 0.0 };
 
 GLfloat light2_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-GLfloat light2_diffeuse[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat light2_diffeuse[] = { 1.0, 0.0, 1.0, 1.0 };
 GLfloat light2_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light2_position[] = { 1.0, 1.0, 1.0, 0.0 };
-GLfloat light2_spot_direction[] = { 0.0, 0.0, 1.0, 0.0 };
+GLfloat light2_position[] = { 0.0f, 0.0, 1.0, 1.0 };
+GLfloat light2_spot_direction[] = { 0.0, 0.0, -1.0};
 GLfloat light2_spot_cutoff[] = { 45.0};
 GLfloat light2_spot_exponent[] = { 0.2};
 GLfloat light2_attenuation_constant[] = { 1.0f };
@@ -188,17 +188,32 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 			}
 			break;
 
+		case '0':
+			if (enabledSecondLight == false)
+			{
+				glEnable(GL_LIGHT0);
+				enabledSecondLight = true;
+			}
+			else 
+			{
+				glDisable(GL_LIGHT0);
+				enabledSecondLight = false;
+			}
+			break;
+
 		case '1':
 			if (enabledSecondLight == false)
 			{
 				glEnable(GL_LIGHT1);
 				enabledSecondLight = true;
 			}
-			else {
+			else 
+			{
 				glDisable(GL_LIGHT1);
 				enabledSecondLight = false;
 			}
-		
+		break;
+
 		default:
 			break;
 		}
@@ -304,6 +319,7 @@ void initialize(void)
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, light2_diffeuse);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light2_specular);
 	glLightfv(GL_LIGHT1, GL_POSITION, light2_position);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light2_spot_direction);
 	glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, light2_spot_cutoff);
 	glLightfv(GL_LIGHT1, GL_SPOT_EXPONENT, light2_spot_exponent);
 	glLightfv(GL_LIGHT1, GL_CONSTANT_ATTENUATION, light2_attenuation_constant);
