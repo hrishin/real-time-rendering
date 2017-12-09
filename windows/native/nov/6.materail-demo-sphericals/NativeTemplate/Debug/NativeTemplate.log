@@ -4,8 +4,9 @@ e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp
 e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(349): warning C4473: 'fscanf_s' : not enough arguments passed for format string
   e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(349): note: placeholders and their parameters expect 4 variadic arguments, but 2 were provided
   e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(349): note: the missing variadic argument 3 is required by format string '%f'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(434): warning C4305: '=': truncation from 'double' to 'GLfloat'
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(459): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(390): warning C4101: 'xpos': unreferenced local variable
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(426): warning C4305: '=': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(429): warning C4305: '=': truncation from 'double' to 'GLfloat'
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(441): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+e:\rtr\windows\native\nov\6.materail-demo-sphericals\nativetemplate\material.cpp(443): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
   NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\6.materail-demo-sphericals\Debug\NativeTemplate.exe
   NativeTemplate.vcxproj -> E:\RTR\windows\native\nov\6.materail-demo-sphericals\Debug\NativeTemplate.pdb (Full PDB)

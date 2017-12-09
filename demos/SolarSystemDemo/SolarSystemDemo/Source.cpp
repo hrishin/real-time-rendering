@@ -308,7 +308,7 @@ void initialize(void)
 	qudric = gluNewQuadric();
 
 	/*state function*/
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
 	glClearDepth(1.0f); // set depth buffer
 	glEnable(GL_DEPTH_TEST); // enable depth testing
@@ -410,7 +410,8 @@ void display(void)
 	glLoadIdentity();
 
 	glTranslatef(0.0f, 0.0f, -3.0);
-	glRotatef(90, 1.0, 0.0, 0.0);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
 	glRotatef(eartchAngle, 0.0, 0.0, 1.0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindTexture(GL_TEXTURE_2D, gbTextureMoon);
