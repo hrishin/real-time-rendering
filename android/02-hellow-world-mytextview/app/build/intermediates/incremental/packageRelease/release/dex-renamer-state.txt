@@ -1,0 +1,4 @@
+#Sat Jan 06 13:35:50 IST 2018
+base.0=D\:\\rtr\\android\\02-hellow-world-mytextview\\app\\build\\intermediates\\transforms\\dex\\release\\0
+path.0=classes.dex
+renamed.0=classes.dex
