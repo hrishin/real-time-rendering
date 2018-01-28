@@ -1,0 +1,4 @@
+﻿  Template.cpp
+d:\rtr\windows\native\jan\shaders_triangle\nativetemplate\vmath.h(996): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\rtr\windows\native\jan\shaders_triangle\nativetemplate\template.cpp(327): error C2374: 'vertexShaderSourceCode': redefinition; multiple initialization
+  d:\rtr\windows\native\jan\shaders_triangle\nativetemplate\template.cpp(289): note: see declaration of 'vertexShaderSourceCode'
