@@ -1,0 +1,4 @@
+#Tue Feb 06 20:04:13 IST 2018
+base.0=D\:\\rtr\\android\\04-gles\\app\\build\\intermediates\\transforms\\dex\\release\\0
+path.0=classes.dex
+renamed.0=classes.dex
