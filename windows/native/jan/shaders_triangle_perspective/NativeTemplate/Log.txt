@@ -1,6 +1,2 @@
 Log file created succcessfully 
-Shader Program Link Log : Vertex info
------------
-0(2) : error C1013: function "main" is already defined at 0(2)
-
 Log file is succefully closed

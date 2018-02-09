@@ -1,5 +1,4 @@
 ﻿  Template.cpp
 d:\rtr\windows\native\jan\shaders_triangle_perspective\nativetemplate\vmath.h(996): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\rtr\windows\native\jan\shaders_triangle_perspective\nativetemplate\template.cpp(569): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\shaders_triangle_perspective\Debug\NativeTemplate.exe
   NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\shaders_triangle_perspective\Debug\NativeTemplate.pdb (Full PDB)

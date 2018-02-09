@@ -1,10 +1,17 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gl/glew.h> // must come before GL header
+
+#include <gl/glew.h> // must come before GL.h header
 #include <gl/GL.h>
 
 #include "vmath.h"
+
+#pragma comment (lib, "glew32.lib")
+#pragma comment (lib, "opengl32.lib")
+
+#define WIN_WIDTH 800
+#define WIN_HEIGHT 600
 
 using namespace vmath;
 
@@ -15,12 +22,6 @@ enum
 	VDG_ATTRIBUTE_NORMAL,
 	VDG_ATTRIBUTE_TEXTURE0,
 };
-
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
-
-#pragma comment (lib, "glew32.lib")
-#pragma comment (lib, "opengl32.lib")
 
 LRESULT CALLBACK WndCallbackProc(HWND, UINT, WPARAM, LPARAM);
 void uninitialize(void);
@@ -316,19 +317,18 @@ void initialize(void)
 				fprintf(gpFile, "Vertex Shader Compilation Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
-				fclose(gpFile);  //if any error occurs right immidiately 
+				//fclose(gpFile);  //if any error occurs write immidiately 
 				exit(0);
 			}
 		}
 	}
 
 	// FRAGMENT SHADER
-	gFragmentShaderObject = glCreateShader(GL_VERTEX_SHADER);
+	gFragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
 	const GLchar *fragmentShaderSourceCode =
 		"#version 130" \
 		"\n" \
 		"out vec4 FragColor;" \
-		"uniform mat4 u_mvp_matrix;" \
 		"void main(void)" \
 		"{" \
 		"FragColor = vec4(1.0, 1.0, 1.0, 1.0);" \
@@ -351,7 +351,7 @@ void initialize(void)
 				fprintf(gpFile, "Fragment Shader Compilation Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
-				fclose(gpFile);  //if any error occurs right immidiately 
+				//fclose(gpFile);  //if any error occurs write immidiately 
 				exit(0);
 			}
 		}
@@ -386,6 +386,7 @@ void initialize(void)
 				fprintf(gpFile, "Shader Program Link Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
+				//fclose(gpFile);  //if any error occurs write immidiately
 				exit(0);
 			}
 		}
@@ -394,11 +395,12 @@ void initialize(void)
 	// get MVP uniform location
 	gMVPUniform = glGetUniformLocation(gShaderProgramObject, "u_mvp_matrix");
 
+	// vertices, colors, shader attribs, vbo, vao initializations
 	const GLfloat triangleVertices[] =
 	{ 
-		0.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f
+		0.0f, 1.0f, 0.0f, 
+		-1.0f, -1.0f, 0.0f, 
+		1.0f, -1.0f, 0.0f 
 	};
 
 	glGenVertexArrays(1, &gVao);
@@ -406,6 +408,8 @@ void initialize(void)
 
 	glGenBuffers(1, &gVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, gVbo);
+	// move data from main memory to graphics memory
+	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
@@ -426,9 +430,9 @@ void initialize(void)
 	glEnable(GL_CULL_FACE);
 
 	/*state function*/
-	glClearColor(0.0f, 0.0f, 1.0f, 0.0f); // BLUE
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // BLACK
 
-	// perspective to identity matrix
+	// Perspective Matrix to identitu matrix
 	gPerspectiveProjectionMatrix = mat4::identity();
 
 	// warmup
@@ -506,8 +510,6 @@ void uninitialize(void)
 
 void display(void)
 {
-	void update(void);
-	
 	//code
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -519,11 +521,12 @@ void display(void)
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
 
-	modelViewMatrix = vmath::translate(0.0f, 0.0f, -0.3f);
+	// tranlsate to negative z axis
+	modelViewMatrix = vmath::translate(0.0f, 0.0f, -6.0f);
 
-	// multiply the modelview and orthographic matrix to get modelviewprojection matrix
+	// multiply the modelview and orthographic matrix to get modelviewprojection matri
 	// order is important
-	modelViewProjectionMatrix = gPerspectiveProjectionMatrix * modelViewMatrix;
+	modelViewProjectionMatrix = gPerspectiveProjectionMatrix * modelViewMatrix; 
 
 	// pass above modelviewprojection matrix to the vertex shader in 'u_mvp_matrix' shader variable
 	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
@@ -541,15 +544,9 @@ void display(void)
 	// stop using OpenGL program object
 	glUseProgram(0);
 
-	// animation
-	update();
-
 	SwapBuffers(gblHdc);
 }
 
-void update(void)
-{
-}
 /*
 Very important for Dirext X not for OpenGL
 becuase DirextX is not state machine and change in windows resize empose
@@ -557,15 +554,12 @@ re-rendering of Direct X (even for Vulcan) scenes.
 */
 void resize(int width, int height)
 {
-
 	if (height == 0)
 		height = 1;
 
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	
-	vmath::perspective(45.0f, width/height, 0.1f, 100.0f);
+	gPerspectiveProjectionMatrix = vmath::perspective(45.0f, (GLfloat) width/ (GLfloat) height, 0.1f, 100.0f);
+
 }
 
 void toggleFullScreen(void)
