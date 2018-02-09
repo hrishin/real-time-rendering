@@ -1,0 +1,219 @@
+========================================= Initial code ==============================================================
+void earth()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(-2.7f, 1.5f, -1.0);
+	glTranslatef(-0.5f, 0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[0]);
+	gluQuadricTexture(pQuadric[0], 1);
+	gluSphere(pQuadric[0], 0.75f, 100, 100);
+
+}
+
+void mercury()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(-1.0f, 1.5f, -7.0);
+	glTranslatef(-0.2f, 0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[1]);
+	gluQuadricTexture(pQuadric[1], 1);
+	gluSphere(pQuadric[1], 0.75f, 100, 100);
+
+}
+
+void venus()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(0.6f, 1.5f, -7.0);
+	glTranslatef(0.1f, 0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[2]);
+	gluQuadricTexture(pQuadric[2], 1);
+	gluSphere(pQuadric[2], 0.75f, 100, 100);
+
+}
+
+void mars()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(2.2f, 1.5f, -7.0);
+	glTranslatef(0.4f, 0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[3]);
+	gluQuadricTexture(pQuadric[3], 1);
+	gluSphere(pQuadric[3], 0.75f, 100, 100);
+
+}
+
+void jupiter()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(-2.7f, -1.5f, -7.0);
+	glTranslatef(-0.5f, -0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[4]);
+	gluQuadricTexture(pQuadric[4], 1);
+	gluSphere(pQuadric[4], 0.75f, 100, 100);
+
+}
+
+
+void saturn()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(-1.0f, -1.5f, -7.0);
+	glTranslatef(-0.2f, -0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[5]);
+	gluQuadricTexture(pQuadric[5], 1);
+	gluSphere(pQuadric[5], 0.75f, 100, 100);
+
+}
+
+void uranus()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(0.6f, -1.5f, -7.0);
+	glTranslatef(0.1f, -0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[6]);
+	gluQuadricTexture(pQuadric[6], 1);
+	gluSphere(pQuadric[6], 0.75f, 100, 100);
+
+}
+
+void neptune()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(2.2f, -1.5f, -7.0);
+	glTranslatef(0.4f, -0.2f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[7]);
+	gluQuadricTexture(pQuadric[7], 1);
+	gluSphere(pQuadric[7], 0.75f, 100, 100);
+
+}
+void sun()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(0.0f, 0.0f, -7.0);
+	glTranslatef(-0.05f, 0.0f, -1.0);
+	glScalef(0.15f, 0.15f, 0.15f);
+
+	glRotatef(95, 1.0, 0.0, 0.0);
+	glRotatef(180, 0.0, 1.0, 0.0);
+	glRotatef(g_Angle, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[8]);
+	gluQuadricTexture(pQuadric[8], 1);
+	gluSphere(pQuadric[8], 0.75f, 100, 100);
+
+}
+
+void stars()
+{
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glTranslatef(0.0f, 0.0f, -1.0f); // Model Transformation
+	//glScalef(0.75f, 0.75f, 0.75f);
+	glBindTexture(GL_TEXTURE_2D, gbTexture[9]);
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(1.0f, 1.0f, -1.0f); // right-top corner of top face
+
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f, -1.0f); // left-top corner of top face
+
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f); // left-bottom corner of top face
+
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f); // right-bottom corner of top face
+
+//	mercury();
+	glEnd();
+
+	/*glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(-1.5f, 0.0f, -6.0f); // Model Transformation
+	
+
+	glBindTexture(GL_TEXTURE_2D, gbTexture[9]);
+
+	glBegin(GL_TRIANGLES);
+
+	// FRONT FACE
+	glTexCoord2f(0.5f, 1.0f);
+	glVertex3f(0.0f, 1.0f, 0.0f); // apex
+
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f); // left-corner of front face
+
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 1.0f); // right-corner of front face
+	glEnd();
+	*/
+}
+
+void display(void)
+{
+	void earth();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	stars();
+	earth();
+	mercury();
+	venus();
+	mars();
+	jupiter();
+	saturn();
+	uranus();
+	neptune();
+	sun();
+	SwapBuffers(g_hDC);
+}
+================================================================================================================
