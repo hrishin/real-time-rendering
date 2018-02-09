@@ -1,10 +1,17 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gl/glew.h> // must come before GL header
+
+#include <gl/glew.h> // must come before GL.h header
 #include <gl/GL.h>
 
 #include "vmath.h"
+
+#pragma comment (lib, "glew32.lib")
+#pragma comment (lib, "opengl32.lib")
+
+#define WIN_WIDTH 800
+#define WIN_HEIGHT 600
 
 using namespace vmath;
 
@@ -15,12 +22,6 @@ enum
 	VDG_ATTRIBUTE_NORMAL,
 	VDG_ATTRIBUTE_TEXTURE0,
 };
-
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
-
-#pragma comment (lib, "glew32.lib")
-#pragma comment (lib, "opengl32.lib")
 
 LRESULT CALLBACK WndCallbackProc(HWND, UINT, WPARAM, LPARAM);
 void uninitialize(void);
@@ -316,24 +317,23 @@ void initialize(void)
 				fprintf(gpFile, "Vertex Shader Compilation Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
-				//fclose(gpFile);  if any error occurs right immidiately 
+				//fclose(gpFile);  //if any error occurs write immidiately 
 				exit(0);
 			}
 		}
 	}
 
 	// FRAGMENT SHADER
-	gFragmentShaderObject = glCreateShader(GL_VERTEX_SHADER);
-	const GLchar *vertexShaderSourceCode =
+	gFragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
+	const GLchar *fragmentShaderSourceCode =
 		"#version 130" \
 		"\n" \
-		"in vec4 vPosition;" \
-		"uniform mat4 u_mvp_matrix;" \
+		"out vec4 FragColor;" \
 		"void main(void)" \
 		"{" \
-		"gl_Position = u_mvp_matrix * vPosition;" \
+		"FragColor = vec4(1.0, 1.0, 1.0, 1.0);" \
 		"}";
-	glShaderSource(gFragmentShaderObject, 1, (const GLchar **)&gFragmentShaderObject, NULL);
+	glShaderSource(gFragmentShaderObject, 1, (const GLchar **)&fragmentShaderSourceCode, NULL);
 	glCompileShader(gFragmentShaderObject);
 
 	// Error checking
@@ -351,7 +351,7 @@ void initialize(void)
 				fprintf(gpFile, "Fragment Shader Compilation Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
-				//fclose(gpFile);  if any error occurs right immidiately 
+				//fclose(gpFile);  //if any error occurs write immidiately 
 				exit(0);
 			}
 		}
@@ -386,6 +386,7 @@ void initialize(void)
 				fprintf(gpFile, "Shader Program Link Log : %s\n", szInfoLog);
 				free(szInfoLog);
 				uninitialize();
+				//fclose(gpFile);  //if any error occurs write immidiately
 				exit(0);
 			}
 		}
@@ -396,9 +397,10 @@ void initialize(void)
 
 	// *** vertices, colors, shader attribs, vbo, vao initializations ***
 	const GLfloat triangleVertices[] =
-	{ 0.0f, 50.0f, 0.0f, // apex
-		-50.0f, -50.0f, 0.0f, // left-bottom
-		50.0f, -50.0f, 0.0f // right-bottom
+	{ 
+		0.0f, 50.0f, 0.0f, 
+		-50.0f, -50.0f, 0.0f, 
+		50.0f, -50.0f, 0.0f 
 	};
 
 	glGenVertexArrays(1, &gVao);
@@ -453,6 +455,20 @@ void uninitialize(void)
 		ShowCursor(TRUE);
 	}
 
+	// destroy vao
+	if (gVao)
+	{
+		glDeleteVertexArrays(1, &gVao);
+		gVao = 0;
+	}
+
+	// destroy vbo
+	if (gVbo)
+	{
+		glDeleteBuffers(1, &gVbo);
+		gVbo = 0;
+	}
+
 	// detach shader from shader program
 	glDetachShader(gShaderProgramObject, gVertexShaderObject);
 	glDetachShader(gShaderProgramObject, gFragmentShaderObject);
@@ -469,6 +485,9 @@ void uninitialize(void)
 	glDeleteProgram(gShaderProgramObject);
 	gShaderProgramObject = 0;
 
+	// unlink shader program
+	glUseProgram(0);
+	
 	wglMakeCurrent(NULL, NULL);
 
 	wglDeleteContext(gblHrc);
@@ -489,8 +508,6 @@ void uninitialize(void)
 
 void display(void)
 {
-	void update(void);
-	
 	//code
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -502,8 +519,9 @@ void display(void)
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
 
-	// multiply the modelview and orthographic matrix to get modelviewprojection matrix
-	modelViewProjectionMatrix = gOrthographicProjectionMatrix * modelViewMatrix; // ORDER IS IMPORTANT
+	// multiply the modelview and orthographic matrix to get modelviewprojection matri
+	// order is important
+	modelViewProjectionMatrix = gOrthographicProjectionMatrix * modelViewMatrix; 
 
 	// pass above modelviewprojection matrix to the vertex shader in 'u_mvp_matrix' shader variable
 	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
@@ -521,15 +539,9 @@ void display(void)
 	// stop using OpenGL program object
 	glUseProgram(0);
 
-	// animation
-	update();
-
 	SwapBuffers(gblHdc);
 }
 
-void update(void)
-{
-}
 /*
 Very important for Dirext X not for OpenGL
 becuase DirextX is not state machine and change in windows resize empose
@@ -543,19 +555,17 @@ void resize(int width, int height)
 		height = 1;
 
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
 
 	if (width < height)
 	{
 		aspectRatio = (GLfloat)height / (GLfloat)width;
-		glOrtho(-5.0f, 5.0f, (-5.0f*aspectRatio), (5.0f*aspectRatio), -5.0f, 5.0f);
 	}
 	else
 	{
 		aspectRatio = (GLfloat)width / (GLfloat)height;
-		glOrtho((-5.0f * aspectRatio), (5.0f * aspectRatio), -5.0f, 5.0f, -5.0f, 5.0f);
 	}
+	gOrthographicProjectionMatrix = ortho(-100.0f, 100.0f, (-100.0f*aspectRatio), (100.0f*aspectRatio), -100.0f, 100.0f);
+
 }
 
 void toggleFullScreen(void)
