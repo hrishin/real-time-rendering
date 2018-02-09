@@ -15,7 +15,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="studio">
         <location
-            file="E:\RTR\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
+            file="D:\rtr\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
             line="6"
             column="5"/>
     </issue>
@@ -34,7 +34,7 @@
         errorLine2="    ^"
         quickfix="studio">
         <location
-            file="E:\RTR\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
+            file="D:\rtr\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
             line="9"
             column="5"/>
     </issue>
@@ -53,7 +53,7 @@
         errorLine2="    ^"
         quickfix="studio">
         <location
-            file="E:\RTR\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
+            file="D:\rtr\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
             line="9"
             column="5"/>
     </issue>
@@ -72,7 +72,7 @@
         errorLine2="    ^"
         quickfix="studio">
         <location
-            file="E:\RTR\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
+            file="D:\rtr\android\00-Winow-Portrait\app\src\main\AndroidManifest.xml"
             line="9"
             column="5"/>
     </issue>
@@ -88,7 +88,7 @@
         errorLine1="        android:text=&quot;Hey There, Android!&quot; />"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="E:\RTR\android\00-Winow-Portrait\app\src\main\res\layout\activity_main.xml"
+            file="D:\rtr\android\00-Winow-Portrait\app\src\main\res\layout\activity_main.xml"
             line="12"
             column="9"/>
     </issue>

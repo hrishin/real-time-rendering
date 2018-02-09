@@ -1,4 +1,4 @@
-#Sat Dec 09 08:26:02 IST 2017
-base.0=E\:\\RTR\\android\\00-Winow-Portrait\\app\\build\\intermediates\\transforms\\dex\\release\\0
+#Sat Jan 06 11:32:32 IST 2018
+base.0=D\:\\rtr\\android\\00-Winow-Portrait\\app\\build\\intermediates\\transforms\\dex\\release\\0
 path.0=classes.dex
 renamed.0=classes.dex

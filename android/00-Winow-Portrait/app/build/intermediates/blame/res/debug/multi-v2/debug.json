@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\RTR\\android\\00-Winow-Portrait\\app\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "outputFile": "D:\\rtr\\android\\00-Winow-Portrait\\app\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
             "map": [
                 {
-                    "source": "E:\\RTR\\android\\00-Winow-Portrait\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "D:\\rtr\\android\\00-Winow-Portrait\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "1",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\hrishikesh\\.gradle\\caches\\transforms-1\\files-1.1\\constraint-layout-1.0.2.aar\\29ff331e47a2bb98bbfb8b420159162f\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Hrishikesh\\.gradle\\caches\\transforms-1\\files-1.1\\constraint-layout-1.0.2.aar\\374c8904e9703e9986978d00f65f4ff0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,7,8,11,14,15,18,21,22,23,24,28,29,30,31,36,37,38,41,44,45,48,51,54,57,58,61,64,65,70,71,75,76,77,78,79,80,81,82,83,84,85",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
