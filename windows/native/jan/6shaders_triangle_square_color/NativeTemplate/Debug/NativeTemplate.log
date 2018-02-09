@@ -1,0 +1,4 @@
+﻿  Template.cpp
+d:\rtr\windows\native\jan\6shaders_triangle_square_color\nativetemplate\vmath.h(996): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\6shaders_triangle_square_color\Debug\NativeTemplate.exe
+  NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\6shaders_triangle_square_color\Debug\NativeTemplate.pdb (Full PDB)
