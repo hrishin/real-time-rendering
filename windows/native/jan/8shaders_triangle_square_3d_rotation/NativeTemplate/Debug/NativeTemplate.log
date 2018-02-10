@@ -1,0 +1,4 @@
+﻿  Template.cpp
+d:\rtr\windows\native\jan\8shaders_triangle_square_3d_rotation\nativetemplate\vmath.h(996): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\8shaders_triangle_square_3d_rotation\Debug\NativeTemplate.exe
+  NativeTemplate.vcxproj -> D:\rtr\windows\native\jan\8shaders_triangle_square_3d_rotation\Debug\NativeTemplate.pdb (Full PDB)
