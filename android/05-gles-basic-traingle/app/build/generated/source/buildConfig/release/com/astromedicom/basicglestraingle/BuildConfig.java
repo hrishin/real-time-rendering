@@ -1,7 +1,7 @@
 /**
  * Automatically generated file. DO NOT MODIFY
  */
-package com.astromedicom.basicglestraingle;
+package com.astromedicom.basicglestraingleperspective;
 
 public final class BuildConfig {
   public static final boolean DEBUG = false;

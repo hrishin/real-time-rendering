@@ -4,7 +4,7 @@ ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xm
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\374c8904e9703e9986978d00f65f4ff0\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\38e6eab41b2844f510021c8644a8162f\AndroidManifest.xml:2:1-11:12
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
 INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:1-22:12
@@ -24,16 +24,16 @@ INJECTED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest
 		ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:2:11-69
 uses-sdk
 ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:5:5-7:34
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\374c8904e9703e9986978d00f65f4ff0\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\374c8904e9703e9986978d00f65f4ff0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\38e6eab41b2844f510021c8644a8162f\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\38e6eab41b2844f510021c8644a8162f\AndroidManifest.xml:5:5-7:41
 	android:targetSdkVersion
 		ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:6:5-34
 	android:minSdkVersion
 		ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:7:5-31
 application
 ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:9:5-20:19
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\374c8904e9703e9986978d00f65f4ff0\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\374c8904e9703e9986978d00f65f4ff0\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\38e6eab41b2844f510021c8644a8162f\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Hrishikesh\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\38e6eab41b2844f510021c8644a8162f\AndroidManifest.xml:9:5-20
 	android:label
 		ADDED from D:\rtr\android\05-gles-basic-traingle\app\src\main\AndroidManifest.xml:11:9-41
 	android:roundIcon

@@ -103,11 +103,11 @@
         summary="Accessibility in Custom Views"
         explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
         errorLine1="        GLES30.glBindVertexArray(vao[0]);"
-        errorLine2="                        ~~~~~~~~~~~~">
+        errorLine2="              ~~~~~~~~~~~~">
         <location
             file="D:\rtr\android\05-gles-basic-traingle\app\src\main\java\com\astromedicom\basicglestraingle\GLESView.java"
-            line="281"
-            column="25"/>
+            line="291"
+            column="15"/>
     </issue>
 
 </issues>

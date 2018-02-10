@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Feb 06 22:23:40 IST 2018
+#Sat Feb 10 13:48:52 IST 2018
 0.baseType=DIRECTORY
 0.base=D\:\\rtr\\android\\05-gles-basic-traingle\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 0.path=classes.dex
