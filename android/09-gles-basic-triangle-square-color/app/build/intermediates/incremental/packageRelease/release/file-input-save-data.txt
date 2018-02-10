@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Sat Feb 10 16:39:06 IST 2018
+0.baseType=DIRECTORY
+0.base=D\:\\rtr\\android\\09-gles-basic-triangle-square-color\\app\\build\\intermediates\\transforms\\dex\\release\\0
+0.path=classes.dex
+0.set=DEX
+count=1

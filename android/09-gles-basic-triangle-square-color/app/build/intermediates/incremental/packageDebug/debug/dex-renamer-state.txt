@@ -1,0 +1,4 @@
+#Sat Feb 10 16:39:05 IST 2018
+base.0=D\:\\rtr\\android\\09-gles-basic-triangle-square-color\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
