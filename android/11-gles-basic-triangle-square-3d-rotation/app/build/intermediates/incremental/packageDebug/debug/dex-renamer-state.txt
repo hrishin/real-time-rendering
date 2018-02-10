@@ -1,0 +1,4 @@
+#Sat Feb 10 17:01:16 IST 2018
+base.0=D\:\\rtr\\android\\11-gles-basic-triangle-square-3d-rotation\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
