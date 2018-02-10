@@ -1,0 +1,4 @@
+#Sat Feb 10 16:19:00 IST 2018
+base.0=D\:\\rtr\\android\\08-gles-basic-triangle-square-b&w\\app\\build\\intermediates\\transforms\\dex\\release\\0
+path.0=classes.dex
+renamed.0=classes.dex
