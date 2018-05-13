@@ -8,6 +8,11 @@
 */Saved
 *_BuiltData.uasset
 BuildingEscape/Content/StarterContent/
+*/Debug
+/Debug
+*/.vs
+/.vs
+
 
 ######################
 # VS Generated Files #
