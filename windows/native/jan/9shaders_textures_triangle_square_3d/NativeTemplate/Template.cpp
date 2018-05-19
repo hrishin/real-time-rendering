@@ -697,6 +697,17 @@ void uninitialize(void)
 	// unlink shader program
 	glUseProgram(0);
 
+	// delete texture objects
+	if (gTextureKundali) {
+		glDeleteTextures(1, &gTextureKundali);
+		gTextureKundali = 0;
+	}
+
+	if (gTextureStone) {
+		glDeleteTextures(1, &gTextureStone);
+		gTextureStone = 0;
+	}
+
 	wglMakeCurrent(NULL, NULL);
 
 	wglDeleteContext(gblHrc);
