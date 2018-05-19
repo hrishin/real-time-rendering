@@ -1,12 +1,8 @@
 package com.astromedicom.texturesquaretriangle3drotation;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLES30;
-import android.opengl.GLES32;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -43,11 +39,12 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
     private int[] vboCubeTexture = new int[1];
 
     private float[] perspectiveProjectionMatrix = new float[16];
-    private int[] textureKundali = new int[1];
 
-    private int[] textureStone = new int[1];
     private float angleTriangle = 0;
     private float angleSquare = 0;
+
+    private TextureHandler stoneTexture;
+    private TextureHandler kundaliTexture;
 
     public GLESView(Context context) {
         super(context);
@@ -62,6 +59,9 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
 
         gestureDetector = new GestureDetector(context, this, null, false);
         gestureDetector.setOnDoubleTapListener(this);
+
+        stoneTexture = new TextureHandler(context, R.raw.stone);
+        kundaliTexture = new TextureHandler(context, R.raw.vijay_kundali_horz_inverted);
     }
 
     @Override
@@ -378,8 +378,8 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
         GLES30.glBindVertexArray(0);
 
         // load textures
-        textureStone[0] = loadTexture(R.raw.stone);
-        textureKundali[0] = loadTexture(R.raw.vijay_kundali_horz_inverted);
+        stoneTexture.loadTexture();
+        kundaliTexture.loadTexture();
 
         // enable depth testing
         GLES30.glEnable(GLES30.GL_DEPTH_TEST);
@@ -394,35 +394,6 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         Matrix.setIdentityM(perspectiveProjectionMatrix, 0);
-    }
-
-    private int loadTexture(int resource) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled  = false;
-
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resource, options);
-        int[] texture = new int[1];
-
-        // create texture object to apply to model
-        GLES30.glGenTextures(1, texture, 0);
-
-        // indicate that pixels rows are tightly packed
-        GLES30.glPixelStorei(GLES32.GL_UNPACK_ALIGNMENT, 1);
-
-        // bind texture
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texture[0]);
-
-        // set up filters and wrap modes for this texture object
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
-        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
-
-        // load the bitmap into bound texture
-        GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0);
-
-        // generate mipmap
-        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
-
-        return (texture[0]);
     }
 
     private void unInitialize() {
@@ -454,14 +425,8 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
             vboCubeTexture[0]=0;
         }
 
-        // destroy texture
-        if(textureStone[0] != 0) {
-            GLES30.glDeleteTextures(1, textureStone, 0);
-            textureStone[0] = 0;
-        }
-        if(textureKundali[0] != 0) {
-            GLES30.glDeleteTextures(1, textureKundali, 0);
-        }
+        stoneTexture.delete();
+        kundaliTexture.delete();
 
         if(shaderProgramObject != 0) {
             // delete vertex shader
@@ -529,9 +494,7 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
 
         GLES30.glBindVertexArray(vaoPyramid[0]);
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureStone[0]);
-        GLES30.glUniform1i(texture0SamplerUniform, 0);
+        stoneTexture.bind(texture0SamplerUniform);
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 12);
 
@@ -554,9 +517,7 @@ class GLESView extends GLSurfaceView implements GLSurfaceView.Renderer, GestureD
 
         GLES30.glBindVertexArray(vaoCube[0]);
 
-        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureKundali[0]);
-        GLES30.glUniform1ui(texture0SamplerUniform, 0);
+        kundaliTexture.bind(texture0SamplerUniform);
 
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 0, 4);
         GLES30.glDrawArrays(GLES30.GL_TRIANGLE_FAN, 4, 4);
