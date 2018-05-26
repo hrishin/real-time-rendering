@@ -14,6 +14,9 @@
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
 
+#define checkImageHeight 64
+#define checkImageWidth 64
+
 using namespace vmath;
 
 enum
@@ -55,6 +58,8 @@ GLuint gTexture_sampler_uniform;
 
 mat4 gPerspectiveProjectionMatrix;
 
+
+GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 GLuint gTextureSmily;
 
 int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lpszCmdLune, int iCmdShow)
@@ -106,7 +111,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("OpenGL Programmable Pipeline : Texture : Just Smiley"),
+		TEXT("OpenGL Programmable Pipeline : Texture : Checker board"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -222,7 +227,7 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 void initialize(void)
 {
 	void ReleaseDeviceContext(void);
-	int LoadGLTexture(GLuint *, TCHAR[]);
+	void LoadGLTexture(GLuint *);
 
 	/*It has 26 members*/
 	PIXELFORMATDESCRIPTOR pfd;
@@ -412,15 +417,6 @@ void initialize(void)
 	gMVPUniform = glGetUniformLocation(gShaderProgramObject, "u_mvp_matrix");
 	gTexture_sampler_uniform = glGetUniformLocation(gShaderProgramObject, "u_texture0_sampler");
 
-	// vertices, colors, shader attribs, vbo, vao initializations
-	const GLfloat squareVertices[] =
-	{
-		1.0f, 1.0f, 1.0f, // front
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-	};
-
 	// pretty bullie way
 	const GLfloat squareTextureCords[] =
 	{
@@ -439,7 +435,7 @@ void initialize(void)
 	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
 	// move data from main memory to graphics memory
 	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertices), squareVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (3  * 4 * sizeof(GLfloat)), NULL, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -464,7 +460,7 @@ void initialize(void)
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	LoadGLTexture(&gTextureSmily, MAKEINTRESOURCE(IDB_BITMAP_SMILEY));
+	LoadGLTexture(&gTextureSmily);
 
 	//glEnable(GL_CULL_FACE);
 
@@ -478,37 +474,47 @@ void initialize(void)
 	resize(WIN_WIDTH, WIN_HEIGHT);
 }
 
-int LoadGLTexture(GLuint *texture, TCHAR resource[])
+void LoadGLTexture(GLuint *texture)
 {
-	HBITMAP hBitmap;
-	BITMAP bmp;
-	int iStatus = FALSE;
+	void makeCheckImage(void);
+
+	makeCheckImage();
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	glGenTextures(1, texture);
-	hBitmap = (HBITMAP) LoadImage(GetModuleHandle(NULL), resource, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
-	
-	if (hBitmap) 
+
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+}
+
+void makeCheckImage(void)
+{
+	int i, j, c;
+
+	for (i = 0; i < checkImageWidth; i++)
 	{
-		iStatus = TRUE;
+		for (j = 0; j < checkImageWidth; j++)
+		{
+			c = (((i & 0X8) == 0) ^ ((j & 0X8) == 0)) * 255;
 
-		GetObject(hBitmap, sizeof(bmp), &bmp);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-		glBindTexture(GL_TEXTURE_2D, *texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bmp.bmWidth, bmp.bmHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, bmp.bmBits);
-
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		DeleteObject(hBitmap);
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
 	}
-
-	return (iStatus);
 }
 
 void display(void)
 {
+	void drawLeftSquare();
+	void drawRightSquare();
 	void update(void);
 
 	//code
@@ -517,13 +523,25 @@ void display(void)
 	// start using OpenGL program object
 	glUseProgram(gShaderProgramObject);
 
+	drawLeftSquare();
+	drawRightSquare();
+
+	// stop using OpenGL program object
+	glUseProgram(0);
+
+	update();
+
+	SwapBuffers(gblHdc);
+}
+
+void drawLeftSquare() {
 	// OpenGL Drawing for Traingle
 	// set modelview & modelviewprojection matrices to identity
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
 
 	// tranlsate to negative x, z axis
-	modelViewMatrix = modelViewMatrix * vmath::translate(0.0f, 0.0f, -5.0f);
+	modelViewMatrix = modelViewMatrix * vmath::translate(-1.5f, 0.0f, -6.0f);
 
 	// multiply the modelview and orthographic matrix to get modelviewprojection matri
 	// order is important
@@ -533,25 +551,75 @@ void display(void)
 	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
 	glUniformMatrix4fv(gMVPUniform, 1, GL_FALSE, modelViewProjectionMatrix);
 
+	// Square 1 position
+	GLfloat square1Vertices[] =
+	{
+		1.0f, 1.0f, 1.0f, // front
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+	};
+
+	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square1Vertices), square1Vertices, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_BUFFER, 0);
+
 	// bind texture
 	glActiveTexture(GL_TEXTURE0); // OpenGL spec says's 80 textures units, it could work for with specifying for single texture
 	glBindTexture(GL_TEXTURE_2D, gTextureSmily); // which texture to use
 	glUniform1i(gTexture_sampler_uniform, 0); // 1i -> integer because sample2d is internally is integer, second parameter is texture index
 
-	// bind vao
+											  // bind vao
 	glBindVertexArray(gVaoSquare);
 
 	// draw, either by glDrawTriangles() or glDrawArrays() or glDrawElements()
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // 3 (each with its x,y,z ) vertices in pyramidVertices array for 4 sides
-									     
+
 	glBindVertexArray(0);				 // unbind VAO
+}
 
-	// stop using OpenGL program object
-	glUseProgram(0);
+void drawRightSquare() {
+	// OpenGL Drawing for Traingle
+	// set modelview & modelviewprojection matrices to identity
+	mat4 modelViewMatrix = mat4::identity();
+	mat4 modelViewProjectionMatrix = mat4::identity();
 
-	update();
+	// tranlsate to negative x, z axis
+	modelViewMatrix = modelViewMatrix * vmath::translate(1.0f, 0.0f, -6.0f);
 
-	SwapBuffers(gblHdc);
+	// multiply the modelview and orthographic matrix to get modelviewprojection matri
+	// order is important
+	modelViewProjectionMatrix = gPerspectiveProjectionMatrix * modelViewMatrix;
+
+	// pass above modelviewprojection matrix to the vertex shader in 'u_mvp_matrix' shader variable
+	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
+	glUniformMatrix4fv(gMVPUniform, 1, GL_FALSE, modelViewProjectionMatrix);
+
+	// Square 1 position
+	GLfloat square1Vertices[] =
+	{
+		2.41421f, 1.0f, -1.41421f, // front
+		1.0f, 1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		2.41421f, -1.0f, -1.41421f,
+	};
+
+	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square1Vertices), square1Vertices, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_BUFFER, 0);
+
+	// bind texture
+	glActiveTexture(GL_TEXTURE0); // OpenGL spec says's 80 textures units, it could work for with specifying for single texture
+	glBindTexture(GL_TEXTURE_2D, gTextureSmily); // which texture to use
+	glUniform1i(gTexture_sampler_uniform, 0); // 1i -> integer because sample2d is internally is integer, second parameter is texture index
+
+											  // bind vao
+	glBindVertexArray(gVaoSquare);
+
+	// draw, either by glDrawTriangles() or glDrawArrays() or glDrawElements()
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // 3 (each with its x,y,z ) vertices in pyramidVertices array for 4 sides
+
+	glBindVertexArray(0);				 // unbind VAO
 }
 
 void update()
