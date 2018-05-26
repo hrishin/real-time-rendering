@@ -1,3 +1,4 @@
+// headers
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
@@ -23,12 +24,12 @@ int main(int argc, const char *argv[]) {
 	return (0);
 }
 
-
+// AppDelegate implementation
 @implementation AppDelegate
 {
-	@private
-		NSWindow *window;
-		MyView *view;
+@private
+    NSWindow *window;
+    MyView *view;
 
 }
 
@@ -40,7 +41,7 @@ int main(int argc, const char *argv[]) {
 
 	// create window
 	window = [[NSWindow alloc] initWithContentRect: win_rect 
-			styleMask: NSWindowStyleMaskTitled|NSWindowStyleMaskClosable|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskResizable 
+			styleMask: NSWindowStyleMaskTitled|NSWindowStyleMaskClosable|                              NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskResizable
 			backing: NSBackingStoreBuffered 
 			defer: NO];
 
@@ -48,14 +49,15 @@ int main(int argc, const char *argv[]) {
 	[window center];
 
 	view = [[MyView alloc] initWithFrame: win_rect];
-	[window setContentView: view];
+	
+    [window setContentView: view];
 	[window setDelegate: self];
 	[window makeKeyAndOrderFront: self];
 }
 
 - (void) applicationWillTerminate: (NSNotification*) notification
 {
-	[NSApp terminate: self];
+
 }
 
 - (void) windowWillClose: (NSNotification*) notification
@@ -74,10 +76,9 @@ int main(int argc, const char *argv[]) {
 @end
 
 
-
 @implementation MyView 
 {
-	NSString *centerText;
+	NSString *centralText;
 }
 
 - (id) initWithFrame: (NSRect) frame
@@ -86,13 +87,14 @@ int main(int argc, const char *argv[]) {
 
 	if (self) 
 	{
-			[[self window] setContentView: self];
+        [[self window] setContentView: self];
+        centralText = @"Hello World";
 	}
 
 	return(self);
 }
 
-- (void) drawrect: (NSRect) dirtyRect
+- (void) drawRect: (NSRect) dirtyRect
 {
 	// black background
 	NSColor *fillColor = [NSColor blackColor];
@@ -104,22 +106,61 @@ int main(int argc, const char *argv[]) {
 		[NSFont fontWithName: @"Helvetica" size: 32], NSFontAttributeName, [NSColor greenColor],
 		NSForegroundColorAttributeName, nil];
 
-	NSSize textSize = [centerText sizeWithAttributes: dictionaryForTextAttributes];
+	NSSize textSize = [centralText sizeWithAttributes: dictionaryForTextAttributes];
 	NSPoint point;
 	point.x = (dirtyRect.size.width/2) - (textSize.width/2);
 	point.y = (dirtyRect.size.height/2) - (textSize.height/2)+12;
 
-	[centerText drawAtPoint: point withAttributes: dictionaryForTextAttributes];
+	[centralText drawAtPoint: point withAttributes: dictionaryForTextAttributes];
 }
 
-- (BOOL) acceptFirstResponder
+- (BOOL) acceptsFirstResponder
 {
 	[[self window] makeFirstResponder:self];
 	return (YES);
+}
+
+-(void)keyDown:(NSEvent *)theEvent
+{
+    // code
+    int key=(int)[[theEvent characters]characterAtIndex:0];
+    switch(key)
+    {
+        case 27: // Esc key
+            [ self release];
+            [NSApp terminate:self];
+            break;
+        case 'F':
+        case 'f':
+            centralText=@"'F' or 'f' Key Is Pressed";
+            [[self window]toggleFullScreen:self]; // repainting occurs automatically
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)mouseDown:(NSEvent *)theEvent
+{
+    centralText=@"Left Mouse Button Is Clicked";
+    [self setNeedsDisplay:YES]; // repainting
+}
+
+-(void)mouseDragged:(NSEvent *)theEvent
+{
+    // code
+}
+
+-(void)rightMouseDown:(NSEvent *)theEvent
+{
+    // code
+    centralText=@"Right Mouse Button Is Clicked";
+    [self setNeedsDisplay:YES]; // repainting
 }
 
 - (void) dealloc
 {
 	[super dealloc];
 }
+
 @end
