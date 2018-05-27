@@ -1,8 +1,12 @@
-build:
-	rm -rf Window.app/Contents/MacOS
-	mkdir -p Window.app/Contents/MacOS
-	Clang -o Window.app/Contents/MacOS/window *.m -framework Cocoa
+.phony : build rebuild clean
 
-rebuild:
-	Clang -o Window.app/Contents/MacOS/window *.m -framework Cocoa
+clean:
+	rm -rf Window.app
+
+rebuild: clean
+	mkdir -p Window.app/Contents/MacOS
+	Clang -o Window.app/Contents/MacOS/window *.m -framework Cocoa  -framework QuartzCore -framework OpenGL
+
+build:
+	Clang -o Window.app/Contents/MacOS/window *.m -framework Cocoa -framework QuartzCore -framework OpenGL
 	
