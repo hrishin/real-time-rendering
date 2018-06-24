@@ -6,7 +6,6 @@
 #include <gl/GL.h>
 
 #include "vmath.h"
-#include "resource.h"
 
 #pragma comment (lib, "glew32.lib")
 #pragma comment (lib, "opengl32.lib")
