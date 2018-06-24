@@ -1,4 +1,0 @@
-Log file created succcessfully 
-Vertex Shader Compilation Log : 0(2) : error C0000: syntax error, unexpected identifier, expecting '{' at token "vColorout"
-
-Log file is succefully closed
