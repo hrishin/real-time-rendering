@@ -326,6 +326,12 @@
 		vboPosition = 0;
 	}
 
+	if(vboColor)
+	{
+		glDeleteVertexArrays(1, &vboColor);
+		vboColor = 0;
+	}
+
 	// detach shader objects
 	glDetachShader(shaderProgramObject, vertexShaderObject);
 	glDetachShader(shaderProgramObject, fragmentShaderObject);
