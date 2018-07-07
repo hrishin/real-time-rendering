@@ -1,5 +1,9 @@
 #import "glview.h"
 
+@interface GLView(PrivateMethods)
+-(void) exitIfError : (GLuint) object : (NSString*) message;
+@end
+
 @implementation GLView
 {
 @private
@@ -92,32 +96,7 @@
 	// compile shader
 	glCompileShader(vertexShaderObject);
 	// check compilation errors
-	GLint iShaderCompileStatus = 0;
-	glGetShaderiv(vertexShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
-	if(iShaderCompileStatus == GL_FALSE)
-	{
-		GLint iInfoLength = 0;
-		glGetShaderiv(vertexShaderObject, GL_INFO_LOG_LENGTH, &iInfoLength);
-		if (iInfoLength > 0)
-		{
-			char *szInfoLog = NULL;
-			GLsizei written;
-			
-			szInfoLog = (char*) malloc(iInfoLength);
-			if(szInfoLog == NULL)
-			{
-				fprintf(gpFile, "Vertex shader compilation log : malloc failed");
-				[self release];
-         		[NSApp terminate: self];
-			}
-
-			glGetShaderInfoLog(vertexShaderObject, iInfoLength, &written, szInfoLog);
-			fprintf(gpFile, "Vertex shader compilation log : %s \n", szInfoLog);
-			free(szInfoLog);
-			[self release];
-			[NSApp terminate: self];
-		}
-	}
+	[self exitIfError: vertexShaderObject : @"Vertex shader compilation"];
 	
 	// FRAGMENT shader
 	//create shader object
@@ -137,31 +116,7 @@
 	// compile shader
 	glCompileShader(fragmentShaderObject);
 	// check compilation errors
-	iShaderCompileStatus = 0;
-	glGetShaderiv(fragmentShaderObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
-	if(iShaderCompileStatus == GL_FALSE)
-	{
-		GLint iInfoLength = 0;
-		glGetShaderiv(fragmentShaderObject, GL_INFO_LOG_LENGTH, &iInfoLength);
-		if (iInfoLength > 0)
-		{
-			char *szInfoLog = NULL;
-			szInfoLog = (char*) malloc(iInfoLength);
-			if(szInfoLog == NULL)
-			{
-				fprintf(gpFile, "Fragment shader compilation log : malloc failed");
-				[self release];
-         		[NSApp terminate: self];
-			}
-
-			GLsizei written;
-			glGetShaderInfoLog(fragmentShaderObject, iInfoLength, &written, szInfoLog);
-			fprintf(gpFile, "Fragment shader compilation log : %s \n", szInfoLog);
-			free(szInfoLog);
-			[self release];
-			[NSApp terminate: self];
-		}
-	}
+	[self exitIfError: fragmentShaderObject : @"Fragment shader compilation"];
 
 	// SHADER PROGRAM
 	shaderProgramObject = glCreateProgram();
@@ -178,31 +133,7 @@
 	// link shader
 	glLinkProgram(shaderProgramObject);
 
-	iShaderCompileStatus = 0;
-	glGetShaderiv(shaderProgramObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
-	if(iShaderCompileStatus == GL_FALSE)
-	{
-		GLint iInfoLength = 0;
-		glGetShaderiv(shaderProgramObject, GL_INFO_LOG_LENGTH, &iInfoLength);
-		if (iInfoLength > 0)
-		{
-			char *szInfoLog = NULL;
-			szInfoLog = (char*) malloc(iInfoLength);
-			if(szInfoLog == NULL)
-			{
-				fprintf(gpFile, "Progam shader compilation log : malloc failed");
-				[self release];
-         		[NSApp terminate: self];
-			}
-
-			GLsizei written;
-			glGetShaderInfoLog(shaderProgramObject, iInfoLength, &written, szInfoLog);
-			fprintf(gpFile, "Prpgram shader compilation log : %s \n", szInfoLog);
-			free(szInfoLog);
-			[self release];
-			[NSApp terminate: self];
-		}
-	}
+	[self exitIfError: shaderProgramObject : @"Shader program object compilation"];
 	
 	mvpUniform = glGetUniformLocation(shaderProgramObject, "uMvpMatrix");
 
@@ -395,6 +326,38 @@
 	CVDisplayLinkRelease(displayLink);
 	
 	[super dealloc];
+}
+
+- (void) exitIfError : (GLuint) glObject : (NSString*) message
+{
+	GLint iShaderCompileStatus = 0;	
+	const char *msg = [message cStringUsingEncoding: NSASCIIStringEncoding];
+	fprintf(gpFile, "%d %s \n", glObject, msg);
+	glGetShaderiv(glObject, GL_COMPILE_STATUS, &iShaderCompileStatus);
+	if(iShaderCompileStatus == GL_FALSE)
+	{
+		GLint iInfoLength = 0;
+		glGetShaderiv(glObject, GL_INFO_LOG_LENGTH, &iInfoLength);
+		if (iInfoLength > 0)
+		{
+			char *szInfoLog = NULL;
+			GLsizei written;
+			
+			szInfoLog = (char*) malloc(iInfoLength);
+			if(szInfoLog == NULL)
+			{
+				fprintf(gpFile, "%s log : malloc failed", msg);
+				[self release];
+         		[NSApp terminate: self];
+			}
+
+			glGetShaderInfoLog(glObject, iInfoLength, &written, szInfoLog);
+			fprintf(gpFile, "%s log : %s \n", msg, szInfoLog);
+			free(szInfoLog);
+			[self release];
+			[NSApp terminate: self];
+		}
+	}
 }
 
 @end
