@@ -29,4 +29,5 @@ Temporary Items
 
 *.swp
 *.app
+*..swp
 Log.txt
