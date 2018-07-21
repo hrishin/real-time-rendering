@@ -579,7 +579,7 @@ void updateShaderPrograms() {
 		"\n" \
 		"in vec3 trasnformed_normals;" \
 		"in vec3 light_direction;" \
-		"vec3 viewer_vector;" \
+		"in vec3 viewer_vector;" \
 		"out vec4 FragColor;" \
 		"uniform int u_lighting_enabled;" \
 		"uniform vec3 u_La;" \
