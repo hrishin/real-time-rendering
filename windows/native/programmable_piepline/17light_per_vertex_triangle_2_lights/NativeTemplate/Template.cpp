@@ -6,12 +6,9 @@
 #include <gl/GL.h>
 
 #include "vmath.h"
-#include "Sphere.h"
 
 #pragma comment (lib, "glew32.lib")
 #pragma comment (lib, "opengl32.lib")
-
-#pragma comment (lib, "Sphere.lib")
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -49,38 +46,34 @@ GLuint gVertexShaderObject;
 GLuint gFragmentShaderObject;
 GLuint gShaderProgramObject;
 
-GLuint gNumElements;
-GLuint gNumVertices;
-float sphere_vertices[1146];
-float sphere_normals[1146];
-float sphere_textures[764];
-unsigned short sphere_elements[2280];
-
-GLuint gVaoSphere;
-GLuint gVboSpherePosition;
-GLuint gVboShereNormal;
-GLuint gVboSphereElements;
+GLuint gVaoPyramid;
+GLuint gVboPyramidPosition;
+GLuint gVboPyramidNormal;
 
 GLuint gModelMatrixUniform, gViewMatrixUniform, gProjectionMatrixUniform;
-GLuint gLaUniform, gLdUniform, gLsUniform, gLightPositionUniform;
+GLuint gLaUniform, gL1dUniform, gL2dUniform, gLsUniform, gLight1PositionUniform, gLight2PositionUniform;
 GLuint gKaUniform, gKdUniform, gKsUniform, gMaterialShinessUniform;
 GLuint gLKeyPressedUniform;
-GLuint gIsPerVertexUniform;
 
 mat4 gPerspectiveProjectionMatrix;
 
-GLfloat gLightAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
-GLfloat gLightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat gLightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat gLightPosition[] = { 100.0f, 100.0f, 100.0f, 1.0f };
+GLfloat gLight1Ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat gLight1Diffuse[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+GLfloat gLight1Specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat gLight1Position[] = { 200.0f, 100.0f, 100.0f, 1.0f };
+
+GLfloat gLight2Diffuse[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+GLfloat gLight2Position[] = { -200.0f, 100.0f, 100.0f, 1.0f };
 
 GLfloat gMaterialAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 GLfloat gMaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat gMaterialSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat gMaterialShininess = 50.0f;
 
+GLfloat gAngle = 0.0f;
+
+bool gbAnimate;
 bool gbLight;
-bool gIsPerVertex;
 
 int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lpszCmdLune, int iCmdShow)
 {
@@ -134,7 +127,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("OpenGL Programmable Pipeline : Light : Per Vertex Light"),
+		TEXT("OpenGL Programmable Pipeline : Light : Defuse Light"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -172,7 +165,9 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 			if (gblActiveWindow == true)
 			{
 				display();
-				update();
+
+				if(gbAnimate == true) 
+					update();
 
 				if (gblIsEscPressed == true)
 					bDone = true;
@@ -190,9 +185,9 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 	void display(void);
 	void toggleFullScreen(void);
 	void uninitialize(void);
-	void createShaderPrograms(void);
 
 	// varibles
+	static bool isAPressed = false;
 	static bool isLPressed = false;
 
 	switch (iMsg)
@@ -220,23 +215,20 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
-		
+		case VK_ESCAPE:
 		case 'q':
 		case 'Q':
 			gblIsEscPressed = true;
 			break;
 
-		case VK_ESCAPE: //
+		case 0x46: // 'f' or 'F'
 			gblFullScreen = !gblFullScreen;
 			toggleFullScreen();
 			break;
-		
-		case 0x46: // 'f' or 'F'
-			gIsPerVertex = true;
-			break;
 
-		case 0x56: // 'v' or 'v'
-			gIsPerVertex = false;
+		case 0x41: // 'A' or 'a'
+			isAPressed = !isAPressed;
+			gbAnimate = isAPressed;
 			break;
 
 		case 0x4c: // 'L' or 'l'
@@ -254,10 +246,6 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 		break;
 
 	case WM_LBUTTONDOWN:
-		break;
-
-	case WM_CLOSE:
-		uninitialize();
 		break;
 
 	case WM_DESTROY:
@@ -306,7 +294,6 @@ void initialize(void)
 {
 	void releaseDeviceContext(void);
 	void uninitialize(void);
-	void createShaderPrograms(void);
 
 	/*It has 26 members*/
 	PIXELFORMATDESCRIPTOR pfd;
@@ -375,155 +362,55 @@ void initialize(void)
 		releaseDeviceContext();
 	}
 
-	// SHADER PROGRAM
-	createShaderPrograms();
-
-	// get MVP uniform location
-	gModelMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_model_matrix");
-	gViewMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_view_matrix");
-	gProjectionMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_projection_matrix");
-
-	gLKeyPressedUniform = glGetUniformLocation(gShaderProgramObject, "u_lighting_enabled");
-	gIsPerVertexUniform = glGetUniformLocation(gShaderProgramObject, "u_per_vertex");
-
-	// ambient color of light
-	gLaUniform = glGetUniformLocation(gShaderProgramObject, "u_La");
-	// diffuse color of light
-	gLdUniform = glGetUniformLocation(gShaderProgramObject, "u_Ld");
-	// specular color of light
-	gLsUniform = glGetUniformLocation(gShaderProgramObject, "u_Ls");
-	// light position
-	gLightPositionUniform = glGetUniformLocation(gShaderProgramObject, "u_light_position");
-
-	// ambient color of material
-	gKaUniform = glGetUniformLocation(gShaderProgramObject, "u_Ka");
-	// diffuse color of material
-	gKdUniform = glGetUniformLocation(gShaderProgramObject, "u_Kd");
-	// specular color of light
-	gKsUniform = glGetUniformLocation(gShaderProgramObject, "u_Ks");
-	// shininess of material
-	gMaterialShinessUniform = glGetUniformLocation(gShaderProgramObject, "u_material_shininess");
-
-	// get sphere vertices, normals, textures, elements
-	getSphereVertexData(sphere_vertices, sphere_normals, sphere_textures, sphere_elements);
-	gNumVertices = getNumberOfSphereVertices();
-	gNumElements = getNumberOfSphereElements();
-
-	// Cube VAO
-	glGenVertexArrays(1, &gVaoSphere);
-	glBindVertexArray(gVaoSphere);
-
-	glGenBuffers(1, &gVboSpherePosition);
-	glBindBuffer(GL_ARRAY_BUFFER, gVboSpherePosition);
-	// move data from main memory to graphics memory
-	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_vertices), sphere_vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// Normals
-	glGenBuffers(1, &gVboShereNormal);
-	glBindBuffer(GL_ARRAY_BUFFER, gVboShereNormal);
-	// move data from main memory to graphics memory
-	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_normals), sphere_normals, GL_STATIC_DRAW);
-	glVertexAttribPointer(VDG_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	glEnableVertexAttribArray(VDG_ATTRIBUTE_NORMAL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// Elements
-	glGenBuffers(1, &gVboSphereElements);
-	glBindBuffer(GL_ARRAY_BUFFER, gVboSphereElements);
-	// move data from main memory to graphics memory
-	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(sphere_elements), sphere_elements, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-
-	gIsPerVertex = true;
-
-	glShadeModel(GL_SMOOTH);
-
-	glClearDepth(1.0f); // set depth buffer
-	glEnable(GL_DEPTH_TEST); // enable depth testing
-	glDepthFunc(GL_LEQUAL); // type of depth testing (may be Direxct3D, Vulkcan doesnt requires this test)
-
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-	// culling for better performance
-	glEnable(GL_CULL_FACE);
-
-	/*state function*/
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // BLACK
-
-	// Perspective Matrix to identity matrix
-	gPerspectiveProjectionMatrix = mat4::identity();
-
-	gbLight = false;
-	
-	// warmup
-	resize(WIN_WIDTH, WIN_HEIGHT);
-}
-
-void createShaderPrograms() {
 	// VERTEX SHADER
 	gVertexShaderObject = glCreateShader(GL_VERTEX_SHADER);
 
 	// source
-	const GLchar *vertexShaderSourceCode = 
+	const GLchar *vertexShaderSourceCode =
 		"#version 130" \
 		"\n" \
 		"in vec4 vPosition;" \
 		"in vec3 vNormal;" \
-		"uniform int u_lighting_enabled;" \
-		"uniform int u_per_vertex;" \
 		"uniform mat4 u_model_matrix;" \
 		"uniform mat4 u_view_matrix;" \
 		"uniform mat4 u_projection_matrix;" \
+		"uniform int u_lighting_enabled;" \
 		"uniform vec3 u_La;" \
-		"uniform vec3 u_Ld;" \
+		"uniform vec3 u_L1d;" \
+		"uniform vec3 u_L2d;" \
 		"uniform vec3 u_Ls;" \
-		"uniform vec4 u_light_position;" \
+		"uniform vec4 u_light1_position;" \
+		"uniform vec4 u_light2_position;" \
 		"uniform vec3 u_Ka;" \
 		"uniform vec3 u_Kd;" \
 		"uniform vec3 u_Ks;" \
 		"uniform float u_material_shininess;" \
-		"out vec3 phong_ads_color_out;" \
-		"out vec3 trasnformed_normals_out;" \
-		"out vec3 light_direction_out;" \
-		"out vec3 viewer_vector_out;" \
+		"out vec3 phong_ads_color;" \
 		"void main(void)" \
 		"{" \
 			"if (u_lighting_enabled == 1)" \
 			"{" \
-				"if (u_per_vertex == 1)" \
-				"{" \
-					"vec4 eye_coordinates = u_view_matrix * u_model_matrix * vPosition;"\
-					"vec3 trasnformed_normals = normalize(mat3(u_view_matrix * u_model_matrix) * vNormal);" \
-					"vec3 light_direction = normalize(vec3(u_light_position) - eye_coordinates.xyz);" \
-					"float tn_dot_ld = max(dot(trasnformed_normals, light_direction), 0.0);" \
-					"vec3 ambient = u_La * u_Ka;" \
-					"vec3 diffuse = u_Ld * u_Kd * tn_dot_ld;" \
-					"vec3 reflection_vector = reflect(-light_direction, trasnformed_normals);" \
-					"vec3 viewer_vector = normalize(-eye_coordinates.xyz);" \
-					"vec3 specular = u_Ls * u_Ks * pow(max(dot(reflection_vector, viewer_vector) , 0.0) , u_material_shininess);" \
-					"phong_ads_color_out = ambient + diffuse + specular;" \
-				"}" \
-				"else" \
-				"{" \
-					"vec4 eye_coordinates = u_view_matrix * u_model_matrix * vPosition;"\
-					"trasnformed_normals_out = mat3(u_view_matrix * u_model_matrix) * vNormal;" \
-					"light_direction_out = vec3(u_light_position) - eye_coordinates.xyz;" \
-					"viewer_vector_out = -eye_coordinates.xyz;" \
-				"}" \
+				"vec4 eye_coordinates = u_view_matrix * u_model_matrix * vPosition;"\
+				"vec3 trasnformed_normals = normalize(mat3(u_view_matrix * u_model_matrix) * vNormal);" \
+				"vec3 light1_direction = normalize(vec3(u_light1_position) - eye_coordinates.xyz);" \
+				"vec3 light2_direction = normalize(vec3(u_light2_position) - eye_coordinates.xyz);" \
+				"float tn_dot_ld1 = max(dot(trasnformed_normals, light1_direction), 0.0);" \
+				"float tn_dot_ld2 = max(dot(trasnformed_normals, light2_direction), 0.0);" \
+				"vec3 ambient = u_La * u_Ka;" \
+				"vec3 diffuse1 = u_L1d * u_Kd * tn_dot_ld1;" \
+				"vec3 diffuse2 = u_L2d * u_Kd * tn_dot_ld2;" \
+				"vec3 reflection_vector1 = reflect(-light1_direction, trasnformed_normals);" \
+				"vec3 reflection_vector2 = reflect(-light2_direction, trasnformed_normals);" \
+				"vec3 viewer_vector = normalize(-eye_coordinates.xyz);" \
+				"vec3 specular1 = u_Ls * u_Ks * pow(max(dot(reflection_vector1, viewer_vector) , 0.0) , u_material_shininess);" \
+				"vec3 specular2 = u_Ls * u_Ks * pow(max(dot(reflection_vector2, viewer_vector) , 0.0) , u_material_shininess);" \
+				"phong_ads_color = ambient + diffuse1 + specular1 + diffuse2 + specular2;" \
 			"}" \
 			"else" \
 			"{" \
-				"phong_ads_color_out = vec3(1.0, 1.0, 1.0);" \
+				"phong_ads_color = vec3(1.0, 1.0, 1.0);" \
 			"}" \
-			"gl_Position = u_projection_matrix * u_view_matrix * u_model_matrix * vPosition;" \
+		"gl_Position = u_projection_matrix * u_view_matrix * u_model_matrix * vPosition;" \
 		"}";
 
 	glShaderSource(gVertexShaderObject, 1, (const GLchar **)&vertexShaderSourceCode, NULL);
@@ -555,51 +442,14 @@ void createShaderPrograms() {
 
 	// FRAGMENT SHADER
 	gFragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
-
-	const GLchar *fragmentShaderSourceCode = 
+	const GLchar *fragmentShaderSourceCode =
 		"#version 130" \
 		"\n" \
-		"in vec3 phong_ads_color_out;" \
-		"in vec3 trasnformed_normals_out;" \
-		"in vec3 light_direction_out;" \
-		"in vec3 viewer_vector_out;" \
-		"uniform int u_per_vertex;" \
-		"uniform int u_lighting_enabled;" \
-		"uniform vec3 u_La;" \
-		"uniform vec3 u_Ld;" \
-		"uniform vec3 u_Ls;" \
-		"uniform vec3 u_Ka;" \
-		"uniform vec3 u_Kd;" \
-		"uniform vec3 u_Ks;" \
-		"uniform float u_material_shininess;" \
+		"in vec3 phong_ads_color;" \
 		"out vec4 FragColor;" \
 		"void main(void)" \
 		"{" \
-			"if (u_per_vertex == 1)" \
-			"{" \
-				"FragColor = vec4(phong_ads_color_out, 1.0);" \
-			"}" \
-			"else" \
-			"{" \
-				"vec3 phong_ads_color;" \
-				"if (u_lighting_enabled == 1)" \
-				"{" \
-					"vec3 normalized_trasnformed_normals = normalize(trasnformed_normals_out);" \
-					"vec3 normalized_light_direction = normalize(light_direction_out);" \
-					"float tn_dot_ld = max(dot(normalized_trasnformed_normals, normalized_light_direction), 0.0);" \
-					"vec3 reflection_vector = reflect(-normalized_light_direction, normalized_trasnformed_normals);" \
-					"vec3 normalized_viewer_vector = normalize(viewer_vector_out);" \
-					"vec3 specular = u_Ls * u_Ks * pow(max(dot(reflection_vector, normalized_viewer_vector) , 0.0) , u_material_shininess);" \
-					"vec3 ambient = u_La * u_Ka;" \
-					"vec3 diffuse = u_Ld * u_Kd * tn_dot_ld;" \
-					"phong_ads_color = ambient + diffuse + specular;" \
-				"}" \
-				"else" \
-				"{" \
-					"phong_ads_color = vec3(1.0, 1.0, 1.0);" \
-				"}" \
-				"FragColor = vec4(phong_ads_color, 1.0);" \
-			"}"
+			"FragColor = vec4(phong_ads_color, 1.0);" \
 		"}";
 
 	glShaderSource(gFragmentShaderObject, 1, (const GLchar **)&fragmentShaderSourceCode, NULL);
@@ -625,7 +475,8 @@ void createShaderPrograms() {
 			}
 		}
 	}
-	
+
+	// SHADER PROGRAM
 	gShaderProgramObject = glCreateProgram();
 
 	// attach vertex shader to shader program
@@ -662,6 +513,122 @@ void createShaderPrograms() {
 			}
 		}
 	}
+
+	// get MVP uniform location
+	gModelMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_model_matrix");
+	gViewMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_view_matrix");
+	gProjectionMatrixUniform = glGetUniformLocation(gShaderProgramObject, "u_projection_matrix");
+
+	gLKeyPressedUniform = glGetUniformLocation(gShaderProgramObject, "u_lighting_enabled");
+
+	// ambient color of light
+	gLaUniform = glGetUniformLocation(gShaderProgramObject, "u_La");
+	// diffuse color of light1
+	gL1dUniform = glGetUniformLocation(gShaderProgramObject, "u_L1d");
+	// specular color of light
+	gLsUniform = glGetUniformLocation(gShaderProgramObject, "u_Ls");
+	// light1 position
+	gLight1PositionUniform = glGetUniformLocation(gShaderProgramObject, "u_light1_position");
+	// diffuse color of light2
+	gL2dUniform = glGetUniformLocation(gShaderProgramObject, "u_L2d");
+	// light2 position
+	gLight2PositionUniform = glGetUniformLocation(gShaderProgramObject, "u_light2_position");
+
+	// ambient color of material
+	gKaUniform = glGetUniformLocation(gShaderProgramObject, "u_Ka");
+	// diffuse color of material
+	gKdUniform = glGetUniformLocation(gShaderProgramObject, "u_Kd");
+	// specular color of light
+	gKsUniform = glGetUniformLocation(gShaderProgramObject, "u_Ks");
+	// shininess of material
+	gMaterialShinessUniform = glGetUniformLocation(gShaderProgramObject, "u_material_shininess");
+
+	// Cube VAO
+	glGenVertexArrays(1, &gVaoPyramid);
+	glBindVertexArray(gVaoPyramid);
+
+	// Position
+	const GLfloat pyramidVertices[] =
+	{
+		0.0f, 1.0f, 0.0f, // front 
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+		
+		0.0f, 1.0f, 0.0f, // right
+		1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,
+		
+		0.0f, 1.0f, 0.0f, // back
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+
+		0.0f, 1.0f, 0.0f, // left
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, 1.0f
+	};	
+
+	glGenBuffers(1, &gVboPyramidPosition);
+	glBindBuffer(GL_ARRAY_BUFFER, gVboPyramidPosition);
+	// move data from main memory to graphics memory
+	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
+	glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Normals
+	const GLfloat pyramidNormals[] =
+	{
+		0.0, 0.447214f, 0.894427f,
+		0.0, 0.447214f, 0.894427f,
+		0.0, 0.447214f, 0.894427f,
+
+		0.447214f, 0.894427f, 0.0,
+		0.447214f, 0.894427f, 0.0,
+		0.447214f, 0.894427f, 0.0,
+		
+		0.0, 0.447214f, -0.894427f,
+		0.0, 0.447214f, -0.894427f,
+		0.0, 0.447214f, -0.894427f,
+		
+		-0.447214f, 0.894427f, 0.0,
+		-0.447214f, 0.894427f, 0.0,
+		-0.447214f, 0.894427f, 0.0,
+	};
+
+	glGenBuffers(1, &gVboPyramidNormal);
+	glBindBuffer(GL_ARRAY_BUFFER, gVboPyramidNormal);
+	// move data from main memory to graphics memory
+	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
+	glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidNormals), pyramidNormals, GL_STATIC_DRAW);
+	glVertexAttribPointer(VDG_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(VDG_ATTRIBUTE_NORMAL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+
+	glShadeModel(GL_SMOOTH);
+
+	glClearDepth(1.0f); // set depth buffer
+	glEnable(GL_DEPTH_TEST); // enable depth testing
+	glDepthFunc(GL_LEQUAL); // type of depth testing (may be Direxct3D, Vulkan doesnt requires this test)
+
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+	//disabled because back faces gets visible
+	glEnable(GL_CULL_FACE);
+
+	/*state function*/
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // BLACK
+
+	// Perspective Matrix to identity matrix
+	gPerspectiveProjectionMatrix = mat4::identity();
+
+	gbAnimate = false;
+	gbLight = false;
+
+	// warmup
+	resize(WIN_WIDTH, WIN_HEIGHT);
 }
 
 void display(void)
@@ -672,25 +639,17 @@ void display(void)
 	// start using OpenGL program object
 	glUseProgram(gShaderProgramObject);
 
-	if (gIsPerVertex)
-	{
-		glUniform1i(gIsPerVertexUniform, 1);
-	}
-	else 
-	{
-		glUniform1i(gIsPerVertexUniform, 0);
-	}
-
 	if (gbLight)
 	{
-		// setting light enabled uniform
 		glUniform1i(gLKeyPressedUniform, 1);
 
 		// setting light properties uniform
-		glUniform3fv(gLaUniform, 1, gLightAmbient);
-		glUniform3fv(gLdUniform, 1, gLightDiffuse);
-		glUniform3fv(gLsUniform, 1, gLightSpecular);
-		glUniform4fv(gLightPositionUniform, 1, gLightPosition);
+		glUniform3fv(gLaUniform, 1, gLight1Ambient);
+		glUniform3fv(gL1dUniform, 1, gLight1Diffuse);
+		glUniform3fv(gLsUniform, 1, gLight1Specular);
+		glUniform4fv(gLight1PositionUniform, 1, gLight1Position);
+		glUniform3fv(gL2dUniform, 1, gLight2Diffuse);
+		glUniform4fv(gLight2PositionUniform, 1, gLight2Position);
 
 		glUniform3fv(gKaUniform, 1, gMaterialAmbient);
 		glUniform3fv(gKdUniform, 1, gMaterialDiffuse);
@@ -707,24 +666,24 @@ void display(void)
 	mat4 viewMatrix = mat4::identity();
 
 	// translate z axis
-	modelMatrix = translate(0.0f, 0.0f, -2.0f);
+	modelMatrix = translate(0.0f, 0.0f, -5.0f);
+
+	modelMatrix = modelMatrix * rotate(0.0f, gAngle, 0.0f); // order is important
 
 	// pass the modelMatrix to vertex shader variable
 	glUniformMatrix4fv(gModelMatrixUniform, 1, GL_FALSE, modelMatrix);
 
-	// pass the viewMatrix to vertex shader variable
+	// pass the modelMatrix to vertex shader variable
 	glUniformMatrix4fv(gViewMatrixUniform, 1, GL_FALSE, viewMatrix);
 
 	// pass the projectionlViewMatrix to vertex shader variable
 	glUniformMatrix4fv(gProjectionMatrixUniform, 1, GL_FALSE, gPerspectiveProjectionMatrix);
 
 	// bind VAO
-	glBindVertexArray(gVaoSphere);
+	glBindVertexArray(gVaoPyramid);
 
-	// draw sphere
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gVboSphereElements);
-	glDrawElements(GL_TRIANGLES, gNumElements, GL_UNSIGNED_SHORT, 0);
-
+	// draw 6 faces for pyramid
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 12);
 	// unbind VAO
 	glBindVertexArray(0);
 
@@ -736,7 +695,10 @@ void display(void)
 
 void update()
 {
+	gAngle = gAngle + 0.3f;
 
+	if (gAngle >= 360.0f)
+		gAngle = gAngle - 360.0f;
 }
 
 void releaseDeviceContext(void)
@@ -758,27 +720,22 @@ void uninitialize(void)
 	}
 
 	// destroy vao
-	if (gVaoSphere)
+	if (gVaoPyramid)
 	{
-		glDeleteVertexArrays(1, &gVaoSphere);
-		gVaoSphere = 0;
+		glDeleteVertexArrays(1, &gVaoPyramid);
+		gVaoPyramid = 0;
 	}
 
 	// destroy vbo
-	if (gVboSpherePosition)
+	if (gVboPyramidPosition)
 	{
-		glDeleteBuffers(1, &gVboSpherePosition);
-		gVboSpherePosition = 0;
+		glDeleteBuffers(1, &gVboPyramidPosition);
+		gVboPyramidPosition = 0;
 	}
-	if (gVboShereNormal)
+	if (gVboPyramidNormal)
 	{
-		glDeleteBuffers(1, &gVboShereNormal);
-		gVboShereNormal = 0;
-	}
-	if (gVboSphereElements)
-	{
-		glDeleteBuffers(1, &gVboSphereElements);
-		gVboSphereElements = 0;
+		glDeleteBuffers(1, &gVboPyramidNormal);
+		gVboPyramidNormal = 0;
 	}
 
 	// detach shader from shader program
@@ -829,4 +786,6 @@ void resize(int width, int height)
 
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 	gPerspectiveProjectionMatrix = vmath::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+
 }
+
