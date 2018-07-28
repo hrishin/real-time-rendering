@@ -599,7 +599,7 @@ void createShaderPrograms() {
 					"phong_ads_color = vec3(1.0, 1.0, 1.0);" \
 				"}" \
 				"FragColor = vec4(phong_ads_color, 1.0);" \
-			"}"
+			"}" \
 		"}";
 
 	glShaderSource(gFragmentShaderObject, 1, (const GLchar **)&fragmentShaderSourceCode, NULL);
