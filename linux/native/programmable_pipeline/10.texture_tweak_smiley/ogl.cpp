@@ -19,6 +19,9 @@
 using namespace std;
 using namespace vmath;
 
+#define checkImageHeight 64
+#define checkImageWidth 64
+
 enum
 {
     VDG_ATTRIBUTE_VERTEX = 0,
@@ -34,7 +37,7 @@ Colormap gColorMap;
 Window gWindow;
 int giWindowWidth = 800;
 int giWindowHeight = 600;
-const char *gpWindowTitle = "Programmable Pipeline : Texture Smiley";
+const char *gpWindowTitle = "Programmable Pipeline : Texture Tweak Smiley";
 
 GLXContext gGLXContext;
 
@@ -48,12 +51,14 @@ GLuint gVboSquareTexture;
 
 GLuint gMVPUniform;
 GLuint gTextureSamplerUniform;
-GLuint gTextureSmily;
+GLubyte checkImage[checkImageHeight * checkImageWidth * 4];
+GLuint gTextureSmily, gWhiteTexture;
 
 mat4 gPerspectiveProjectionMatrix;
 
 FILE *gpLogFile;
 bool gbFullScreen = false;
+int gKeyEvent = 0;
 
 // entry point function
 int main(int argc, char *arg[])
@@ -110,6 +115,22 @@ int main(int argc, char *arg[])
                         ToggleFullscreen();
                         gbFullScreen = false;
                     }
+                    break;
+
+                case XK_1:
+                    gKeyEvent = 1;
+                    break;
+
+                case XK_2:
+                    gKeyEvent = 2;
+                    break;
+
+                case XK_3:
+                    gKeyEvent = 3;
+                    break;
+
+                case XK_4:
+                    gKeyEvent = 4;
                     break;
 
                 default:
@@ -244,6 +265,7 @@ void Initialize(void)
 {
     void Resize(int, int);
     bool LoadTexture(GLuint *, const char *);
+    bool LoadProceduraltexture(GLuint *);
     void Uninitialize(void);
     void logShaderCompilationStatus(GLuint, FILE *, const char *);
     void logProgramCompilationStatus(GLuint, FILE *, const char *);
@@ -349,15 +371,6 @@ void Initialize(void)
 		1.0f, -1.0f, 1.0f,
 	};
 
-	// pretty bullie way
-	const GLfloat squareTextureCords[] =
-	{
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-	};	
-
 	// Cube VAO
 	glGenVertexArrays(1, &gVaoSquare);
 	glBindVertexArray(gVaoSquare);
@@ -377,7 +390,7 @@ void Initialize(void)
 	glBindBuffer(GL_ARRAY_BUFFER, gVboSquareTexture);
 	// move data from main memory to graphics memory
 	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), squareTextureCords, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (4 * 2 * sizeof(GLfloat)), NULL, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(VDG_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(VDG_ATTRIBUTE_TEXTURE0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -394,9 +407,10 @@ void Initialize(void)
     glDepthFunc(GL_LEQUAL);
 
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     LoadTexture(&gTextureSmily, "Smiley-512x512.bmp");
+    LoadProceduraltexture(&gWhiteTexture);
 
     // warm up
     Resize(giWindowWidth, giWindowHeight);
@@ -406,11 +420,11 @@ bool LoadTexture(GLuint *texture, const char *image)
 {
     bool is_status = false;
     int width, height;
-    unsigned char *img_data = NULL;
+    unsigned char *imgData = NULL;
 
     glGenTextures(1, texture);
-    img_data = SOIL_load_image(image, &width, &height, 0, SOIL_LOAD_RGB);
-    if (img_data != NULL)
+    imgData = SOIL_load_image(image, &width, &height, 0, SOIL_LOAD_RGB);
+    if (imgData != NULL)
     {
         is_status = true;
         glBindTexture(GL_TEXTURE_2D, *texture);
@@ -418,13 +432,55 @@ bool LoadTexture(GLuint *texture, const char *image)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (void *)img_data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (void *)imgData);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        SOIL_free_image_data(img_data);
+        SOIL_free_image_data(imgData);
     }
 
     return (is_status);
+}
+
+bool LoadProceduraltexture(GLuint *texture)
+{
+	void makeCheckImage(void);
+
+	makeCheckImage();
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glGenTextures(1, texture);
+
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+}
+
+void makeCheckImage(void)
+{
+	int i, j, c, heightIndex, widthIndex, postion;
+
+	for (i = 0; i < checkImageHeight; i++)
+	{
+		heightIndex = i * checkImageWidth * 4;
+
+		for (j = 0; j < checkImageWidth; j++)
+		{
+			widthIndex = j * 4;
+			postion = heightIndex + widthIndex;
+
+			c = 255;
+
+			checkImage[postion + 0] = (GLubyte)c;
+			checkImage[postion + 1] = (GLubyte)c;
+			checkImage[postion + 2] = (GLubyte)c;
+			checkImage[postion + 3] = (GLubyte)255;
+		}
+	}
 }
 
 void ToggleFullscreen(void)
@@ -454,6 +510,8 @@ void ToggleFullscreen(void)
 
 void Render(void)
 {
+    GLfloat squareTextureCords[8];
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(gShaderProgramObject);
@@ -474,9 +532,69 @@ void Render(void)
 	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
 	glUniformMatrix4fv(gMVPUniform, 1, GL_FALSE, modelViewProjectionMatrix);
 
+	if (gKeyEvent == 1) {
+		squareTextureCords[0] = 0.0;
+		squareTextureCords[1] = 0.0;
+		squareTextureCords[2] = 0.5;
+		squareTextureCords[3] = 0.0;
+		squareTextureCords[4] = 0.5;
+		squareTextureCords[5] = 0.5;
+		squareTextureCords[6] = 0.0;
+		squareTextureCords[7] = 0.5;
+	}
+	else if (gKeyEvent == 2) {
+		squareTextureCords[0] = 0.0;
+		squareTextureCords[1] = 0.0;
+		squareTextureCords[2] = 1.0;
+		squareTextureCords[3] = 0.0;
+		squareTextureCords[4] = 1.0;
+		squareTextureCords[5] = 1.0;
+		squareTextureCords[6] = 0.0;
+		squareTextureCords[7] = 1.0;
+	}
+	else if (gKeyEvent == 3) {
+		squareTextureCords[0] = 0.0;
+		squareTextureCords[1] = 0.0;
+		squareTextureCords[2] = 2.0;
+		squareTextureCords[3] = 0.0;
+		squareTextureCords[4] = 2.0;
+		squareTextureCords[5] = 2.0;
+		squareTextureCords[6] = 0.0;
+		squareTextureCords[7] = 2.0;
+	}
+	else if (gKeyEvent == 4) {
+		squareTextureCords[0] = 0.5;
+		squareTextureCords[1] = 0.5;
+		squareTextureCords[2] = 0.5;
+		squareTextureCords[3] = 0.5;
+		squareTextureCords[4] = 0.5;
+		squareTextureCords[5] = 0.5;
+		squareTextureCords[6] = 0.5;
+		squareTextureCords[7] = 0.5;
+	}
+    else 
+    {
+		squareTextureCords[0] = 0.0;
+		squareTextureCords[1] = 0.0;
+		squareTextureCords[2] = 0.5;
+		squareTextureCords[3] = 0.0;
+		squareTextureCords[4] = 0.5;
+		squareTextureCords[5] = 0.5;
+		squareTextureCords[6] = 0.0;
+		squareTextureCords[7] = 0.5;
+    }
+
+	// load texture co-ords dynamically
+	glBindBuffer(GL_ARRAY_BUFFER, gVboSquareTexture);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), squareTextureCords, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	// bind texture
 	glActiveTexture(GL_TEXTURE0); // OpenGL spec says's 80 textures units, it could work for with specifying for single texture
-	glBindTexture(GL_TEXTURE_2D, gTextureSmily); // which texture to use
+    if (gKeyEvent == 0) 
+        glBindTexture(GL_TEXTURE_2D, gWhiteTexture); // which texture to use
+    else 
+        glBindTexture(GL_TEXTURE_2D, gTextureSmily); // which texture to use
 	glUniform1i(gTextureSamplerUniform, 0); // 1i -> integer because sample2d is internally is integer, second parameter is texture index
 
 	// bind vao
