@@ -678,6 +678,11 @@ void display(void)
 
 void update()
 {
+	if (!gbAnimate)
+	{
+		return;
+	}
+
 	gAngle = gAngle + 0.3f;
 
 	if (gAngle >= 360.0f)
