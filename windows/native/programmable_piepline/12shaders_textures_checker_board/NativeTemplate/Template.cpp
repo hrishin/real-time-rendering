@@ -540,7 +540,6 @@ void display(void)
 }
 
 void drawLeftSquare() {
-	// OpenGL Drawing for Traingle
 	// set modelview & modelviewprojection matrices to identity
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
@@ -584,7 +583,6 @@ void drawLeftSquare() {
 }
 
 void drawRightSquare() {
-	// OpenGL Drawing for Traingle
 	// set modelview & modelviewprojection matrices to identity
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
@@ -648,6 +646,12 @@ void uninitialize(void)
 
 		ShowCursor(TRUE);
 	}
+	
+	// delete textures
+	if (gTextureSmily) {
+		glDeleteTextures(1, &gTextureSmily);
+		gTextureSmily = 0;
+	}
 
 	// destroy vao
 	if (gVaoSquare)
@@ -662,6 +666,7 @@ void uninitialize(void)
 		glDeleteBuffers(1, &gVboSquarePosition);
 		gVboSquarePosition = 0;
 	}
+
 	if (gVboSquareTexture)
 	{
 		glDeleteBuffers(1, &gVboSquareTexture);

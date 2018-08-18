@@ -576,6 +576,12 @@ void uninitialize(void)
 		ShowCursor(TRUE);
 	}
 
+	// delete textures
+	if (gTextureSmily) {
+		glDeleteTextures(1, &gTextureSmily);
+		gTextureSmily = 0;
+	}
+	
 	// destroy vao
 	if (gVaoSquare)
 	{
