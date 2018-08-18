@@ -358,6 +358,7 @@ void Initialize(void)
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
     glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // color
     glGenBuffers(1, &gVboColor);
@@ -367,6 +368,7 @@ void Initialize(void)
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangleColors), triangleColors, GL_STATIC_DRAW);
     glVertexAttribPointer(VDG_ATTRIBUTE_COLOR, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(VDG_ATTRIBUTE_COLOR);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
