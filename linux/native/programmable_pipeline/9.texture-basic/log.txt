@@ -1,2 +1,0 @@
-Log file created successfully 
-Log file is successfully closed
