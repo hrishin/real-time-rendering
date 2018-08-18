@@ -10,7 +10,6 @@
 
 #include <GL/glew.h>
 #include <GL/glx.h>
-#include <SOIL/SOIL.h>
 
 #include "vmath.h"
 
@@ -37,7 +36,7 @@ Colormap gColorMap;
 Window gWindow;
 int giWindowWidth = 800;
 int giWindowHeight = 600;
-const char *gpWindowTitle = "Programmable Pipeline : Texture Tweak Smiley";
+const char *gpWindowTitle = "Programmable Pipeline : Texture Checker Board";
 
 GLXContext gGLXContext;
 
@@ -51,14 +50,13 @@ GLuint gVboSquareTexture;
 
 GLuint gMVPUniform;
 GLuint gTextureSamplerUniform;
+GLuint gTextureCheckerboard;
 GLubyte checkImage[checkImageHeight * checkImageWidth * 4];
-GLuint gTextureSmily, gWhiteTexture;
 
 mat4 gPerspectiveProjectionMatrix;
 
 FILE *gpLogFile;
 bool gbFullScreen = false;
-int gKeyEvent = 0;
 
 // entry point function
 int main(int argc, char *arg[])
@@ -115,22 +113,6 @@ int main(int argc, char *arg[])
                         ToggleFullscreen();
                         gbFullScreen = false;
                     }
-                    break;
-
-                case XK_1:
-                    gKeyEvent = 1;
-                    break;
-
-                case XK_2:
-                    gKeyEvent = 2;
-                    break;
-
-                case XK_3:
-                    gKeyEvent = 3;
-                    break;
-
-                case XK_4:
-                    gKeyEvent = 4;
                     break;
 
                 default:
@@ -264,8 +246,7 @@ void CreateWindow(void)
 void Initialize(void)
 {
     void Resize(int, int);
-    bool LoadTexture(GLuint *, const char *);
-    bool LoadProceduraltexture(GLuint *);
+    bool LoadTexture(GLuint *);
     void Uninitialize(void);
     void logShaderCompilationStatus(GLuint, FILE *, const char *);
     void logProgramCompilationStatus(GLuint, FILE *, const char *);
@@ -362,14 +343,14 @@ void Initialize(void)
     gMVPUniform = glGetUniformLocation(gShaderProgramObject, "u_mvp_matrix");
     gTextureSamplerUniform = glGetUniformLocation(gShaderProgramObject, "u_texture0_sampler");
 
-    // vertices, colors, shader attribs, vbo, vao initializations
-	const GLfloat squareVertices[] =
+	// pretty bullie way
+	const GLfloat squareTextureCords[] =
 	{
-		1.0f, 1.0f, 1.0f, // front
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-	};
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+	};	
 
 	// Cube VAO
 	glGenVertexArrays(1, &gVaoSquare);
@@ -380,7 +361,7 @@ void Initialize(void)
 	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
 	// move data from main memory to graphics memory
 	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertices), squareVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ( 3 * 4 * sizeof(GLfloat)), NULL, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -390,7 +371,7 @@ void Initialize(void)
 	glBindBuffer(GL_ARRAY_BUFFER, gVboSquareTexture);
 	// move data from main memory to graphics memory
 	// GL_STATIC_DRAW or GL_DYNAMIC_DRAW : How you want load data run or preloading. example game shows loadingbar and "loading" messages
-	glBufferData(GL_ARRAY_BUFFER, (4 * 2 * sizeof(GLfloat)), NULL, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), squareTextureCords, GL_STATIC_DRAW);
 	glVertexAttribPointer(VDG_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(VDG_ATTRIBUTE_TEXTURE0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -409,43 +390,17 @@ void Initialize(void)
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glEnable(GL_CULL_FACE);
 
-    LoadTexture(&gTextureSmily, "Smiley-512x512.bmp");
-    LoadProceduraltexture(&gWhiteTexture);
+    LoadTexture(&gTextureCheckerboard);
 
     // warm up
     Resize(giWindowWidth, giWindowHeight);
 }
 
-bool LoadTexture(GLuint *texture, const char *image)
+void LoadTexture(GLuint *texture)
 {
-    bool is_status = false;
-    int width, height;
-    unsigned char *imgData = NULL;
+	void MakeCheckImage(void);
 
-    glGenTextures(1, texture);
-    imgData = SOIL_load_image(image, &width, &height, 0, SOIL_LOAD_RGB);
-    if (imgData != NULL)
-    {
-        is_status = true;
-        glBindTexture(GL_TEXTURE_2D, *texture);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (void *)imgData);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        SOIL_free_image_data(imgData);
-    }
-
-    return (is_status);
-}
-
-bool LoadProceduraltexture(GLuint *texture)
-{
-	void makeCheckImage(void);
-
-	makeCheckImage();
+	MakeCheckImage();
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -460,7 +415,7 @@ bool LoadProceduraltexture(GLuint *texture)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 }
 
-void makeCheckImage(void)
+void MakeCheckImage(void)
 {
 	int i, j, c, heightIndex, widthIndex, postion;
 
@@ -473,7 +428,7 @@ void makeCheckImage(void)
 			widthIndex = j * 4;
 			postion = heightIndex + widthIndex;
 
-			c = 255;
+			c = (((i & 0X8) == 0) ^ ((j & 0X8) == 0)) * 255;
 
 			checkImage[postion + 0] = (GLubyte)c;
 			checkImage[postion + 1] = (GLubyte)c;
@@ -510,19 +465,28 @@ void ToggleFullscreen(void)
 
 void Render(void)
 {
-    GLfloat squareTextureCords[8];
+    void DrawLeftSquare(void);
+	void DrawRightSquare(void);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(gShaderProgramObject);
 
-	// OpenGL Drawing for Traingle
+    DrawLeftSquare();
+	DrawRightSquare();
+
+    glUseProgram(0);
+
+    glXSwapBuffers(gpDisplay, gWindow);
+}
+
+void DrawLeftSquare() {
 	// set modelview & modelviewprojection matrices to identity
 	mat4 modelViewMatrix = mat4::identity();
 	mat4 modelViewProjectionMatrix = mat4::identity();
 
 	// tranlsate to negative x, z axis
-	modelViewMatrix = modelViewMatrix * vmath::translate(0.0f, 0.0f, -5.0f);
+	modelViewMatrix = modelViewMatrix * vmath::translate(-1.5f, 0.0f, -6.0f);
 
 	// multiply the modelview and orthographic matrix to get modelviewprojection matri
 	// order is important
@@ -532,82 +496,74 @@ void Render(void)
 	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
 	glUniformMatrix4fv(gMVPUniform, 1, GL_FALSE, modelViewProjectionMatrix);
 
-	if (gKeyEvent == 1) {
-		squareTextureCords[0] = 0.0;
-		squareTextureCords[1] = 0.0;
-		squareTextureCords[2] = 0.5;
-		squareTextureCords[3] = 0.0;
-		squareTextureCords[4] = 0.5;
-		squareTextureCords[5] = 0.5;
-		squareTextureCords[6] = 0.0;
-		squareTextureCords[7] = 0.5;
-	}
-	else if (gKeyEvent == 2) {
-		squareTextureCords[0] = 0.0;
-		squareTextureCords[1] = 0.0;
-		squareTextureCords[2] = 1.0;
-		squareTextureCords[3] = 0.0;
-		squareTextureCords[4] = 1.0;
-		squareTextureCords[5] = 1.0;
-		squareTextureCords[6] = 0.0;
-		squareTextureCords[7] = 1.0;
-	}
-	else if (gKeyEvent == 3) {
-		squareTextureCords[0] = 0.0;
-		squareTextureCords[1] = 0.0;
-		squareTextureCords[2] = 2.0;
-		squareTextureCords[3] = 0.0;
-		squareTextureCords[4] = 2.0;
-		squareTextureCords[5] = 2.0;
-		squareTextureCords[6] = 0.0;
-		squareTextureCords[7] = 2.0;
-	}
-	else if (gKeyEvent == 4) {
-		squareTextureCords[0] = 0.5;
-		squareTextureCords[1] = 0.5;
-		squareTextureCords[2] = 0.5;
-		squareTextureCords[3] = 0.5;
-		squareTextureCords[4] = 0.5;
-		squareTextureCords[5] = 0.5;
-		squareTextureCords[6] = 0.5;
-		squareTextureCords[7] = 0.5;
-	}
-    else 
-    {
-		squareTextureCords[0] = 0.0;
-		squareTextureCords[1] = 0.0;
-		squareTextureCords[2] = 0.5;
-		squareTextureCords[3] = 0.0;
-		squareTextureCords[4] = 0.5;
-		squareTextureCords[5] = 0.5;
-		squareTextureCords[6] = 0.0;
-		squareTextureCords[7] = 0.5;
-    }
+	// Square 1 position
+	GLfloat square1Vertices[] =
+	{
+		1.0f, 1.0f, 1.0f, // front
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,
+	};
 
-	// load texture co-ords dynamically
-	glBindBuffer(GL_ARRAY_BUFFER, gVboSquareTexture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), squareTextureCords, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square1Vertices), square1Vertices, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_BUFFER, 0);
 
 	// bind texture
 	glActiveTexture(GL_TEXTURE0); // OpenGL spec says's 80 textures units, it could work for with specifying for single texture
-    if (gKeyEvent == 0) 
-        glBindTexture(GL_TEXTURE_2D, gWhiteTexture); // which texture to use
-    else 
-        glBindTexture(GL_TEXTURE_2D, gTextureSmily); // which texture to use
+	glBindTexture(GL_TEXTURE_2D, gTextureCheckerboard); // which texture to use
 	glUniform1i(gTextureSamplerUniform, 0); // 1i -> integer because sample2d is internally is integer, second parameter is texture index
 
-	// bind vao
+    // bind vao
 	glBindVertexArray(gVaoSquare);
 
 	// draw, either by glDrawTriangles() or glDrawArrays() or glDrawElements()
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // 3 (each with its x,y,z ) vertices in pyramidVertices array for 4 sides
-									     
-	glBindVertexArray(0); // unbind VAO
 
-    glUseProgram(0);
+	glBindVertexArray(0);				 // unbind VAO
+}
 
-    glXSwapBuffers(gpDisplay, gWindow);
+void DrawRightSquare() {
+	// set modelview & modelviewprojection matrices to identity
+	mat4 modelViewMatrix = mat4::identity();
+	mat4 modelViewProjectionMatrix = mat4::identity();
+
+	// tranlsate to negative x, z axis
+	modelViewMatrix = modelViewMatrix * vmath::translate(1.0f, 0.0f, -6.0f);
+
+	// multiply the modelview and orthographic matrix to get modelviewprojection matri
+	// order is important
+	modelViewProjectionMatrix = gPerspectiveProjectionMatrix * modelViewMatrix;
+
+	// pass above modelviewprojection matrix to the vertex shader in 'u_mvp_matrix' shader variable
+	// whose position value we already calculated in initWithFrame() by using glGetUniformLocation()
+	glUniformMatrix4fv(gMVPUniform, 1, GL_FALSE, modelViewProjectionMatrix);
+
+	// Square 2 position
+	GLfloat square1Vertices[] =
+	{
+		2.41421f, 1.0f, -1.41421f, // front
+		1.0f, 1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		2.41421f, -1.0f, -1.41421f,
+	};
+
+	glBindBuffer(GL_ARRAY_BUFFER, gVboSquarePosition);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(square1Vertices), square1Vertices, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_BUFFER, 0);
+
+	// bind texture
+	glActiveTexture(GL_TEXTURE0); // OpenGL spec says's 80 textures units, it could work for with specifying for single texture
+	glBindTexture(GL_TEXTURE_2D, gTextureCheckerboard); // which texture to use
+	glUniform1i(gTextureSamplerUniform, 0); // 1i -> integer because sample2d is internally is integer, second parameter is texture index
+
+											
+	glBindVertexArray(gVaoSquare);      // bind vao
+
+	// draw, either by glDrawTriangles() or glDrawArrays() or glDrawElements()
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4); // 3 (each with its x,y,z ) vertices in pyramidVertices array for 4 sides
+
+	glBindVertexArray(0);				 // unbind VAO
 }
 
 void Resize(int width, int height)
@@ -625,9 +581,9 @@ void Uninitialize(void)
 {
     GLXContext currentGLXContext;
 
-    if (gTextureSmily) {
-		glDeleteTextures(1, &gTextureSmily);
-		gTextureSmily = 0;
+    if (gTextureCheckerboard) {
+		glDeleteTextures(1, &gTextureCheckerboard);
+		gTextureCheckerboard = 0;
 	}
 
     // destroy vao

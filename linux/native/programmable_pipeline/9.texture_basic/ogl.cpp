@@ -507,6 +507,11 @@ void Uninitialize(void)
 {
     GLXContext currentGLXContext;
 
+    if (gTextureSmily) {
+        glDeleteTextures(1, &gTextureSmily);
+        gTextureSmily = 0;
+    }
+
     // destroy vao
 	if (gVaoSquare)
 	{
