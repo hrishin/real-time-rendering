@@ -473,6 +473,7 @@ void Initialize(void)
 	glGenVertexArrays(1, &gVaoSphere);
 	glBindVertexArray(gVaoSphere);
 
+    // position
 	glGenBuffers(1, &gVboSpherePosition);
 	glBindBuffer(GL_ARRAY_BUFFER, gVboSpherePosition);
 	// move data from main memory to graphics memory
