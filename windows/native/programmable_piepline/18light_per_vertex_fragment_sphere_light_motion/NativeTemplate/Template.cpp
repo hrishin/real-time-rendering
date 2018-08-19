@@ -85,7 +85,6 @@ GLfloat gMaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat gMaterialSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat gMaterialShininess = 50.0f;
 
-
 bool gbLight;
 bool gIsPerVertex;
 
@@ -399,19 +398,19 @@ void initialize(void)
 
 	// ambient color of light
 	gLaUniform = glGetUniformLocation(gShaderProgramObject, "u_La");
-	// diffuse color of light
+	// diffuse color red of light
 	gRedLdUniform = glGetUniformLocation(gShaderProgramObject, "u_r_Ld");
 	// specular color of light
 	gLsUniform = glGetUniformLocation(gShaderProgramObject, "u_Ls");
-	// light position
+	// red light position
 	gRedLightPositionUniform = glGetUniformLocation(gShaderProgramObject, "u_r_light_position");
-	// diffuse color of light
+	// diffuse color of green light
 	gGreenLdUniform = glGetUniformLocation(gShaderProgramObject, "u_g_Ld");
-	// light position
+	// green light position
 	gGreenLightPositionUniform = glGetUniformLocation(gShaderProgramObject, "u_g_light_position");
-	// diffuse color of light
+	// diffuse color of blue light
 	gBlueLdUniform = glGetUniformLocation(gShaderProgramObject, "u_b_Ld");
-	// light position
+	// blue light position
 	gBlueLightPositionUniform = glGetUniformLocation(gShaderProgramObject, "u_b_light_position");
 
 	// ambient color of material
@@ -428,7 +427,7 @@ void initialize(void)
 	gNumVertices = getNumberOfSphereVertices();
 	gNumElements = getNumberOfSphereElements();
 
-	// Cube VAO
+	// Sphere VAO
 	glGenVertexArrays(1, &gVaoSphere);
 	glBindVertexArray(gVaoSphere);
 
