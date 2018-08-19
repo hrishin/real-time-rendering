@@ -507,7 +507,7 @@ void Render(void)
 
     glUseProgram(gShaderProgramObject);
 
-		if (gbLight)
+    if (gbLight)
 	{
 		// setting light enabled uniform
 		glUniform1i(gLKeyPressedUniform, 1);
