@@ -2,7 +2,7 @@
 
 @interface GLView(PrivateMethods)
 -(void) exitIfError : (GLuint) object : (NSString*) message;
--(GLubyte*) makeCheckImage: (int)checkImageWidth :(int) checkImageHeight;
+-(void) makeCheckImage: (GLubyte*) checkImage : (int)checkImageWidth : (int) checkImageHeight;
 @end
 
 @implementation GLView
@@ -151,9 +151,6 @@
 	mvpUniform        = glGetUniformLocation(shaderProgramObject, "uMvpMatrix");
 	texSamplerUniform = glGetUniformLocation(shaderProgramObject, "uTextureSampler");
 
-	// load textures
-	checkerBoardTexture  = [self loadTextureFromProcedure];
-
 	// pass vertices, colors, normals, textures to VBO, VAO initilization
 	const GLfloat squareTextureCords[] = 
 	{
@@ -191,12 +188,16 @@
 	// always cullback faces for better performance
 	glEnable(GL_CULL_FACE);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 
 	// set projection matrix to identity matrix
 	perspectiveProjectionMatrix = vmath::mat4::identity();
 
-    CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+	// load textures
+	checkerBoardTexture  = [self loadTextureFromProcedure];
+	fprintf(gpFile, "texture in value %d \n", checkerBoardTexture);
+    
+	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
     CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, self);
     CGLContextObj cglContext = (CGLContextObj) [[self openGLContext] CGLContextObj];
     CGLPixelFormatObj cglPixelFormat = (CGLPixelFormatObj) [[self pixelFormat] CGLPixelFormatObj];
@@ -250,11 +251,17 @@
 
 	checkImageHeight = 64;
 	checkImageWidth  = 64;
-    checkImage= [self makeCheckImage: checkImageWidth : checkImageHeight];
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	checkImage = (GLubyte*) malloc(checkImageHeight * checkImageWidth * 4);
+    
+	[self makeCheckImage: checkImage : checkImageWidth : checkImageHeight];
+	for(int i=0; i < 16384; i++)
+	{
+		fprintf(gpFile,"%d %d \n", i, checkImage[i]);
+	}
 
     glGenTextures(1, &texture);
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -263,15 +270,15 @@
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
-	//free(checkImage);
-
+	free(checkImage);
+	
+	fprintf(gpFile, "teture in function %d \n", texture);
 	return (texture);
 }
 
--(GLubyte*) makeCheckImage: (int)checkImageWidth :(int) checkImageHeight
+-(void) makeCheckImage: (GLubyte*) checkImage : (int)checkImageWidth : (int) checkImageHeight
 {
-	int i, j, c, heightIndex, widthIndex, postion;
-	GLubyte *checkImage = (GLubyte*) malloc(checkImageHeight * checkImageWidth * 4);
+	int i, j, c, heightIndex, widthIndex, position;
 
 	for (i = 0; i < checkImageHeight; i++)
     {
@@ -280,18 +287,16 @@
         for (j = 0; j < checkImageWidth; j++)
         {
             widthIndex = j * 4;
-            postion = heightIndex + widthIndex;
+            position = heightIndex + widthIndex;
 			
 			c = (((i & 0X8) == 0) ^ ((j & 0X8) == 0)) * 255;
-            
-			checkImage[postion + 0] = (GLubyte)c;
-            checkImage[postion + 1] = (GLubyte)c;
-            checkImage[postion + 2] = (GLubyte)c;
-            checkImage[postion + 3] = (GLubyte)255;
+           	fprintf(gpFile, " position : %d, value : %d\n", position, c);
+			checkImage[position + 0] = (GLubyte)c;
+            checkImage[position + 1] = (GLubyte)c;
+            checkImage[position + 2] = (GLubyte)c;
+            checkImage[position + 3] = (GLubyte)255;
         }
     }
-
-	return (checkImage);
 }
 
 - (CVReturn) getFrameForTime: (const CVTimeStamp *)pOutputTime
@@ -359,7 +364,9 @@
     glBufferData(GL_ARRAY_BUFFER, sizeof(square1Vertices), square1Vertices, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, checkerBoardTexture);
+	glUniform1i(texSamplerUniform, 0);
 
 	// bind vaoSquare
 	glBindVertexArray(vaoSquare);
