@@ -543,7 +543,7 @@ void initialize(void)
 	// shininess of material
 	gMaterialShinessUniform = glGetUniformLocation(gShaderProgramObject, "u_material_shininess");
 
-	// Cube VAO
+	// Pyramid VAO
 	glGenVertexArrays(1, &gVaoPyramid);
 	glBindVertexArray(gVaoPyramid);
 
@@ -695,6 +695,11 @@ void display(void)
 
 void update()
 {
+	if (!gbAnimate)
+    {
+        return;
+    }
+	
 	gAngle = gAngle + 0.3f;
 
 	if (gAngle >= 360.0f)
@@ -732,6 +737,7 @@ void uninitialize(void)
 		glDeleteBuffers(1, &gVboPyramidPosition);
 		gVboPyramidPosition = 0;
 	}
+	
 	if (gVboPyramidNormal)
 	{
 		glDeleteBuffers(1, &gVboPyramidNormal);
