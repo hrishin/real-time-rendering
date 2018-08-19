@@ -520,6 +520,7 @@ void Initialize(void)
 
 	glBindVertexArray(0);
 
+    gbLight = false;
     gIsPerVertex = true;
 
     glShadeModel(GL_SMOOTH);
