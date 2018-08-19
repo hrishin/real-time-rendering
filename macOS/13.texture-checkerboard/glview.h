@@ -7,6 +7,9 @@
 
 #import "vmath.h"
 
+#define checkImageWidth 64
+#define checkImageHeight 64
+
 // 'C' style global declaration
 CVReturn MyDisplayLinkCallback(CVDisplayLinkRef, const CVTimeStamp *, const CVTimeStamp *,
                       CVOptionFlags, CVOptionFlags *, void *);
