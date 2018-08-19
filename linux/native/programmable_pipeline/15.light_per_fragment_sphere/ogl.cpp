@@ -331,14 +331,14 @@ void Initialize(void)
 		"out vec3 viewer_vector;" \
 		"void main(void)" \
 		"{" \
-		"if (u_lighting_enabled == 1)" \
-		"{" \
-		"vec4 eye_coordinates = u_view_matrix * u_model_matrix * vPosition;"\
-		"trasnformed_normals = mat3(u_view_matrix * u_model_matrix) * vNormal;" \
-		"light_direction = vec3(u_light_position) - eye_coordinates.xyz;" \
-		"viewer_vector = -eye_coordinates.xyz;" \
-		"}" \
-		"gl_Position = u_projection_matrix * u_view_matrix * u_model_matrix * vPosition;" \
+		    "if (u_lighting_enabled == 1)" \
+		    "{" \
+		        "vec4 eye_coordinates = u_view_matrix * u_model_matrix * vPosition;"\
+		        "trasnformed_normals = mat3(u_view_matrix * u_model_matrix) * vNormal;" \
+		        "light_direction = vec3(u_light_position) - eye_coordinates.xyz;" \
+		        "viewer_vector = -eye_coordinates.xyz;" \
+		    "}" \
+		    "gl_Position = u_projection_matrix * u_view_matrix * u_model_matrix * vPosition;" \
 		"}";
 
     glShaderSource(gVertexShaderObject, 1, (const GLchar **)&vertexShaderSourceCode, NULL);
@@ -364,24 +364,24 @@ void Initialize(void)
 		"uniform float u_material_shininess;" \
 		"void main(void)" \
 		"{" \
-		"vec3 phong_ads_color;" \
-		"if (u_lighting_enabled == 1)" \
-		"{" \
-		"vec3 normalized_trasnformed_normals = normalize(trasnformed_normals);" \
-		"vec3 normalized_light_direction = normalize(light_direction);" \
-		"float tn_dot_ld = max(dot(normalized_trasnformed_normals, normalized_light_direction), 0.0);" \
-		"vec3 reflection_vector = reflect(-normalized_light_direction, normalized_trasnformed_normals);" \
-		"vec3 normalized_viewer_vector = normalize(viewer_vector);" \
-		"vec3 specular = u_Ls * u_Ks * pow(max(dot(reflection_vector, normalized_viewer_vector) , 0.0) , u_material_shininess);" \
-		"vec3 ambient = u_La * u_Ka;" \
-		"vec3 diffuse = u_Ld * u_Kd * tn_dot_ld;" \
-		"phong_ads_color = ambient + diffuse + specular;" \
-		"}" \
-		"else" \
-		"{" \
-		"phong_ads_color = vec3(1.0, 1.0, 1.0);" \
-		"}" \
-		"FragColor = vec4(phong_ads_color, 1.0);" \
+		    "vec3 phong_ads_color;" \
+		    "if (u_lighting_enabled == 1)" \
+		    "{" \
+		        "vec3 normalized_trasnformed_normals = normalize(trasnformed_normals);" \
+		        "vec3 normalized_light_direction = normalize(light_direction);" \
+		        "float tn_dot_ld = max(dot(normalized_trasnformed_normals, normalized_light_direction), 0.0);" \
+		        "vec3 reflection_vector = reflect(-normalized_light_direction, normalized_trasnformed_normals);" \
+		        "vec3 normalized_viewer_vector = normalize(viewer_vector);" \
+		        "vec3 specular = u_Ls * u_Ks * pow(max(dot(reflection_vector, normalized_viewer_vector) , 0.0) , u_material_shininess);" \
+		        "vec3 ambient = u_La * u_Ka;" \
+		        "vec3 diffuse = u_Ld * u_Kd * tn_dot_ld;" \
+		        "phong_ads_color = ambient + diffuse + specular;" \
+		    "}" \
+		    "else" \
+		    "{" \
+		        "phong_ads_color = vec3(1.0, 1.0, 1.0);" \
+		    "}" \
+		    "FragColor = vec4(phong_ads_color, 1.0);" \
 		"}";
 
     glShaderSource(gFragmentShaderObject, 1, (const GLchar **)&fragmentShaderSourceCode, NULL);
@@ -471,6 +471,7 @@ void Initialize(void)
 	glBindVertexArray(0);
 
     glShadeModel(GL_SMOOTH);
+
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
@@ -482,8 +483,8 @@ void Initialize(void)
 
     // perspective matrix to identity matrix
     gPerspectiveProjectionMatrix = mat4::identity();
-	
-    gbLight = false;
+
+	gbLight = false;
 
     // warm up
     Resize(giWindowWidth, giWindowHeight);
@@ -516,9 +517,10 @@ void ToggleFullscreen(void)
 
 void Render(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(gShaderProgramObject);
+	// start using OpenGL program object
+	glUseProgram(gShaderProgramObject);
 
 	if (gbLight)
 	{
