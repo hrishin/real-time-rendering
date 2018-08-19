@@ -409,7 +409,7 @@ void initialize(void)
 	gNumVertices = getNumberOfSphereVertices();
 	gNumElements = getNumberOfSphereElements();
 
-	// Cube VAO
+	// Sphere VAO
 	glGenVertexArrays(1, &gVaoSphere);
 	glBindVertexArray(gVaoSphere);
 
