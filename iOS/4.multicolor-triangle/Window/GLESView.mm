@@ -38,7 +38,8 @@ enum
     GLuint shaderProgramObject;
     
     GLuint vao;
-    GLuint vbo;
+    GLuint vboPosition;
+    GLuint vboColor;
     GLuint mvpUniform;
     vmath::mat4 perspectiveProjectionMatrix;
     
@@ -102,10 +103,13 @@ enum
         "#version 300 es" \
         "\n" \
         "in vec4 vPosition;" \
+        "in vec4 vColor;" \
         "uniform mat4 uMvpMatrix;" \
+        "out vec4 outColor;" \
         "void main(void)" \
         "{" \
             "gl_Position = uMvpMatrix * vPosition;" \
+            "outColor = vColor;" \
         "}";
         glShaderSource(vertexShaderObject, 1, (const char **) &vertexShaderSourceCode, NULL);
         
@@ -124,10 +128,11 @@ enum
         "#version 300 es" \
         "\n" \
         "precision highp float;" \
+        "in vec4 outColor;" \
         "out vec4 FragColor;" \
         "void main(void)" \
         "{" \
-            "FragColor = vec4(1.0, 1.0, 1.0, 1.0);" \
+            "FragColor = outColor;" \
         "}";
         glShaderSource(fragmentShaderObject, 1, (const char **) &fragmentShaderSourceCode, NULL);
         
@@ -148,6 +153,7 @@ enum
         
         // pre-link shader program attributes
         glBindAttribLocation(shaderProgramObject, VDG_ATTRIBUTE_VERTEX, "vPosition");
+        glBindAttribLocation(shaderProgramObject, VDG_ATTRIBUTE_COLOR, "vColor");
         
         // link shader
         glLinkProgram(shaderProgramObject);
@@ -157,6 +163,9 @@ enum
         
         mvpUniform = glGetUniformLocation(shaderProgramObject, "uMvpMatrix");
         
+        glGenVertexArrays(1, &vao);
+        glBindVertexArray(vao);
+        
         // pass vertices, colors, normals, textures to VBO, VAO initilization
         const GLfloat traingleVertices[] =
         {
@@ -164,19 +173,28 @@ enum
             -1.0f, -1.0f, 0.0f,
             1.0f, -1.0f, 0.0f
         };
-        
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
-        
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        
+        glGenBuffers(1, &vboPosition);
+        glBindBuffer(GL_ARRAY_BUFFER, vboPosition);
         glBufferData(GL_ARRAY_BUFFER, sizeof(traingleVertices), traingleVertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT,GL_FALSE, 0, NULL);
+        glVertexAttribPointer(VDG_ATTRIBUTE_VERTEX, 3, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(VDG_ATTRIBUTE_VERTEX);
-        
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
+        const GLfloat traingleColor[] =
+        {
+            1.0f, 1.0f, 0.5f,
+            0.2f, 1.0f, 1.0f,
+            1.0f, 0.0f, 1.0f
+        };
+        glGenBuffers(1, &vboColor);
+        glBindBuffer(GL_ARRAY_BUFFER, vboColor);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(traingleColor), traingleColor, GL_STATIC_DRAW);
+        glVertexAttribPointer(VDG_ATTRIBUTE_COLOR, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+        glEnableVertexAttribArray(VDG_ATTRIBUTE_COLOR);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        glBindVertexArray(0);
+    
         glBindVertexArray(0);
         
         //glClearDepthf(1.0f);
@@ -256,7 +274,7 @@ enum
     // translate z axis
     modelViewMatrix = vmath::translate(0.0f, 0.0f, -6.0f);
     
-    // multiply the modelview and orthographic matrix to get modelViewProjection
+    // multiply the modelview and perspective matrix to get modelViewProjection
     // order is important
     modelViewProjectionMatrix = perspectiveProjectionMatrix * modelViewMatrix;
     
@@ -372,10 +390,16 @@ enum
         vao = 0;
     }
     
-    if(vbo)
+    if(vboPosition)
     {
-        glDeleteVertexArrays(1, &vbo);
-        vbo = 0;
+        glDeleteVertexArrays(1, &vboPosition);
+        vboPosition = 0;
+    }
+    
+    if(vboColor)
+    {
+        glDeleteVertexArrays(1, &vboColor);
+        vboColor = 0;
     }
     
     // detach shader objects
