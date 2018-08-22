@@ -296,6 +296,8 @@
 	// unbind vao
 	glBindVertexArray(0);
 
+	glUseProgram(0);
+
     CGLFlushDrawable((CGLContextObj) [[self openGLContext] CGLContextObj]);
     CGLUnlockContext((CGLContextObj) [[self openGLContext] CGLContextObj]);
 }
