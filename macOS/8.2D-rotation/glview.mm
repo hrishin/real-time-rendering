@@ -314,6 +314,8 @@
 
 	// unbind vaoSquare
 	glBindVertexArray(0);
+
+	glUseProgram(0);
 	
 	triangleRotation = triangleRotation >= 360.0f ? 0 : triangleRotation + 1.0f;
 	squareRotation = squareRotation >= 360.0f ? 0 : squareRotation + 1.0f;
