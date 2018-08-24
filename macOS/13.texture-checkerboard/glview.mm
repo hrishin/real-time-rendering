@@ -173,7 +173,7 @@
 	// texture
 	glGenBuffers(1, &vboTexcoords);
 	glBindBuffer(GL_ARRAY_BUFFER, vboTexcoords);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(squareTextureCords), squareTextureCords, GL_STATIC_DRAW);
 	glVertexAttribPointer(VDG_ATTRIBUTE_TEXTURE, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(VDG_ATTRIBUTE_TEXTURE);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -278,6 +278,7 @@
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	[self drawLeft];
+	[self drawRight];
 
 	// start using program object
 	glUseProgram(shaderProgramObject);
