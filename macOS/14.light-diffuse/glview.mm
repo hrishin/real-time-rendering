@@ -373,6 +373,8 @@
 	
     // unbind VAO
 	glBindVertexArray(0);
+
+	glUseProgram(0);
 	
 	if(gbAnimate)
 		cubeRotation = cubeRotation >= 360.0f ? 0 : cubeRotation + 1.0f;

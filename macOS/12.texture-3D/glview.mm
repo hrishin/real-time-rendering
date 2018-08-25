@@ -440,6 +440,8 @@
 
 	// unbind vaoCube
 	glBindVertexArray(0);
+
+	glUseProgram(0);
 	
 	pyramidRotation = pyramidRotation >= 360.0f ? 0 : pyramidRotation + 1.0f;
 	cubeRotation = cubeRotation >= 360.0f ? 0 : cubeRotation + 1.0f;
@@ -516,11 +518,11 @@
 		vaoCube = 0;
 	}
 
-	if(vaoCube)
-	{
-		glDeleteVertexArrays(1, &vaoCube);
-		vaoCube= 0;
-	}
+    if(vaoPyramid)
+    {
+        glDeleteVertexArrays(1, &vaoPyramid);
+        vaoPyramid = 0;
+    }
 	
 	if(vboPosition)
 	{
