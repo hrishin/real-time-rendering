@@ -209,7 +209,7 @@
 
 	[self exitIfError: shaderProgramObject : @"Shader program object compilation"];
 	
-		// get MVP uniform location
+	// get MVP uniform location
 	gModelMatrixUniform = glGetUniformLocation(shaderProgramObject, "u_model_matrix");
 	gViewMatrixUniform = glGetUniformLocation(shaderProgramObject, "u_view_matrix");
 	gProjectionMatrixUniform = glGetUniformLocation(shaderProgramObject, "u_projection_matrix");
@@ -484,7 +484,7 @@
 
 - (void) dealloc
 {
-		// destroy vao
+	// destroy vao
 	if (gVaoPyramid)
 	{
 		glDeleteVertexArrays(1, &gVaoPyramid);
