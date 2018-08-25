@@ -84,7 +84,7 @@ enum
         glGenRenderbuffers(1, &depthRenderbuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, backingWidth, backingHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthRenderbuffer);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,depthRenderbuffer);
         
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
@@ -264,9 +264,9 @@ enum
         [self addGestureRecognizer: singleTap];
         
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget: self action: @selector(onDoubleTap:)];
-        [singleTap setNumberOfTapsRequired: 1];
-        [singleTap setNumberOfTouchesRequired: 1]; // 1 finger
-        [singleTap setDelegate: self];
+        [doubleTap setNumberOfTapsRequired: 2];
+        [doubleTap setNumberOfTouchesRequired: 1]; // 1 finger
+        [doubleTap setDelegate: self];
         [self addGestureRecognizer: doubleTap];
         
         //  let single ignore it if its double tapped
