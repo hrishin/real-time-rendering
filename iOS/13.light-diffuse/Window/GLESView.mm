@@ -323,13 +323,13 @@ enum
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget: self action: @selector(onSingleTap:)];
         [singleTap setNumberOfTapsRequired: 1];
         [singleTap setNumberOfTouchesRequired: 1]; // 1 finger
-        [singleTap setDelegate: self];
+        //[singleTap setDelegate: self];
         [self addGestureRecognizer: singleTap];
         
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget: self action: @selector(onDoubleTap:)];
-        [singleTap setNumberOfTapsRequired: 2];
-        [singleTap setNumberOfTouchesRequired: 1]; // 1 finger
-        [singleTap setDelegate: self];
+        [doubleTap setNumberOfTapsRequired: 2];
+        [doubleTap setNumberOfTouchesRequired: 1]; // 1 finger
+        //[singleTap setDelegate: self];
         [self addGestureRecognizer: doubleTap];
         
         //  let single ignore it if its double tapped
@@ -484,7 +484,6 @@ enum
 
 -(BOOL) acceptsFirstResponder
 {
-
     return YES;
 }
 
@@ -503,8 +502,7 @@ enum
 - (void) onDoubleTap: (UITapGestureRecognizer*)gr
 {
     NSLog(@"Double tap");
-    gbLight = !gbLight;
-    //gbAnimate = !gbAnimate;
+    gbAnimate = !gbAnimate;
 }
 
 - (void) onSwipe: (UITapGestureRecognizer*)gr
