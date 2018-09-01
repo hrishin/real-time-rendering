@@ -1,11 +1,11 @@
 // global variables
-var canvas=null;
-var gl=null; // webgl context
-var bFullscreen=false;
+var canvas = null;
+var gl = null; // webgl context
+var bFullscreen = false;
 var canvas_original_width;
 var canvas_original_height;
 
-const WebGLMacros= // when whole 'WebGLMacros' is 'const', all inside it are automatically 'const'
+const WebGLMacros = // when whole 'WebGLMacros' is 'const', all inside it are automatically 'const'
 {
 VDG_ATTRIBUTE_VERTEX:0,
 VDG_ATTRIBUTE_COLOR:1,
@@ -21,7 +21,7 @@ var vao;
 var vbo;
 var mvpUniform;
 
-var orthographicProjectionMatrix;
+var perspectiveProjectionMatrix;
 
 // To start animation : To have requestAnimationFrame() to be called "cross-browser" compatible
 var requestAnimationFrame =
@@ -43,13 +43,16 @@ window.msCancelRequestAnimationFrame || window.msCancelAnimationFrame;
 function main()
 {
     // get <canvas> element
-    canvas = document.getElementById("AMC");
-    if(!canvas)
-        console.log("Obtaining Canvas Failed\n");
-    else
-        console.log("Obtaining Canvas Succeeded\n");
-    canvas_original_width=canvas.width;
-    canvas_original_height=canvas.height;
+    canvas = document.getElementById("amc");
+    if(!canvas) {
+        console.error("Obtaining Canvas Failed\n");
+        return;
+    } 
+    console.log("Obtaining Canvas Succeeded\n");
+    
+
+    canvas_original_width = canvas.width;
+    canvas_original_height = canvas.height;
     
     // register keyboard's keydown event handler
     window.addEventListener("keydown", keyDown, false);
@@ -64,53 +67,18 @@ function main()
     draw();
 }
 
-function toggleFullScreen()
-{
-    // code
-    var fullscreen_element =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement ||
-    null;
-
-    // if not fullscreen
-    if(fullscreen_element==null)
-    {
-        if(canvas.requestFullscreen)
-            canvas.requestFullscreen();
-        else if(canvas.mozRequestFullScreen)
-            canvas.mozRequestFullScreen();
-        else if(canvas.webkitRequestFullscreen)
-            canvas.webkitRequestFullscreen();
-        else if(canvas.msRequestFullscreen)
-            canvas.msRequestFullscreen();
-        bFullscreen=true;
-    }
-    else // if already fullscreen
-    {
-        if(document.exitFullscreen)
-            document.exitFullscreen();
-        else if(document.mozCancelFullScreen)
-            document.mozCancelFullScreen();
-        else if(document.webkitExitFullscreen)
-            document.webkitExitFullscreen();
-        else if(document.msExitFullscreen)
-            document.msExitFullscreen();
-        bFullscreen=false;
-    }
-}
-
 function init()
 {
     // code
     // get WebGL 2.0 context
     gl = canvas.getContext("webgl2");
-    if(gl==null) // failed to get context
+    if(gl == null) // failed to get context
     {
-        console.log("Failed to get the rendering context for WebGL");
+        console.error("Failed to get the rendering context for WebGL");
         return;
-    }
+    } 
+    console.log("obtained context successfully");
+    
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
     
@@ -122,14 +90,14 @@ function init()
     "uniform mat4 u_mvp_matrix;"+
     "void main(void)"+
     "{"+
-    "gl_Position = u_mvp_matrix * vPosition;"+
+        "gl_Position = u_mvp_matrix * vPosition;"+
     "}";
-    vertexShaderObject=gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertexShaderObject,vertexShaderSourceCode);
+    vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertexShaderObject, vertexShaderSourceCode);
     gl.compileShader(vertexShaderObject);
-    if(gl.getShaderParameter(vertexShaderObject,gl.COMPILE_STATUS)==false)
+    if(gl.getShaderParameter(vertexShaderObject, gl.COMPILE_STATUS) == false)
     {
-        var error=gl.getShaderInfoLog(vertexShaderObject);
+        var error = gl.getShaderInfoLog(vertexShaderObject);
         if(error.length > 0)
         {
             alert(error);
@@ -145,12 +113,12 @@ function init()
     "out vec4 FragColor;"+
     "void main(void)"+
     "{"+
-    "FragColor = vec4(1.0, 1.0, 1.0, 1.0);"+
+        "FragColor = vec4(1.0, 1.0, 1.0, 1.0);"+
     "}"
-    fragmentShaderObject=gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragmentShaderObject,fragmentShaderSourceCode);
+    fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShaderObject, fragmentShaderSourceCode);
     gl.compileShader(fragmentShaderObject);
-    if(gl.getShaderParameter(fragmentShaderObject,gl.COMPILE_STATUS)==false)
+    if(gl.getShaderParameter(fragmentShaderObject, gl.COMPILE_STATUS)==false)
     {
         var error=gl.getShaderInfoLog(fragmentShaderObject);
         if(error.length > 0)
@@ -162,11 +130,11 @@ function init()
     
     // shader program
     shaderProgramObject=gl.createProgram();
-    gl.attachShader(shaderProgramObject,vertexShaderObject);
-    gl.attachShader(shaderProgramObject,fragmentShaderObject);
+    gl.attachShader(shaderProgramObject, vertexShaderObject);
+    gl.attachShader(shaderProgramObject, fragmentShaderObject);
     
     // pre-link binding of shader program object with vertex shader attributes
-    gl.bindAttribLocation(shaderProgramObject,WebGLMacros.VDG_ATTRIBUTE_VERTEX,"vPosition");
+    gl.bindAttribLocation(shaderProgramObject, WebGLMacros.VDG_ATTRIBUTE_VERTEX, "vPosition");
     
     // linking
     gl.linkProgram(shaderProgramObject);
@@ -181,58 +149,53 @@ function init()
     }
 
     // get MVP uniform location
-    mvpUniform=gl.getUniformLocation(shaderProgramObject,"u_mvp_matrix");
+    mvpUniform = gl.getUniformLocation(shaderProgramObject, "u_mvp_matrix");
     
-    // *** vertices, colors, shader attribs, vbo, vao initializations ***
-    var triangleVertices=new Float32Array([
-                                           0.0,  50.0, 0.0,   // appex
-                                           -50.0, -50.0, 0.0, // left-bottom
-                                           50.0, -50.0, 0.0   // right-bottom
-                                           ]);
+    // vertices, colors, shader attribs, vbo, vao initializations
+    var triangleVertices = new Float32Array([
+        0.0,  1.0, 0.0,   // appex
+        -1.0, -1.0, 0.0, // left-bottom
+        1.0, -1.0, 0.0   // right-bottom
+    ]);
 
-    vao=gl.createVertexArray();
+    vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
     
     vbo = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER,vbo);
-    gl.bufferData(gl.ARRAY_BUFFER,triangleVertices,gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, triangleVertices,gl.STATIC_DRAW);
     gl.vertexAttribPointer(WebGLMacros.VDG_ATTRIBUTE_VERTEX,
-                           3, // 3 is for X,Y,Z co-ordinates in our triangleVertices array
+                           3, 
                            gl.FLOAT,
-                           false,0,0);
+                           false, 0 ,0);
     gl.enableVertexAttribArray(WebGLMacros.VDG_ATTRIBUTE_VERTEX);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
     gl.bindVertexArray(null);
 
     // set clear color
-    gl.clearColor(0.0, 0.0, 1.0, 1.0); // blue
+    gl.clearColor(0.0, 0.0, 0.0, 1.0); // black
     
     // initialize projection matrix
-    orthographicProjectionMatrix=mat4.create();
+    perspectiveProjectionMatrix = mat4.create();
 }
 
 function resize()
 {
     // code
-    if(bFullscreen==true)
+    if(bFullscreen == true)
     {
-        canvas.width=window.innerWidth;
-        canvas.height=window.innerHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
     else
     {
-        canvas.width=canvas_original_width;
-        canvas.height=canvas_original_height;
+        canvas.width = canvas_original_width;
+        canvas.height = canvas_original_height;
     }
    
     // set the viewport to match
     gl.viewport(0, 0, canvas.width, canvas.height);
-    
-    // Orthographic Projection => left,right,bottom,top,near,far
-    if (canvas.width <= canvas.height)
-        mat4.ortho(orthographicProjectionMatrix, -100.0, 100.0, (-100.0 * (canvas.height / canvas.width)), (100.0 * (canvas.height / canvas.width)), -100.0, 100.0);
-    else
-        mat4.ortho(orthographicProjectionMatrix, (-100.0 * (canvas.width / canvas.height)), (100.0 * (canvas.width / canvas.height)), -100.0, 100.0, -100.0, 100.0);
+    mat4.perspective(perspectiveProjectionMatrix, 45.0, parseFloat(canvas.width) / parseFloat(canvas.height), 0.1, 100.0);
 }
 
 function draw()
@@ -242,14 +205,15 @@ function draw()
     
     gl.useProgram(shaderProgramObject);
     
-    var modelViewMatrix=mat4.create();
-    var modelViewProjectionMatrix=mat4.create();
-    mat4.multiply(modelViewProjectionMatrix,orthographicProjectionMatrix,modelViewMatrix);
-    gl.uniformMatrix4fv(mvpUniform,false,modelViewProjectionMatrix);
+    var modelViewMatrix = mat4.create();
+    var modelViewProjectionMatrix = mat4.create();
+    mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -5.0]);
+    mat4.multiply(modelViewProjectionMatrix, perspectiveProjectionMatrix, modelViewMatrix);
+    gl.uniformMatrix4fv(mvpUniform, false, modelViewProjectionMatrix);
 
     gl.bindVertexArray(vao);
 
-    gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
     
     gl.bindVertexArray(null);
     
@@ -265,33 +229,70 @@ function uninitialize()
     if(vao)
     {
         gl.deleteVertexArray(vao);
-        vao=null;
+        vao = null;
     }
     
     if(vbo)
     {
         gl.deleteBuffer(vbo);
-        vbo=null;
+        vbo = null;
     }
     
     if(shaderProgramObject)
     {
         if(fragmentShaderObject)
         {
-            gl.detachShader(shaderProgramObject,fragmentShaderObject);
+            gl.detachShader(shaderProgramObject, fragmentShaderObject);
             gl.deleteShader(fragmentShaderObject);
-            fragmentShaderObject=null;
+            fragmentShaderObject = null;
         }
         
         if(vertexShaderObject)
         {
-            gl.detachShader(shaderProgramObject,vertexShaderObject);
+            gl.detachShader(shaderProgramObject, vertexShaderObject);
             gl.deleteShader(vertexShaderObject);
-            vertexShaderObject=null;
+            vertexShaderObject = null;
         }
         
         gl.deleteProgram(shaderProgramObject);
-        shaderProgramObject=null;
+        shaderProgramObject = null;
+    }
+}
+
+function toggleFullScreen()
+{
+    // code
+    var fullscreen_element =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement ||
+    null;
+
+    // if not fullscreen
+    if(fullscreen_element == null)
+    {
+        if(canvas.requestFullscreen)
+            canvas.requestFullscreen();
+        else if(canvas.mozRequestFullScreen)
+            canvas.mozRequestFullScreen();
+        else if(canvas.webkitRequestFullscreen)
+            canvas.webkitRequestFullscreen();
+        else if(canvas.msRequestFullscreen)
+            canvas.msRequestFullscreen();
+        bFullscreen = true;
+    }
+    else // if already fullscreen
+    {
+        if(document.exitFullscreen)
+            document.exitFullscreen();
+        else if(document.mozCancelFullScreen)
+            document.mozCancelFullScreen();
+        else if(document.webkitExitFullscreen)
+            document.webkitExitFullscreen();
+        else if(document.msExitFullscreen)
+            document.msExitFullscreen();
+        bFullscreen=false;
     }
 }
 
