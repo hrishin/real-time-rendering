@@ -1,5 +1,0 @@
-﻿  Source.cpp
-e:\rtr\windows\native\nov\5.lighting-basic-sphere - spotlight\assignment6\source.cpp(42): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-e:\rtr\windows\native\nov\5.lighting-basic-sphere - spotlight\assignment6\source.cpp(42): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-  Assignment6.vcxproj -> E:\RTR\windows\native\nov\5.lighting-basic-sphere - spotlight\Debug\Assignment6.exe
-  Assignment6.vcxproj -> E:\RTR\windows\native\nov\5.lighting-basic-sphere - spotlight\Debug\Assignment6.pdb (Full PDB)

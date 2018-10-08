@@ -1,4 +1,0 @@
-#Sat Feb 10 16:03:32 IST 2018
-base.0=D\:\\rtr\\android\\07-gles-basic-triangle-multicolor\\app\\build\\intermediates\\transforms\\dex\\release\\0
-path.0=classes.dex
-renamed.0=classes.dex

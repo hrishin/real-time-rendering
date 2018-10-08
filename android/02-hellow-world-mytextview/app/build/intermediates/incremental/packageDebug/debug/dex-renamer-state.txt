@@ -1,4 +1,0 @@
-#Sat Jan 06 13:35:48 IST 2018
-base.0=D\:\\rtr\\android\\02-hellow-world-mytextview\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex

@@ -1,4 +1,0 @@
-#Sat Jan 06 11:32:31 IST 2018
-base.0=D\:\\rtr\\android\\00-Winow-Portrait\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex

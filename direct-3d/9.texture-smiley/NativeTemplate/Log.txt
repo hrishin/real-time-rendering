@@ -1,0 +1,22 @@
+Log file created succcessfully 
+CreateSwapChain() succeeded 
+Choosen driver is of Hardware type 
+Supported highest level feature is 11.0 
+D3DCompile() vertex shader compilation succeeded 
+ID3D11VertexShader:: CreateVertexShader() creation succeeded 
+D3DCompile() pixel shader compilation succeeded 
+ID3D11PixelShader:: CreatePixelShader() compilation succeeded 
+ID3D11Device::CreateBuffer() succeeded for square vertex buffer 
+ID3D11Device::CreateBuffer() succeeded for vertex buffer 
+ID3D11Device::CreateInputLayout() succeeded 
+ID3D11Device::CreateBuffer()  succeeded to create constant buffer 
+CreateWICTextureFromFile() succeeded to create texture 
+LoadD3DTexture() succeeded to create texture 
+CreateSamplerState() succeeded to create texture 
+ID3D11Device::CreateRenderTargetView()::CreateRenderTargetView succeeded 
+resize() succeeded 
+Initiliazation succeeded 
+uninitialize() succeeded 
+Log file is closed 
+uninitialize() succeeded 
+Log file is closed 

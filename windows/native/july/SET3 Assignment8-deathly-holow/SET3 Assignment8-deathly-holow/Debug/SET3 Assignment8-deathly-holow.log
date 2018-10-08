@@ -1,7 +1,0 @@
-﻿  Source.cpp
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment8-deathly-holow\set3 assignment8-deathly-holow\source.cpp(359): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment8-deathly-holow\set3 assignment8-deathly-holow\source.cpp(360): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment8-deathly-holow\set3 assignment8-deathly-holow\source.cpp(367): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment8-deathly-holow\set3 assignment8-deathly-holow\source.cpp(368): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-  SET3 Assignment8-deathly-holow.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET3 Assignment8-deathly-holow\Debug\SET3 Assignment8-deathly-holow.exe
-  SET3 Assignment8-deathly-holow.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET3 Assignment8-deathly-holow\Debug\SET3 Assignment8-deathly-holow.pdb (Full PDB)

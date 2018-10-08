@@ -1,4 +1,0 @@
-#Sat Feb 10 16:50:10 IST 2018
-base.0=D\:\\rtr\\android\\10-gles-basic-triangle-square-2d-rotation\\app\\build\\intermediates\\transforms\\dex\\release\\0
-path.0=classes.dex
-renamed.0=classes.dex

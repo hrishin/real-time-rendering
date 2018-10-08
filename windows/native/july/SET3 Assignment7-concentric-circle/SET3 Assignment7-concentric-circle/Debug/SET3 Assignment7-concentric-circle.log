@@ -1,5 +1,0 @@
-﻿  Source.cpp
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment7-concentric-circle\set3 assignment7-concentric-circle\source.cpp(342): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishi\documents\visual studio 2015\projects\windows\native\july\set3 assignment7-concentric-circle\set3 assignment7-concentric-circle\source.cpp(343): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-  SET3 Assignment7-concentric-circle.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET3 Assignment7-concentric-circle\Debug\SET3 Assignment7-concentric-circle.exe
-  SET3 Assignment7-concentric-circle.vcxproj -> C:\Users\hrishi\Documents\Visual Studio 2015\Projects\windows\native\july\SET3 Assignment7-concentric-circle\Debug\SET3 Assignment7-concentric-circle.pdb (Full PDB)

@@ -1,9 +1,0 @@
-﻿  Source.cpp
-c:\users\hrishikesh\rtr\windows\native\july\set4-assignment12-deathly-rotate\set4-assignment12-deathly-rotate\source.cpp(367): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishikesh\rtr\windows\native\july\set4-assignment12-deathly-rotate\set4-assignment12-deathly-rotate\source.cpp(368): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishikesh\rtr\windows\native\july\set4-assignment12-deathly-rotate\set4-assignment12-deathly-rotate\source.cpp(375): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishikesh\rtr\windows\native\july\set4-assignment12-deathly-rotate\set4-assignment12-deathly-rotate\source.cpp(376): warning C4244: 'initializing': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\hrishikesh\rtr\windows\native\july\set4-assignment12-deathly-rotate\set4-assignment12-deathly-rotate\source.cpp(412): warning C4101: 'aspectRatio': unreferenced local variable
-  LINK : C:\Users\Hrishikesh\rtr\windows\native\july\SET4-Assignment12-deathly-rotate\Debug\SET4-Assignment12-deathly-rotate.exe not found or not built by the last incremental link; performing full link
-  SET4-Assignment12-deathly-rotate.vcxproj -> C:\Users\Hrishikesh\rtr\windows\native\july\SET4-Assignment12-deathly-rotate\Debug\SET4-Assignment12-deathly-rotate.exe
-  SET4-Assignment12-deathly-rotate.vcxproj -> C:\Users\Hrishikesh\rtr\windows\native\july\SET4-Assignment12-deathly-rotate\Debug\SET4-Assignment12-deathly-rotate.pdb (Full PDB)
