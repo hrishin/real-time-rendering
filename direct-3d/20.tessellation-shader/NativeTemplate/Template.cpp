@@ -580,7 +580,7 @@ HRESULT initialize(void)
 		"[domain(\"isoline\")]" \
 		"[partitioning(\"integer\")]" \
 		"[outputtopology(\"line\")]" \
-		"[outputcontrolpoints(\"4\")]" \
+		"[outputcontrolpoints(4)]" \
 		"[patchconstantfunc(\"hull_constant_function\")]" \
 
 		"DomainOutput main(HullConstantOutput input, OutputPatch<HullOutput, 4> outputPatch, float2 tesscoord: SV_DOMAINLOCATION)" \
@@ -660,7 +660,7 @@ HRESULT initialize(void)
 	const char *pixelShaderSourceCode =
 		"cbuffer ConstantBuffer" \
 		"{" \
-			"float4 LineColor; " \
+			"float4 lineColor; " \
 		"};" \
 
 		"float4 main(): SV_TARGET" \
