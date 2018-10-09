@@ -40,7 +40,7 @@ ID3D11HullShader *gpID3D11HullShader = NULL;
 ID3D11DomainShader *gpID3D11DomainShader = NULL;
 ID3D11Buffer *gpID3D11BufferVertexBuffer = NULL;
 ID3D11InputLayout *gpID3D11InputLayout = NULL;
-ID3D11Buffer *gpID3D11BufferConstantBuffer = NULL;
+ID3D11Buffer *gpID3D11BufferConstantBufferPixel = NULL;
 ID3D11Buffer *gpID3D11BufferConstantBufferHull = NULL;
 ID3D11Buffer *gpID3D11BufferConstantBufferDomain = NULL;
 
@@ -48,7 +48,7 @@ unsigned int gNumberOfLineSegments;
 
 struct CBUFFER
 {
-	XMMATRIX WorldViewProjectionMatrix;
+	XMVECTOR LineColor;
 };
 
 struct CBUFFER_HULL
@@ -58,7 +58,7 @@ struct CBUFFER_HULL
 
 struct CBUFFER_DOMAIN
 {
-	XMVECTOR LineColor;
+	XMMATRIX WorldViewProjectionMatrix;
 };
 
 XMMATRIX gPerspectiveProjectionMatrix;
@@ -790,21 +790,6 @@ HRESULT initialize(void)
 	D3D11_BUFFER_DESC constantBufferDesc;
 	ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
 	constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	constantBufferDesc.ByteWidth = sizeof(CBUFFER);
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = gpID3D11Device -> CreateBuffer(&constantBufferDesc, nullptr, &gpID3D11BufferConstantBuffer);
-	if (FAILED(hr))
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer() failed to create constant buffer \n")
-	}
-	else
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer \n")
-	}
-	gpID3D11DeviceContext -> PSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBuffer);
-
-	ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
-	constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	constantBufferDesc.ByteWidth = sizeof(CBUFFER_HULL);
 	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	hr = gpID3D11Device->CreateBuffer(&constantBufferDesc, nullptr, &gpID3D11BufferConstantBufferHull);
@@ -832,6 +817,21 @@ HRESULT initialize(void)
 		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer domain \n")
 	}
 	gpID3D11DeviceContext -> DSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBufferDomain);
+
+	ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
+	constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	constantBufferDesc.ByteWidth = sizeof(CBUFFER);
+	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	hr = gpID3D11Device->CreateBuffer(&constantBufferDesc, nullptr, &gpID3D11BufferConstantBufferPixel);
+	if (FAILED(hr))
+	{
+		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer() failed to create constant buffer \n")
+	}
+	else
+	{
+		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer \n")
+	}
+	gpID3D11DeviceContext->PSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBufferPixel);
 
 	// d3d clear color (black)
 	gClearColor[0] = 0.0f;
@@ -933,16 +933,16 @@ void display(void)
 	XMMATRIX wvpMatrix = worldMatrix * viewMatrix * gPerspectiveProjectionMatrix;
 
 	// load the data into constant buffer
-	CBUFFER constantBuffer;
-	constantBuffer.WorldViewProjectionMatrix = wvpMatrix;
-	gpID3D11DeviceContext -> UpdateSubresource(gpID3D11BufferConstantBuffer, 0, NULL, &constantBuffer, 0, 0);
+	CBUFFER constantBufferPixel;
+	constantBufferPixel.LineColor = XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f);
+	gpID3D11DeviceContext -> UpdateSubresource(gpID3D11BufferConstantBufferPixel, 0, NULL, &constantBufferPixel, 0, 0);
 
 	CBUFFER_HULL constantBufferHull;
 	constantBufferHull.HullConstantFunctionPara = XMVectorSet(1, gNumberOfLineSegments, 0.0f, 0.0f);
 	gpID3D11DeviceContext->UpdateSubresource(gpID3D11BufferConstantBufferHull, 0, NULL, &constantBufferHull, 0, 0);
 
 	CBUFFER_DOMAIN constantBufferDomain;
-	constantBufferDomain.LineColor= XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f);
+	constantBufferDomain.WorldViewProjectionMatrix = wvpMatrix;
 	gpID3D11DeviceContext->UpdateSubresource(gpID3D11BufferConstantBufferDomain, 0, NULL, &constantBufferDomain, 0, 0);
 
 	// draw vertex buffer to render target
@@ -955,6 +955,13 @@ void display(void)
 void uninitialize(void)
 {
 	// tear down 
+
+	if (gpID3D11BufferConstantBufferPixel)
+	{
+		gpID3D11BufferConstantBufferPixel->Release();
+		gpID3D11BufferConstantBufferPixel = NULL;
+	}
+	
 	if (gpID3D11BufferConstantBufferDomain)
 	{
 		gpID3D11BufferConstantBufferDomain->Release();
@@ -965,12 +972,6 @@ void uninitialize(void)
 	{
 		gpID3D11BufferConstantBufferHull->Release();
 		gpID3D11BufferConstantBufferHull = NULL;
-	}
-
-	if (gpID3D11BufferConstantBuffer)
-	{
-		gpID3D11BufferConstantBuffer -> Release();
-		gpID3D11BufferConstantBuffer = NULL;
 	}
 
 	if (gpID3D11InputLayout)
