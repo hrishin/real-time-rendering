@@ -35,30 +35,16 @@ ID3D11DeviceContext *gpID3D11DeviceContext = NULL;
 ID3D11RenderTargetView *gpID3D11RenderTargetView = NULL;
 
 ID3D11VertexShader *gpID3D11VertexShader = NULL;
+ID3D11GeometryShader *gpID3D11GeometryShader = NULL;
 ID3D11PixelShader *gpID3D11PixelShader = NULL;
-ID3D11HullShader *gpID3D11HullShader = NULL;
-ID3D11DomainShader *gpID3D11DomainShader = NULL;
 ID3D11Buffer *gpID3D11BufferVertexBuffer = NULL;
 ID3D11InputLayout *gpID3D11InputLayout = NULL;
 ID3D11Buffer *gpID3D11BufferConstantBuffer = NULL;
-ID3D11Buffer *gpID3D11BufferConstantBufferHull = NULL;
-ID3D11Buffer *gpID3D11BufferConstantBufferDomain = NULL;
-
-unsigned int gNumberOfLineSegments;
+ID3D11Buffer *gpID3D11BufferConstantBufferGeometry = NULL;
 
 struct CBUFFER
 {
 	XMMATRIX WorldViewProjectionMatrix;
-};
-
-struct CBUFFER_HULL
-{
-	XMVECTOR HullConstantFunctionPara;
-};
-
-struct CBUFFER_DOMAIN
-{
-	XMVECTOR LineColor;
 };
 
 XMMATRIX gPerspectiveProjectionMatrix;
@@ -114,7 +100,7 @@ int WINAPI WinMain(HINSTANCE currentHInstance, HINSTANCE prevHInstance, LPSTR lp
 	// create window
 	hwnd = CreateWindowEx(WS_EX_APPWINDOW,
 		szClassName,
-		TEXT("Direct3D11 : Tessellation"),
+		TEXT("Direct3D11 : Geometry Shader"),
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
 		(iScreenWidth / 2) - (WIN_WIDTH / 2),
 		(iScreenHeight / 2) - (WIN_HEIGHT / 2),
@@ -200,14 +186,6 @@ LRESULT CALLBACK WndCallbackProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lPa
 		case 'q':
 		case 'Q':
 			gblIsEscPressed = true;
-			break;
-
-		case VK_UP:
-			gNumberOfLineSegments = gNumberOfLineSegments > 50 ? 50 : gNumberOfLineSegments + 1;
-			break;
-
-		case VK_DOWN:
-			gNumberOfLineSegments = gNumberOfLineSegments > 50 ? 50 : gNumberOfLineSegments - 1;
 			break;
 
 		case 0x46: // 'f' or 'F'
@@ -390,15 +368,20 @@ HRESULT initialize(void)
 
 	// vertex shader
 	const char *vertexShaderSourceCode =
+		"cbuffer ConstantBuffer" \
+		"{" \
+			"float4x4 worldViewProjectionMatrix;" \
+		"}"
+
 		"struct VertexOutput" \
 		"{" \
-			"float4 position: position;"\
+			"float4 position: position;" \
 		"};" \
 
-		"VertexOutput main(float2 pos: POSITION)" \
+		"VertexOutput main(float4 pos: POSITION)" \
 		"{" \
-			"VertexOutput output;"\
-			"output.position = float4(pos, 0.0, 1.0);" \
+			"VertexOutput output;" \
+			"output.position = mul(worldViewProjectionMatrix, pos);" \
 			"return output;" \
 		"}";
 
@@ -456,216 +439,99 @@ HRESULT initialize(void)
 	}
 	gpID3D11DeviceContext -> VSSetShader(gpID3D11VertexShader, 0, 0);
 	
-	// hull shader 
-	const char *hullShaderSourceCode =
+	// geometry shader
+	const char *geometryShaderSourceCode =
 		"cbuffer ConstantBuffer" \
 		"{" \
-			"float4 hullconstantfunctionpara; " \
-		"};" \
+			"float4x4 worldViewProjectionMatrix;" \
+		"}"
 
 		"struct VertexOutput" \
-		"{" \
-			"float4 position: position;"\
-		"};" \
-
-		"struct HullConstantOutput" \
-		"{" \
-			"float edges[2]: SV_TESSFACTOR;" \
-		"};" \
-
-		"HullConstantOutput hull_constant_function(void)" \
-		"{" \
-			"HullConstantOutput output;" \
-			"float numberOfStrips = hullconstantfunctionpara[0];" \
-			"float numberOfSegments = hullconstantfunctionpara[1];" \
-			"output.edges[0] = numberOfStrips;" \
-			"output.edges[1] = numberOfSegments;" \
-			"return output;" \
-		"}" \
-
-		"struct HullOutput" \
 		"{" \
 			"float4 position: position;" \
 		"};" \
 
-		"[domain(\"isoline\")]" \
-		"[partitioning(\"integer\")]" \
-		"[outputtopology(\"line\")]" \
-		"[outputcontrolpoints(4)]" \
-		"[patchconstantfunc(\"hull_constant_function\")]" \
-
-		"HullOutput main(InputPatch<VertexOutput, 4> inputPatch, uint i: SV_OUTPUTCONTROLPOINTID)" \
-		"{" \
-			"HullOutput output;" \
-			"output.position = inputPatch[i].position;" \
-			"return output;" \
-		"}";
-
-	ID3DBlob *pID3DBlobHullShaderCode = NULL;
-	pID3DBlobError = NULL;
-
-	hr = D3DCompile(
-		hullShaderSourceCode,
-		lstrlenA(hullShaderSourceCode) + 1,
-		"HS",
-		NULL,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		"main",
-		"hs_5_0",
-		0,
-		0,
-		&pID3DBlobHullShaderCode,
-		&pID3DBlobError
-	);
-	if (FAILED(hr))
-	{
-		if (pID3DBlobError != NULL)
-		{
-			LOG_ERROR(gpFile, logFileName, "D3DCompile() hull shader compilation failed : %s \n", (char*)pID3DBlobError->GetBufferPointer());
-			pID3DBlobError->Release();
-			pID3DBlobError = NULL;
-		}
-		else
-		{
-			LOG_ERROR(gpFile, logFileName, "D3DCompile() hull shader compilation failed \n");
-		}
-
-		return hr;
-	}
-	else
-	{
-		LOG_ERROR(gpFile, logFileName, "D3DCompile() hull shader compilation succeeded \n");
-	}
-
-	hr = gpID3D11Device -> CreateHullShader(
-		pID3DBlobHullShaderCode->GetBufferPointer(),
-		pID3DBlobHullShaderCode->GetBufferSize(),
-		NULL,
-		&gpID3D11HullShader
-	);
-
-	if (FAILED(hr))
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateHullShader() creation failed \n");
-		return hr;
-	}
-	else
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateHullShader() creation succeeded \n");
-	}
-	gpID3D11DeviceContext->HSSetShader(gpID3D11HullShader, 0, 0);
-
-	// domain shader 
-	const char *domainShaderSourceCode =
-		"cbuffer ConstantBuffer" \
-		"{" \
-			"float4x4 WorldViewProjectionMatrix; " \
-		"};" \
-
-		"struct DomainOutput" \
+		"struct GeometryOutput" \
 		"{" \
 			"float4 position: SV_POSITION;" \
 		"};" \
 
-		"struct HullConstantOutput" \
-		"{" \
-			"float edges[2]: SV_TESSFACTOR;" \
-		"};" \
+		"[maxvertexcount(9)]" \
 
-		"struct HullOutput" \
+		"void main(triangle VertexOutput input[3], inout TriangleStream<GeometryOutput> triangleStream)" \
 		"{" \
-			"float4 position: position;" \
-		"};" \
-
-		"[domain(\"isoline\")]" \
-		"[partitioning(\"integer\")]" \
-		"[outputtopology(\"line\")]" \
-		"[outputcontrolpoints(\"4\")]" \
-		"[patchconstantfunc(\"hull_constant_function\")]" \
-
-		"DomainOutput main(HullConstantOutput input, OutputPatch<HullOutput, 4> outputPatch, float2 tesscoord: SV_DOMAINLOCATION)" \
-		"{" \
-			"DomainOutput output;" \
-			"float u = tesscoord.x;" \
-			"float3 p0 = outputPatch[0].position.xyz;" \
-			"float3 p1 = outputPatch[1].position.xyz;" \
-			"float3 p2 = outputPatch[2].position.xyz;" \
-			"float3 p3 = outputPatch[3].position.xyz;" \
-			"float u1 = (1.0 - u);" \
-			"float u2 = u * u;" \
-			"float b3 = u2 * u;" \
-			"float b2 = 3.0 * u2 * u1;" \
-			"float b1 = 3.0 * u * u1 * u1;" \
-			"float b0 = u1 * u1 * u1;" \
-			"float3 p = p0 + b0 + p1 * b1 + p2 * b2 + p3 * b3;" \
-			"output.position = mul(WorldViewProjectionMatrix, float4(p, 1.0));" \
-			"return output;" \
+			"GeometryOutput output;"
+			"for(uint vertex=0; vertex < 3; vertex = vertex + 1)" \
+			"{" \
+				"output.position  = mul(worldViewProjectionMatrix, (input[vertex].position + float4(0.0, 1.0, 0.0, 0.0)));" \
+				"triangleStream.Append(output);" \
+				"output.position  = mul(worldViewProjectionMatrix, (input[vertex].position + float4(1.0, -1.0, 0.0, 0.0)));" \
+				"triangleStream.Append(output);" \
+				"output.position  = mul(worldViewProjectionMatrix, (input[vertex].position + float4(-1.0, -1.0, 0.0, 0.0)));" \
+				"triangleStream.Append(output);" \
+				"triangleStream.RestartStrip();" \
+			"}" \
 		"}";
 
-	ID3DBlob *pID3DBlobDomainShaderCode = NULL;
+	ID3DBlob *pID3DBlobGeometryShaderCode = NULL;
 	pID3DBlobError = NULL;
 
 	hr = D3DCompile(
-		domainShaderSourceCode,
-		lstrlenA(domainShaderSourceCode) + 1,
-		"DS",
+		geometryShaderSourceCode,
+		lstrlenA(geometryShaderSourceCode) + 1,
+		"GS",
 		NULL,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main",
-		"ds_5_0",
+		"gs_5_0",
 		0,
 		0,
-		&pID3DBlobDomainShaderCode,
+		&pID3DBlobGeometryShaderCode,
 		&pID3DBlobError
 	);
 	if (FAILED(hr))
 	{
 		if (pID3DBlobError != NULL)
 		{
-			LOG_ERROR(gpFile, logFileName, "D3DCompile() domain shader compilation failed : %s \n", (char*)pID3DBlobError->GetBufferPointer());
+			LOG_ERROR(gpFile, logFileName, "D3DCompile() geometry shader compilation failed : %s \n", (char*)pID3DBlobError->GetBufferPointer());
 			pID3DBlobError->Release();
 			pID3DBlobError = NULL;
 		}
 		else
 		{
-			LOG_ERROR(gpFile, logFileName, "D3DCompile() domain shader compilation failed \n");
+			LOG_ERROR(gpFile, logFileName, "D3DCompile() geometry shader compilation failed \n");
 		}
 
 		return hr;
 	}
 	else
 	{
-		LOG_ERROR(gpFile, logFileName, "D3DCompile() domain shader compilation succeeded \n");
+		LOG_ERROR(gpFile, logFileName, "D3DCompile() geometry shader compilation succeeded \n");
 	}
 
-	hr = gpID3D11Device->CreateDomainShader(
-		pID3DBlobDomainShaderCode->GetBufferPointer(),
-		pID3DBlobDomainShaderCode->GetBufferSize(),
+	hr = gpID3D11Device->CreateGeometryShader(
+		pID3DBlobGeometryShaderCode->GetBufferPointer(),
+		pID3DBlobGeometryShaderCode->GetBufferSize(),
 		NULL,
-		&gpID3D11DomainShader
+		&gpID3D11GeometryShader
 	);
 
 	if (FAILED(hr))
 	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateDomainShader() creation failed \n");
+		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateGeometryShader() creation failed \n");
 		return hr;
 	}
 	else
 	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateDomainShader() creation succeeded \n");
+		LOG_ERROR(gpFile, logFileName, "ID3D11VertexShader:: CreateGeometryShader() creation succeeded \n");
 	}
-	gpID3D11DeviceContext->DSSetShader(gpID3D11DomainShader, 0, 0);
+	gpID3D11DeviceContext->GSSetShader(gpID3D11GeometryShader, 0, 0);
 
 	// pixel (fragment) shader
 	const char *pixelShaderSourceCode =
-		"cbuffer ConstantBuffer" \
-		"{" \
-			"float4 LineColor; " \
-		"};" \
-
 		"float4 main(): SV_TARGET" \
 		"{" \
-			"return lineColor;" \
+			"return (float4(1.0f, 1.0f, 1.0f, 1.0f));" \
 		"}";
 
 	ID3DBlob *pID3DBlobPixelShaderCode = NULL;
@@ -673,7 +539,7 @@ HRESULT initialize(void)
 
 	hr = D3DCompile(
 		pixelShaderSourceCode,
-		lstrlenA(pixelShaderSourceCode) + 1,
+		lstrlenA(vertexShaderSourceCode) + 1,
 		"PS",
 		NULL,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
@@ -727,7 +593,9 @@ HRESULT initialize(void)
 	//clockwise winding order
 	float vertices[] =
 	{
-		-1.0f, -1.0f, -0.5f, 1.0f, 0.5f, 1.0f, 1.0f, 1.0f
+		0.0f, 1.0f, 0.0f,   //apex
+		1.0f, -1.0f, 0.0f,  // right
+		-1.0f, -1.0f, 0.0f, // left
 	};
 
 	//create vertex buffer
@@ -760,7 +628,7 @@ HRESULT initialize(void)
 	D3D11_INPUT_ELEMENT_DESC inputElementDesc;
 	inputElementDesc.SemanticName = "POSITION";
 	inputElementDesc.SemanticIndex = 0;
-	inputElementDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
+	inputElementDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDesc.InputSlot = 0;
 	inputElementDesc.AlignedByteOffset = 0;
 	inputElementDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -801,37 +669,8 @@ HRESULT initialize(void)
 	{
 		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer \n")
 	}
-	gpID3D11DeviceContext -> PSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBuffer);
-
-	ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
-	constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	constantBufferDesc.ByteWidth = sizeof(CBUFFER_HULL);
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = gpID3D11Device->CreateBuffer(&constantBufferDesc, nullptr, &gpID3D11BufferConstantBufferHull);
-	if (FAILED(hr))
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer() failed to create constant buffer hull \n")
-	}
-	else
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer hull \n")
-	}
-	gpID3D11DeviceContext -> HSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBufferHull);
-	
-	ZeroMemory(&constantBufferDesc, sizeof(D3D11_BUFFER_DESC));
-	constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	constantBufferDesc.ByteWidth = sizeof(CBUFFER_DOMAIN);
-	constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = gpID3D11Device->CreateBuffer(&constantBufferDesc, nullptr, &gpID3D11BufferConstantBufferDomain);
-	if (FAILED(hr))
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer() failed to create constant buffer domain \n")
-	}
-	else
-	{
-		LOG_ERROR(gpFile, logFileName, "ID3D11Device::CreateBuffer()  succeeded to create constant buffer domain \n")
-	}
-	gpID3D11DeviceContext -> DSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBufferDomain);
+	gpID3D11DeviceContext -> VSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBuffer);
+	gpID3D11DeviceContext -> GSSetConstantBuffers(0, 1, &gpID3D11BufferConstantBuffer);
 
 	// d3d clear color (black)
 	gClearColor[0] = 0.0f;
@@ -904,8 +743,6 @@ HRESULT resize(int width, int height)
 	d3dViewPort.MaxDepth = 1.0f;
 	gpID3D11DeviceContext -> RSSetViewports(1, &d3dViewPort);
 
-	gNumberOfLineSegments = 1;
-
 	gPerspectiveProjectionMatrix = XMMatrixPerspectiveFovLH(45.0f, (float)width / (float)height, 0.1f, 100.0f);
 	
 	return hr;
@@ -916,37 +753,29 @@ void display(void)
 	gpID3D11DeviceContext -> ClearRenderTargetView(gpID3D11RenderTargetView, gClearColor);
 
 	// select buffer to display
-	UINT stride = sizeof(float) * 2;
+	UINT stride = sizeof(float) * 3;
 	UINT offset = 0;
 	gpID3D11DeviceContext -> IASetVertexBuffers(0, 1, &gpID3D11BufferVertexBuffer, &stride, &offset);
 
 	// select geometry premetive (topology)
-	gpID3D11DeviceContext -> IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
+	gpID3D11DeviceContext -> IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// translation
 	XMMATRIX worldMatrix = XMMatrixIdentity();
 	XMMATRIX viewMatrix = XMMatrixIdentity();
 
-	worldMatrix = XMMatrixTranslation(0.5f, 0.5f, 2.0f);
+	worldMatrix = XMMatrixTranslation(0.f, 0.0f, 3.0f);
 
 	// final worldviewProjection matrix
 	XMMATRIX wvpMatrix = worldMatrix * viewMatrix * gPerspectiveProjectionMatrix;
 
-	// load the data into constant buffer
+	// load the data inot constant buffer
 	CBUFFER constantBuffer;
 	constantBuffer.WorldViewProjectionMatrix = wvpMatrix;
 	gpID3D11DeviceContext -> UpdateSubresource(gpID3D11BufferConstantBuffer, 0, NULL, &constantBuffer, 0, 0);
 
-	CBUFFER_HULL constantBufferHull;
-	constantBufferHull.HullConstantFunctionPara = XMVectorSet(1, gNumberOfLineSegments, 0.0f, 0.0f);
-	gpID3D11DeviceContext->UpdateSubresource(gpID3D11BufferConstantBufferHull, 0, NULL, &constantBufferHull, 0, 0);
-
-	CBUFFER_DOMAIN constantBufferDomain;
-	constantBufferDomain.LineColor= XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f);
-	gpID3D11DeviceContext->UpdateSubresource(gpID3D11BufferConstantBufferDomain, 0, NULL, &constantBufferDomain, 0, 0);
-
 	// draw vertex buffer to render target
-	gpID3D11DeviceContext -> Draw(4, 0);
+	gpID3D11DeviceContext->Draw(3, 0);
 
 	// switch between front and back buffer
 	gpIDXGISwapChain -> Present(0, 0);
@@ -955,18 +784,6 @@ void display(void)
 void uninitialize(void)
 {
 	// tear down 
-	if (gpID3D11BufferConstantBufferDomain)
-	{
-		gpID3D11BufferConstantBufferDomain->Release();
-		gpID3D11BufferConstantBufferDomain = NULL;
-	}
-
-	if (gpID3D11BufferConstantBufferHull)
-	{
-		gpID3D11BufferConstantBufferHull->Release();
-		gpID3D11BufferConstantBufferHull = NULL;
-	}
-
 	if (gpID3D11BufferConstantBuffer)
 	{
 		gpID3D11BufferConstantBuffer -> Release();
@@ -989,18 +806,6 @@ void uninitialize(void)
 	{
 		gpID3D11PixelShader -> Release();
 		gpID3D11PixelShader = NULL;
-	}
-
-	if (gpID3D11HullShader)
-	{
-		gpID3D11HullShader->Release();
-		gpID3D11HullShader = NULL;
-	}
-
-	if (gpID3D11DomainShader)
-	{
-		gpID3D11DomainShader->Release();
-		gpID3D11DomainShader = NULL;
 	}
 
 	if (gpID3D11VertexShader)
